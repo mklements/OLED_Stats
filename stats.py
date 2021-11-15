@@ -1,7 +1,7 @@
 # Created by: Michael Klements
 # For Raspberry Pi Desktop Case with OLED Stats Display
 # Base on Adafruit CircuitPython & SSD1306 Libraries
-# Installation & Setup Instructions - 
+# Installation & Setup Instructions - https://www.the-diy-life.com/add-an-oled-stats-display-to-raspberry-pi-os-bullseye/
 import time
 import board
 import busio
