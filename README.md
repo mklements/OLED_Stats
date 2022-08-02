@@ -91,5 +91,4 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
     $ sudo rm -rf OLED_Stats
     $ sudo reboot
 ```
-
-<center><h1>THE  END</h1></center>
+<h3><p align="center">THE  END</p></h3>
