@@ -58,7 +58,7 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
 6. Next, we need to install the CircuitPython libraries specific to the display. Start by entering the following commands:
 
 ```shell
-    $ pip3 install adafruit-circuitpython-ssd1306
+    $ sudo pip3 install adafruit-circuitpython-ssd1306
     $ sudo reboot
     $ sudo apt-get install python3-pil
 ```
