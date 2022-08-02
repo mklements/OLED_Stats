@@ -1,3 +1,11 @@
 {
-  "cSpell.words": ["Adafruit", "blinka", "OLED", "raspi", "setuptools"]
+  "cSpell.words": [
+    "Adafruit",
+    "blinka",
+    "cdetect",
+    "circuitpython",
+    "OLED",
+    "raspi",
+    "setuptools"
+  ]
 }
