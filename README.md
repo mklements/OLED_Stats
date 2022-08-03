@@ -63,7 +63,7 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
     $ sudo apt-get install python3-pil
 ```
 
-7. New we need to download the python script from out github:
+7. Now we need to download the python script from out github:
 
 ```shell
     $ git clone https://github.com/md-siam/OLED_Stats.git
