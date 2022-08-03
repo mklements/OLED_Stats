@@ -71,6 +71,9 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
     $ cd OLED_Stats
     $ cp PixelOperator.ttf ~/PixelOperator.ttf
     $ cp stats.py ~/stats.py
+    $ cp fontawesome-webfont.ttf ~/fontawesome-webfont.ttf
+    $ cp monitor.py ~/monitor.py
+    
 ```
 
 8. For activating the `crontab` follow the procedure:
@@ -83,6 +86,10 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
 
 ```
     @reboot python3 /home/pi/stats.py &
+
+    OR
+
+    @reboot python3 /home/pi/monitor.py &    
 ```
 
 9. At the end DELETE the OLED_Stats folder and reboot

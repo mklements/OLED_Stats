@@ -4,8 +4,13 @@
     "blinka",
     "cdetect",
     "circuitpython",
+    "digitalio",
+    "fontawesome",
+    "Klements",
     "OLED",
     "raspi",
-    "setuptools"
+    "setuptools",
+    "vcgencmd",
+    "webfont"
   ]
 }
