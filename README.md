@@ -7,6 +7,19 @@ Or my Youtube Channel - https://youtu.be/lRTQ0NsXMuw
 
 The script is pre-configured for 128x64 I2C OLED Display, but can easily be modified to run on a 128x32 I2C OLED Display
 
+## Screenshots:
+
+<table align="center" style="margin: 0px auto;">
+  <tr>
+    <th>stats.py</th>
+    <th>monitor.py</th>
+  </tr>
+  <tr>
+    <td><img align="right" src="https://i.ytimg.com/vi/lRTQ0NsXMuw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA2eFunUPnMf_Cveih2-b_JEXZxig" height="220"></img></td>
+    <td><img align="right" src="https://i.ytimg.com/vi/94ZjxjmhBrY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBTY9ptxf2VqzErucUVVxqmK3Pw6g" height="220"></img></td>
+  </tr>
+  </table>
+
 ## Installation Steps:
 
 1. Connect **GND, VCC(3.3v), SCL, & SDA** ports of the display according to the picture shown below:
@@ -73,7 +86,7 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
     $ cp stats.py ~/stats.py
     $ cp fontawesome-webfont.ttf ~/fontawesome-webfont.ttf
     $ cp monitor.py ~/monitor.py
-    
+
 ```
 
 8. For activating the `crontab` follow the procedure:
@@ -89,7 +102,7 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
 
     OR
 
-    @reboot python3 /home/pi/monitor.py &    
+    @reboot python3 /home/pi/monitor.py &
 ```
 
 9. At the end DELETE the OLED_Stats folder and reboot
@@ -98,4 +111,5 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
     $ sudo rm -rf OLED_Stats
     $ sudo reboot
 ```
+
 <h3><p align="center">THE  END</p></h3>
