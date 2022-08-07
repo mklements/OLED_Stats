@@ -79,7 +79,7 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
 7. Now we need to download the python script from out github:
 
 ```shell
-    $ git clone https://github.com/md-siam/OLED_Stats.git
+    $ git clone https://github.com/mklements/OLED_Stats.git
 
     $ cd OLED_Stats
     $ cp PixelOperator.ttf ~/PixelOperator.ttf
