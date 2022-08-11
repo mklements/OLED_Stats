@@ -72,6 +72,7 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
 
 ```shell
     $ sudo pip3 install adafruit-circuitpython-ssd1306
+    $ sudo pip3 install psutil
     $ sudo reboot
     $ sudo apt-get install python3-pil
 ```
@@ -100,6 +101,10 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
 ```
     @reboot python3 /home/pi/stats.py &
 
+    OR
+    
+    @reboot python3 /home/pi/psutilstats.py &
+    
     OR
 
     @reboot python3 /home/pi/monitor.py &
