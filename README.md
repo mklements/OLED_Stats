@@ -85,6 +85,9 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
     $ cd OLED_Stats
     $ cp PixelOperator.ttf ~/PixelOperator.ttf
     $ cp stats.py ~/stats.py
+    
+    $ cp psutilstats.py ~/psutilstats.py
+    
     $ cp fontawesome-webfont.ttf ~/fontawesome-webfont.ttf
     $ cp monitor.py ~/monitor.py
 
