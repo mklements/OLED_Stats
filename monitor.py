@@ -74,7 +74,7 @@ while True:
     MemUsage = subprocess.check_output(cmd, shell = True )
     
     cmd = "df -h | awk '$NF==\"/\"{printf \"HDD: %d/%dGB %s\", $3,$2,$5}'"
-    cmd = "df -h | awk '$NF==\"/\"{printf \"%s\", $5}'"
+    cmd = "df -h | awk '$NF==\"/\"{printf \"%d/%dGB\", $3,$2}'"
     Disk = subprocess.check_output(cmd, shell = True )
     
     cmd = "vcgencmd measure_temp | cut -d '=' -f 2 | head --bytes -1"
@@ -84,25 +84,25 @@ while True:
     # Icon temperature
     draw.text((x, top+5),    chr(62609),  font=icon_font, fill=255)
     # Icon memory
-    draw.text((x+60, top+5), chr(62776),  font=icon_font, fill=255)
+    draw.text((x+65, top+5), chr(62776),  font=icon_font, fill=255)
     # Icon disk
     draw.text((x, top+25), chr(63426),  font=icon_font, fill=255)
     # Icon cpu
-    draw.text((x+60, top+25), chr(62171), font=icon_font, fill=255)
+    draw.text((x+65, top+25), chr(62171), font=icon_font, fill=255)
     # Icon wifi
     draw.text((x, top+45), chr(61931),  font=icon_font, fill=255)
 
    # Text
     # Text temperature
-    draw.text((x+18, top+5), str(Temperature,'utf-8'),  font=font, fill=255)
-    # Text mem usage
-    draw.text((x+80, top+5), str(MemUsage,'utf-8'),  font=font, fill=255)
+    draw.text((x+19, top+5), str(Temperature,'utf-8'),  font=font, fill=255)
+    # Text memory usage
+    draw.text((x+87, top+5), str(MemUsage,'utf-8'),  font=font, fill=255)
     # Text Disk usage
-    draw.text((x+18, top+25), str(Disk,'utf-8'),  font=font, fill=255)
+    draw.text((x+19, top+25), str(Disk,'utf-8'),  font=font, fill=255)
     # Text cpu usage
-    draw.text((x+80, top+25), str(CPU,'utf-8'), font=font, fill=255)
+    draw.text((x+87, top+25), str(CPU,'utf-8'), font=font, fill=255)
     # Text IP address
-    draw.text((x+18, top+45), str(IP,'utf-8'),  font=font, fill=255)
+    draw.text((x+19, top+45), str(IP,'utf-8'),  font=font, fill=255)
     
    # Display image.
     oled.image(image)
