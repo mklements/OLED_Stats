@@ -17,6 +17,9 @@ WIDTH = 128
 HEIGHT = 64
 BORDER = 5
 
+# Display Refresh
+LOOPTIME = 1.0
+
 # Use for I2C.
 i2c = board.I2C()
 oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c, addr=0x3C, reset=oled_reset)
@@ -101,4 +104,4 @@ while True:
    # Display image.
     oled.image(image)
     oled.show()
-    time.sleep(.1)
+    time.sleep(LOOPTIME)
