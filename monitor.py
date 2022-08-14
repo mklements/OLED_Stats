@@ -17,6 +17,9 @@ WIDTH = 128
 HEIGHT = 64
 BORDER = 5
 
+# Display Refresh
+LOOPTIME = 1.0
+
 # Use for I2C.
 i2c = board.I2C()
 oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c, addr=0x3C, reset=oled_reset)
@@ -51,9 +54,9 @@ font = ImageFont.load_default()
 
 # Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
 # Some other nice fonts to try: http://www.dafont.com/bitmap.php
+# Icons website: https://icons8.com/line-awesome
 font = ImageFont.truetype('PixelOperator.ttf', 16)
-icon_font_small = ImageFont.truetype('fontawesome-webfont.ttf', 14)
-icon_font_large = ImageFont.truetype('fontawesome-webfont.ttf', 16)
+icon_font= ImageFont.truetype('lineawesome-webfont.ttf', 18)
 
 while True:
 
@@ -64,41 +67,44 @@ while True:
     cmd = "hostname -I | cut -d\' \' -f1 | head --bytes -1"
     IP = subprocess.check_output(cmd, shell = True )
 
-    cmd = "top -bn1 | grep load | awk '{printf \"CPU %.2f\", $(NF-2)}'"
+    cmd = "top -bn1 | grep load | awk '{printf \"%.2fLA\", $(NF-2)}'"
     CPU = subprocess.check_output(cmd, shell = True )
 
     cmd = "free -m | awk 'NR==2{printf \"%.2f%%\", $3*100/$2 }'"    
     MemUsage = subprocess.check_output(cmd, shell = True )
     
     cmd = "df -h | awk '$NF==\"/\"{printf \"HDD: %d/%dGB %s\", $3,$2,$5}'"
-    cmd = "df -h | awk '$NF==\"/\"{printf \"%s\", $5}'"
+    cmd = "df -h | awk '$NF==\"/\"{printf \"%d/%dGB\", $3,$2}'"
     Disk = subprocess.check_output(cmd, shell = True )
     
     cmd = "vcgencmd measure_temp | cut -d '=' -f 2 | head --bytes -1"
     Temperature = subprocess.check_output(cmd, shell = True )
 
-    # Icons
+   # Icons
     # Icon temperature
-    draw.text((x, top+5),    chr(62152),  font=icon_font_large, fill=255)
+    draw.text((x, top+5),    chr(62609),  font=icon_font, fill=255)
     # Icon memory
-    draw.text((x+60, top+5), chr(62171),  font=icon_font_large, fill=255)
+    draw.text((x+65, top+5), chr(62776),  font=icon_font, fill=255)
     # Icon disk
-    draw.text((x, top+30), chr(61888),  font=icon_font_small, fill=255)
-    # Icon Wifi
-    draw.text((x, top+52), chr(61931),  font=icon_font_small, fill=255)
+    draw.text((x, top+25), chr(63426),  font=icon_font, fill=255)
+    # Icon cpu
+    draw.text((x+65, top+25), chr(62171), font=icon_font, fill=255)
+    # Icon wifi
+    draw.text((x, top+45), chr(61931),  font=icon_font, fill=255)
 
-  # Text temperature
-    draw.text((x+15, top+5), str(Temperature,'utf-8'),  font=font, fill=255)
-  # Text mem usage
-    draw.text((x+80, top+5), str(MemUsage,'utf-8'),  font=font, fill=255)
-  # Text Disk usage
-    draw.text((x+15, top+30), str(Disk,'utf-8'),  font=font, fill=255)
-  # Text cpu usage
-    draw.text((x+60, top+30), str(CPU,'utf-8'), font=font, fill=255)
-  # Text IP address
-    draw.text((x+15, top+49), str(IP,'utf-8'),  font=font, fill=255)
+   # Text
+    # Text temperature
+    draw.text((x+19, top+5), str(Temperature,'utf-8'),  font=font, fill=255)
+    # Text memory usage
+    draw.text((x+87, top+5), str(MemUsage,'utf-8'),  font=font, fill=255)
+    # Text Disk usage
+    draw.text((x+19, top+25), str(Disk,'utf-8'),  font=font, fill=255)
+    # Text cpu usage
+    draw.text((x+87, top+25), str(CPU,'utf-8'), font=font, fill=255)
+    # Text IP address
+    draw.text((x+19, top+45), str(IP,'utf-8'),  font=font, fill=255)
     
    # Display image.
     oled.image(image)
     oled.show()
-    time.sleep(.1)
+    time.sleep(LOOPTIME)
