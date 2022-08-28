@@ -1,0 +1,12 @@
+[Unit]
+Description=Front display stats
+After=sshd.service
+
+[Service]
+WorkingDirectory=/home/<USERNAME>/OLED_Stats/
+ExecStart=/home/<USERNAME>/OLED_Stats/stats.py
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
