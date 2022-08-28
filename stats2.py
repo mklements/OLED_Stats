@@ -63,7 +63,7 @@ while (time_in_range(start, end, current)):
     Memuseper = subprocess.check_output(cmd, shell = True )
     cmd = "df -h | awk '$NF==\"/\"{printf \"%s\", $5}'"
     Disk = subprocess.check_output(cmd, shell = True )
-    cmd = "uptime | awk -F'( |,|:)+' '{print $99,$6,$7}'"
+    cmd = "uptime=$(</proc/uptime) ;  uptime=${uptime%%.*} ; days=$(( uptime/60/60/24 )); echo $days days"
     uptime = subprocess.check_output(cmd, shell = True )
     cmd = "cat /sys/class/thermal/thermal_zone*/temp | awk -v CONVFMT='%.1f' '{printf $1/1000}'"   
     temp = subprocess.check_output(cmd, shell = True )
