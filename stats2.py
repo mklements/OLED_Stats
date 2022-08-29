@@ -94,11 +94,9 @@ while True:
         # Display image
         oled.image(image)
         oled.show()
-    
-        time.sleep(sleep)
-    
     else:
         oled.fill(0)
         oled.show()
-        time.sleep(sleep)
+        sleep(60)
         current = datetime.datetime.now().time()
+    time.sleep(sleep)
