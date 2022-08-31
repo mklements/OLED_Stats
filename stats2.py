@@ -64,7 +64,7 @@ while True:
         cmd = "df -h | awk '$NF==\"/\"{printf \"%s\", $5}'"
         Disk = subprocess.check_output(cmd, shell = True )
         #cmd = "uptime=$(</proc/uptime) ;  uptime=${uptime%%.*} ; days=$(( uptime/60/60/24 )); echo $days days"
-        cmd = "uptime | awk '{print $3,$4}' | head -c -2"
+        cmd = "uptime | awk '{print $3,$4}' | cut -f1 -d','"
         uptime = subprocess.check_output(cmd, shell = True )
         cmd = "cat /sys/class/thermal/thermal_zone*/temp | awk -v CONVFMT='%.1f' '{printf $1/1000}'"   
         temp = subprocess.check_output(cmd, shell = True )
