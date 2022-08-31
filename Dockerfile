@@ -11,12 +11,6 @@ RUN apk add --no-cache i2c-tools libgpiod-dev gcc libc-dev linux-headers py3-pil
 
 WORKDIR /opt/stats
 
-COPY . .
-
-COPY PixelOperator.ttf lineawesome-webfont.ttf stats.py /opt/stats/
+COPY PixelOperator.ttf lineawesome-webfont.ttf stats2.py /opt/stats/
 
 ENTRYPOINT [ "python", "stats.py" ]
-
-# Build: docker build . -t test-stats
-# Use: docker run --network=host --device=/dev/i2c-1 --device=/dev/gpiomem -d --name test test-stats
-# Debug: docker run --entrypoint=/bin/sh -it --network=host --device=/dev/i2c-1 --device=/dev/gpiomem -d --name test test-stats
