@@ -76,7 +76,7 @@ while True:
         draw.text((1, 32), chr(62776), font=icon_font, fill=255)
         # Icon disk
         draw.text((1, 48), chr(63426), font=icon_font, fill=255)
-        # Icon temp right
+        # Icon time right
         draw.text((111, 48), chr(62034), font=icon_font, fill=255)
     
         # Pi Stats Display, printed from left to right each line
