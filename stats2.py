@@ -23,9 +23,6 @@ height = 64
 # Font size
 font_sz = 16
 
-# Wait with refresh after showing all stats (takes a second)
-sleep = 0
-
 # When the display should be on e.g. 8:30 (8, 30, 0) up to 23:00
 start = datetime.time(0, 0, 0)
 end = datetime.time(0, 0, 0)
@@ -95,9 +92,9 @@ while True:
         # Display image
         oled.image(image)
         oled.show()
+        time.sleep(3)
     else:
         oled.fill(0)
         oled.show()
         sleep(60)
         current = datetime.datetime.now().time()
-    time.sleep(sleep)
