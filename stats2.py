@@ -50,7 +50,7 @@ while True:
         draw.rectangle((0, 0, oled.width, oled.height), fill=0) # Draw a black filled box to clear the image.
         cmd = "ip addr | awk '/inet / { print $2 }' | sed -n '2{p;q}' | cut -d '/' -f1" # Command that's executed in bash
         IP = subprocess.check_output(cmd, shell = True ) # Register ouput from cmd in var
-        cmd = "vmstat 1 2|tail -1|awk '{print 100-$15}' | tr -d '\n'" # Takes a second to fetch for accurate cpu usage in %
+        cmd = "vmstat 4 2|tail -1|awk '{print 100-$15}' | tr -d '\n'" # Takes a second to fetch for accurate cpu usage in %
         CPU = subprocess.check_output(cmd, shell = True )
         cmd = "free -m | awk 'NR==2{printf $3}'| awk '{printf $1/1000}'"
         Memuse = subprocess.check_output(cmd, shell = True )
@@ -91,7 +91,7 @@ while True:
         # Display image
         oled.image(image)
         oled.show()
-        time.sleep(3)
+        time.sleep(0)
     else:
         oled.fill(0)
         oled.show()
