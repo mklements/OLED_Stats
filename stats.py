@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Created by: Michael Klements
 # For Raspberry Pi Desktop Case with OLED Stats Display
 # Base on Adafruit CircuitPython & SSD1306 Libraries
