@@ -100,6 +100,7 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
 ```
 
 **Add this at the bottom:**
+
 Remember to change your username (pi below) if you're not using the default username
 
 ```
