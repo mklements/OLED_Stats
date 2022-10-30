@@ -99,7 +99,8 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
     $ crontab -e
 ```
 
-**Add this like at the bottom:**
+**Add this at the bottom:**
+Remember to change your username (pi below) if you're not using the default username
 
 ```
     @reboot python3 /home/pi/stats.py &
