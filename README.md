@@ -122,4 +122,7 @@ Remember to change your username (pi below) if you're not using the default user
     $ sudo reboot
 ```
 
+If your display shows jumbled pixels/symbols instead of actual text - you may have a display which supports the SH1106 driver instead of more common SSD1306 driver. This script ONLY works for SSD1306 displays.
+If you have this issue, follow this guide instead: https://www.youtube.com/watch?v=LdOKXUDw2NY
+
 <h3><p align="center">THE  END</p></h3>
