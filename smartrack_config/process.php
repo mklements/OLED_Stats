@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 $ip_address = $_POST['ip_address'];
 $gateway = $_POST['gateway'];
 // Open the file for writing
-$filename = '/home/smartrack/smartrack-pi/.env';
+$filename = '/home/smartrack/smartrack-pi/smartrack_pi/.env';
 
 $file = fopen($filename, 'w'); 
 
