@@ -1,0 +1,4 @@
+adafruit-circuitpython-ssd1306
+psutil
+python3-pil
+adafruit-python-shell
