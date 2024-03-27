@@ -1,9 +1,9 @@
 [Unit]
-Description=Controller Reset Button
+Description=Smartrack Reset Button
 After=multi-user.target
 [Service]
 Type=simple
 Restart=always
-ExecStart=/home/controlpanel/control-panel/.venv/bin/python /home/controlpanel/control-panel/control_panel/button.py
+ExecStart=/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/button.py
 [Install]
 WantedBy=multi-user.target

@@ -1,8 +1,9 @@
-# CTUS Control Panel
+# CTUS Smartrack PI
 
 ```
-git clone https://github.com/ctus-dev/control-panel.git
-cd control-panel
+cd ~
+git clone https://github.com/ctus-dev/smartrack-pi.git
+cd smartrack-pi
 chmod +x install/install.sh
 install/install.sh
 ```
