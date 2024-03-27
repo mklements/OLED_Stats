@@ -53,6 +53,19 @@ def set_dhcp():
             "con",
             "mod",
             "Wired connection 1",
+            "ipv4.addresses",
+            "",
+        ],
+        check=False,
+    )
+    print(pcess)
+    pcess = subprocess.run(
+        [
+            "sudo",
+            "nmcli",
+            "con",
+            "mod",
+            "Wired connection 1",
             "ipv4.method",
             "auto",
         ],
@@ -78,7 +91,7 @@ def released():
         set_dhcp()
     else:
         print("Setting to Static")
-        config = set_static("192.168.1.241")
+        set_static("192.168.1.241")
     DHCP = not DHCP
 
 
