@@ -26,14 +26,14 @@ def set_network_config(interface, ip_address, netmask, gateway):
     """Sets the network configuration for a given interface.
 
     Args:
-      interface: The name of the network interface.
-      ip_address: The IP address to assign to the interface.
-      netmask: The netmask for the IP address.
-      gateway: The gateway for the network.
+        interface: The name of the network interface.
+        ip_address: The IP address to assign to the interface.
+        netmask: The netmask for the IP address.
+        gateway: The gateway for the network.
     """
 
-    return f"""# auto {interface}
-  iface {interface} inet static
+    return f"""auto {interface}
+ iface {interface} inet static
     address {ip_address}
     netmask {netmask}
     gateway {gateway}
@@ -53,15 +53,15 @@ def released():
     print(WAS_HELD)
     print("take action")
     WAS_HELD = False
-    if DHCP:
-        print("Setting to DHCP")
-        config = set_auto()
-    else:
-        print("Setting to Static")
-        config = set_network_config(
-            "eth0", "192.168.1.241", "255.255.255.0", "192.168.1.1"
-        )
-    write_config(config)
+    # if DHCP:
+    #     print("Setting to DHCP")
+    #     config = set_auto()
+    # else:
+    #     print("Setting to Static")
+    #     config = set_network_config(
+    #         "eth0", "192.168.1.241", "255.255.255.0", "192.168.1.1"
+    #     )
+    # write_config(config)
     DHCP = not DHCP
 
 

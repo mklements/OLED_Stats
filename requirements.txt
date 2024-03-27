@@ -1,6 +1,6 @@
 adafruit-circuitpython-ssd1306
 psutil
-python3-pil
+pillow
 adafruit-python-shell
 RPi.GPIO
 adafruit-blinka

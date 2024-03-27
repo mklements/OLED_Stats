@@ -17,3 +17,11 @@ python -m venv .venv --system-site-packages
 source .venv/bin/activate
 pip install --upgrade -r requirements.txt
 
+sudo cp install/stats.service /etc/systemd/system/stats.service
+sudo cp install/button.service /etc/systemd/system/button.service
+
+sudo systemctl daemon-reload
+sudo systemctl enable stats.service
+sudo systemctl enable button.service
+sudo systemctl start stats.service
+sudo systemctl start button.service
