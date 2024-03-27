@@ -13,9 +13,6 @@ sudo raspi-config nonint do_spi 0
 sudo raspi-config nonint do_ssh 0
 sudo raspi-config nonint disable_raspi_config_at_boot 0
 
-mkdir /home/controlpanel/control-panel
-cd /home/controlpanel/control-panel
-git clone https://github.com/ctus-dev/control-panel.git
 python -m venv .venv --system-site-packages
 source .venv/bin/activate
 pip install --upgrade -r requirements.txt
