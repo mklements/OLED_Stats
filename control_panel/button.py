@@ -9,42 +9,62 @@ WAS_HELD = False
 DHCP = True
 
 
-def write_config(config):
-    with open("/tmp/interfaces", "w") as f:
-        f.write(config)
-    pcess = subprocess.run(["sudo", "mv", "/tmp/interfaces", "/etc/network/interfaces"])
+def set_static(ip_address):
+    pcess = subprocess.run(
+        [
+            "sudo",
+            "nmcli",
+            "con",
+            "mod",
+            "Wired connection 1",
+            "ipv4.addresses",
+            f"{ip_address}/24",
+        ],
+        check=False,
+    )
     print(pcess)
-    print("Flushing Networking")
-    pcess = subprocess.run(["sudo", "ip", "addr", "flush", "eth0"])
-    print("Restarting Networking")
+
+    pcess = subprocess.run(
+        [
+            "sudo",
+            "nmcli",
+            "con",
+            "mod",
+            "Wired connection 1",
+            "ipv4.method",
+            "manual",
+        ],
+        check=False,
+    )
     print(pcess)
-    pcess = subprocess.run(["sudo", "systemctl", "restart", "networking"])
+
+    pcess = subprocess.run(
+        ["sudo", "nmcli", "con", "up", "Wired connection 1"],
+        check=False,
+    )
     print(pcess)
 
 
-def set_network_config(interface, ip_address, netmask, gateway):
-    """Sets the network configuration for a given interface.
+def set_dhcp():
+    pcess = subprocess.run(
+        [
+            "sudo",
+            "nmcli",
+            "con",
+            "mod",
+            "Wired connection 1",
+            "ipv4.method",
+            "auto",
+        ],
+        check=False,
+    )
+    print(pcess)
 
-    Args:
-        interface: The name of the network interface.
-        ip_address: The IP address to assign to the interface.
-        netmask: The netmask for the IP address.
-        gateway: The gateway for the network.
-    """
-
-    return f"""auto {interface}
- iface {interface} inet static
-    address {ip_address}
-    netmask {netmask}
-    gateway {gateway}
-"""
-
-
-def set_auto():
-    return """auto eth0
-allow-hotplug eth0
-iface eth0 inet dhcp
-"""
+    pcess = subprocess.run(
+        ["sudo", "nmcli", "con", "up", "Wired connection 1"],
+        check=False,
+    )
+    print(pcess)
 
 
 def released():
@@ -53,15 +73,12 @@ def released():
     print(WAS_HELD)
     print("take action")
     WAS_HELD = False
-    # if DHCP:
-    #     print("Setting to DHCP")
-    #     config = set_auto()
-    # else:
-    #     print("Setting to Static")
-    #     config = set_network_config(
-    #         "eth0", "192.168.1.241", "255.255.255.0", "192.168.1.1"
-    #     )
-    # write_config(config)
+    if DHCP:
+        print("Setting to DHCP")
+        set_dhcp()
+    else:
+        print("Setting to Static")
+        config = set_static("192.168.1.241")
     DHCP = not DHCP
 
 
