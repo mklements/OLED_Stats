@@ -20,16 +20,19 @@ FONTSIZE = 16
 LOOPTIME = 1.0
 
 
-def get_ipv4_from_interface(interfacename):
+def get_ip():
     """Returns the IP from a specific interface"""
-
     try:
-        iface = ps.net_if_addrs()[interfacename]
+        iface = ps.net_if_addrs()["eth0"]
         for addr in iface:
             if addr.family is socket.AddressFamily.AF_INET:
                 return f"IP: {addr.address}"
     except Exception:
         return "IP: ???:???:???:???"
+
+
+def get_hostname():
+    return socket.gethostname()
 
 
 # Use for I2C.
@@ -61,13 +64,16 @@ font = ImageFont.truetype(
 )
 
 count = 0
+
 while True:
+    title = ""
     count += 1
     if 1 <= count <= 5:
-        ip = get_ipv4_from_interface("eth0")
+        title = get_hostname()
     elif 6 <= count <= 9:
-        ip = socket.gethostname()
-    else:
+        title = get_ip()
+
+    if count == 9:
         count = 0
 
     # Draw a black filled box to clear the image.
@@ -84,7 +90,7 @@ while True:
     root = ps.disk_usage("/")
     disk = f"Disk: {(root.used+GB-1)/GB:.1f}/ {(root.total+GB-1)/GB:.1f} GB"
 
-    draw.text((x, top), ip, font=font, fill=255)
+    draw.text((x, top), title, font=font, fill=255)
     draw.text((x, top + FONTSIZE), cpu, font=font, fill=255)
     draw.text((x + 80, top + FONTSIZE), temp, font=font, fill=255)
     draw.text((x, top + 2 * FONTSIZE), mem_usage, font=font, fill=255)

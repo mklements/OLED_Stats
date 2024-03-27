@@ -3,22 +3,26 @@ import subprocess
 from signal import pause
 from time import sleep
 
+from dotenv import load_dotenv
 from gpiozero import Button
 
 WAS_HELD = False
 DHCP = True
 
 
-def set_static(ip_address):
+def set_static(ip_address, gateway):
+
     pcess = subprocess.run(
         [
             "sudo",
             "nmcli",
             "con",
             "mod",
-            "Wired connection 1",
+            "ipstatic",
             "ipv4.addresses",
-            f"{ip_address}/24",
+            f"{ip_address}",
+            "ipv4.gateway",
+            gateway,
         ],
         check=False,
     )
@@ -30,16 +34,40 @@ def set_static(ip_address):
             "nmcli",
             "con",
             "mod",
-            "Wired connection 1",
-            "ipv4.method",
-            "manual",
+            "dhcp",
+            "connection.autoconnect",
+            "no",
+            "connection.autoconnect-priority",
+            "-1",
         ],
         check=False,
     )
     print(pcess)
 
     pcess = subprocess.run(
-        ["sudo", "nmcli", "con", "up", "Wired connection 1"],
+        [
+            "sudo",
+            "nmcli",
+            "con",
+            "mod",
+            "ipstatic",
+            "connection.autoconnect",
+            "yes",
+            "connection.autoconnect-priority",
+            "10",
+        ],
+        check=False,
+    )
+    print(pcess)
+
+    pcess = subprocess.run(
+        ["sudo", "nmcli", "con", "down", "dhcp"],
+        check=False,
+    )
+    print(pcess)
+
+    pcess = subprocess.run(
+        ["sudo", "nmcli", "con", "up", "ipstatic"],
         check=False,
     )
     print(pcess)
@@ -52,29 +80,40 @@ def set_dhcp():
             "nmcli",
             "con",
             "mod",
-            "Wired connection 1",
-            "ipv4.addresses",
-            "",
-        ],
-        check=False,
-    )
-    print(pcess)
-    pcess = subprocess.run(
-        [
-            "sudo",
-            "nmcli",
-            "con",
-            "mod",
-            "Wired connection 1",
-            "ipv4.method",
-            "auto",
+            "ipstatic",
+            "connection.autoconnect",
+            "no",
+            "connection.autoconnect-priority",
+            "-1",
         ],
         check=False,
     )
     print(pcess)
 
     pcess = subprocess.run(
-        ["sudo", "nmcli", "con", "up", "Wired connection 1"],
+        [
+            "sudo",
+            "nmcli",
+            "con",
+            "mod",
+            "dhcp",
+            "connection.autoconnect",
+            "yes",
+            "connection.autoconnect-priority",
+            "10",
+        ],
+        check=False,
+    )
+    print(pcess)
+
+    pcess = subprocess.run(
+        ["sudo", "nmcli", "con", "down", "ipstatic"],
+        check=False,
+    )
+    print(pcess)
+
+    pcess = subprocess.run(
+        ["sudo", "nmcli", "con", "up", "dhcp"],
         check=False,
     )
     print(pcess)
@@ -91,7 +130,8 @@ def released():
         set_dhcp()
     else:
         print("Setting to Static")
-        set_static("192.168.1.241")
+        load_dotenv(override=True)
+        set_static(os.getenv("STATIC_IP"), os.getenv("STATIC_IP"))
     DHCP = not DHCP
 
 

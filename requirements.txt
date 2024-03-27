@@ -4,3 +4,4 @@ pillow
 adafruit-python-shell
 RPi.GPIO
 adafruit-blinka
+python-dotenv
