@@ -1,4 +1,4 @@
-#!bin/sh
+#!/bin/bash
 
 sudo apt-get update -y
 sudp apt-get full-upgrade -y
