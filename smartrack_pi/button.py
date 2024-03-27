@@ -20,7 +20,7 @@ def set_static(ip_address, gateway):
             "mod",
             "ipstatic",
             "ipv4.addresses",
-            f"{ip_address}",
+            ip_address,
             "ipv4.gateway",
             gateway,
         ],
@@ -131,7 +131,7 @@ def released():
     else:
         print("Setting to Static")
         load_dotenv(override=True)
-        set_static(os.getenv("STATIC_IP"), os.getenv("STATIC_IP"))
+        set_static(os.getenv("STATIC_IP"), os.getenv("GATEWAY"))
     DHCP = not DHCP
 
 
