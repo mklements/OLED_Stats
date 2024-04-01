@@ -3,15 +3,17 @@ import subprocess
 from signal import pause
 from time import sleep
 
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv, set_key
 from gpiozero import Button
 
 WAS_HELD = False
 DHCP = True
+DOTENV_FILE = find_dotenv()
 
 
 def set_static(ip_address, gateway):
-
+    os.environ["MODE"] = "S"
+    set_key(DOTENV_FILE, "MODE", os.environ["MODE"])
     pcess = subprocess.run(
         [
             "sudo",
@@ -74,6 +76,8 @@ def set_static(ip_address, gateway):
 
 
 def set_dhcp():
+    os.environ["MODE"] = "D"
+    set_key(DOTENV_FILE, "MODE", os.environ["MODE"])
     pcess = subprocess.run(
         [
             "sudo",
