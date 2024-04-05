@@ -9,6 +9,17 @@ function set_config() {
   fi
 }
 
+function set_alias() {
+  local alias=$1
+  local alias_target=$2
+
+  if sudo grep -q "alias $alias=" ~/.bashrc; then
+    sed -i "s@alias $alias='.*'@alias $alias=$alias_target@" ~/.bashrc
+  else
+    echo "alias $alias=$alias_target" >> ~/.bashrc
+  fi
+}
+
 set_config "usb_max_current_enable=1"
 
 sudo apt-get update -y
@@ -59,3 +70,8 @@ chmod +x /home/smartrack
 chmod 0777 /home/smartrack/smartrack_pi/.env
 
 sudo service apache2 reload
+
+alias="smartrackcli"
+alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
+
+set_alias "$alias" "$alias_target"
