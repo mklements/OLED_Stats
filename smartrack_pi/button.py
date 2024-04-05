@@ -5,138 +5,31 @@ from time import sleep
 
 from dotenv import find_dotenv, load_dotenv, set_key
 from gpiozero import Button
+from ip.set_adaptor import Adaptor
 
 WAS_HELD = False
-DHCP = True
 DOTENV_FILE = find_dotenv()
+adaptor = Adaptor()
 
 
-def set_static(ip_address, gateway):
-    os.environ["MODE"] = "S"
+def _set_mode_env(mode):
+    os.environ["MODE"] = mode
     set_key(DOTENV_FILE, "MODE", os.environ["MODE"])
-    pcess = subprocess.run(
-        [
-            "sudo",
-            "nmcli",
-            "con",
-            "mod",
-            "ipstatic",
-            "ipv4.addresses",
-            ip_address,
-            "ipv4.gateway",
-            gateway,
-        ],
-        check=False,
-    )
-    print(pcess)
-
-    pcess = subprocess.run(
-        [
-            "sudo",
-            "nmcli",
-            "con",
-            "mod",
-            "dhcp",
-            "connection.autoconnect",
-            "no",
-            "connection.autoconnect-priority",
-            "-1",
-        ],
-        check=False,
-    )
-    print(pcess)
-
-    pcess = subprocess.run(
-        [
-            "sudo",
-            "nmcli",
-            "con",
-            "mod",
-            "ipstatic",
-            "connection.autoconnect",
-            "yes",
-            "connection.autoconnect-priority",
-            "10",
-        ],
-        check=False,
-    )
-    print(pcess)
-
-    pcess = subprocess.run(
-        ["sudo", "nmcli", "con", "down", "dhcp"],
-        check=False,
-    )
-    print(pcess)
-
-    pcess = subprocess.run(
-        ["sudo", "nmcli", "con", "up", "ipstatic"],
-        check=False,
-    )
-    print(pcess)
-
-
-def set_dhcp():
-    os.environ["MODE"] = "D"
-    set_key(DOTENV_FILE, "MODE", os.environ["MODE"])
-    pcess = subprocess.run(
-        [
-            "sudo",
-            "nmcli",
-            "con",
-            "mod",
-            "ipstatic",
-            "connection.autoconnect",
-            "no",
-            "connection.autoconnect-priority",
-            "-1",
-        ],
-        check=False,
-    )
-    print(pcess)
-
-    pcess = subprocess.run(
-        [
-            "sudo",
-            "nmcli",
-            "con",
-            "mod",
-            "dhcp",
-            "connection.autoconnect",
-            "yes",
-            "connection.autoconnect-priority",
-            "10",
-        ],
-        check=False,
-    )
-    print(pcess)
-
-    pcess = subprocess.run(
-        ["sudo", "nmcli", "con", "down", "ipstatic"],
-        check=False,
-    )
-    print(pcess)
-
-    pcess = subprocess.run(
-        ["sudo", "nmcli", "con", "up", "dhcp"],
-        check=False,
-    )
-    print(pcess)
 
 
 def released():
     global WAS_HELD
-    global DHCP
-    print(WAS_HELD)
     print("take action")
     WAS_HELD = False
-    if DHCP:
-        print("Setting to DHCP")
-        set_dhcp()
-    else:
+    load_dotenv(override=True)
+    if os.environ["MODE"] == "D":
         print("Setting to Static")
-        load_dotenv(override=True)
-        set_static(os.getenv("STATIC_IP"), os.getenv("GATEWAY"))
-    DHCP = not DHCP
+        adaptor.set_adaptor_static(os.getenv("STATIC_IP"), os.getenv("GATEWAY"))
+        _set_mode_env("S")
+    else:
+        print("Setting to DHCP")
+        adaptor.set_adaptor_dhcp()
+        _set_mode_env("D")
 
 
 def held():

@@ -1,5 +1,6 @@
 """Interface for retreiving stats and displaying on an OLED"""
 
+import os
 import socket
 import time
 from pathlib import Path
@@ -7,6 +8,7 @@ from pathlib import Path
 import adafruit_ssd1306
 import board
 import psutil as ps
+from dotenv import load_dotenv
 from PIL import Image, ImageDraw, ImageFont
 
 KB = 1024
@@ -66,6 +68,8 @@ font = ImageFont.truetype(
 count = 0
 
 while True:
+    load_dotenv(override=True)
+
     title = ""
     count += 1
     if 1 <= count <= 5:
@@ -75,9 +79,6 @@ while True:
 
     if count == 9:
         count = 0
-
-    # Draw a black filled box to clear the image.
-    draw.rectangle((0, 0, oled.width, oled.height), outline=0, fill=0)
 
     cpu = f"CPU: {ps.cpu_percent():.1f} %"
 
@@ -90,7 +91,10 @@ while True:
     root = ps.disk_usage("/")
     disk = f"Disk: {(root.used+GB-1)/GB:.1f}/ {(root.total+GB-1)/GB:.1f} GB"
 
+    # Draw a black filled box to clear the image.
+    draw.rectangle((0, 0, oled.width, oled.height), outline=0, fill=0)
     draw.text((x, top), title, font=font, fill=255)
+    draw.text((x + 118, top), os.environ["MODE"], font=font, fill=255)
     draw.text((x, top + FONTSIZE), cpu, font=font, fill=255)
     draw.text((x + 80, top + FONTSIZE), temp, font=font, fill=255)
     draw.text((x, top + 2 * FONTSIZE), mem_usage, font=font, fill=255)

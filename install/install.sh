@@ -2,10 +2,9 @@
 function set_config() {
   local line=$1
 
-  if sudo grep -q $line /boot/config.txt; then
+  if sudo grep -q "$line" /boot/config.txt; then
     sudo sed -i "s@$line'.*'@$line@" /boot/config.txt
   else
-    # sudo echo "$line" >> /boot/config.txt
     sudo sed -i '$a'"$line"'' /boot/config.txt
   fi
 }
@@ -35,6 +34,7 @@ sudo nmcli con mod dhcp ipv4.method auto ipv4.addresses '' ipv4.gateway '' ipv4.
 python -m venv .venv --system-site-packages
 source .venv/bin/activate
 pip install --upgrade -r requirements.txt
+sudo chown smartrack:smartrack smartrack_pi/.env
 
 sudo cp install/stats.service /etc/systemd/system/stats.service
 sudo cp install/button.service /etc/systemd/system/button.service
