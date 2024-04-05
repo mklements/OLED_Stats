@@ -1,4 +1,16 @@
 #!/bin/bash
+function set_config() {
+  local line=$1
+
+  if sudo grep -q $line /boot/config.txt; then
+    sudo sed -i "s@$line'.*'@$line@" /boot/config.txt
+  else
+    # sudo echo "$line" >> /boot/config.txt
+    sudo sed -i '$a'"$line"'' /boot/config.txt
+  fi
+}
+
+set_config "usb_max_current_enable=1"
 
 sudo apt-get update -y
 sudp apt-get full-upgrade -y
@@ -32,7 +44,6 @@ sudo systemctl enable stats.service
 sudo systemctl enable button.service
 sudo systemctl start stats.service
 sudo systemctl start button.service
-
 
 # webserver
 sudo apt-get -y install apache2
