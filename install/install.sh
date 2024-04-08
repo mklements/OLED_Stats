@@ -67,7 +67,7 @@ sudo a2enmod rewrite
 sudo a2dissite 000-default
 
 chmod +x /home/smartrack
-chmod 0777 /home/smartrack/smartrack_pi/.env
+chmod 0777 /home/smartrack/smartrack-pi/smartrack_pi/.env
 
 sudo service apache2 reload
 
