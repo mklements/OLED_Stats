@@ -1,18 +1,14 @@
 <?php 
-$filename = '/home/smartrack/smartrack-pi/smartrack_pi/config.json';
-$json = file_get_contents($filename);
-$config = json_decode($json, true);
 
-$config["static_ip"] = $_POST['ip_address'];
-$config["gateway"]  = $_POST['gateway'];
+$ip_address = $_POST['ip_address'];
+$gateway =  $_POST['gateway'];
+
+$output = shell_exec("sudo /home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py static $ip_address $gateway") or die("Failed Running static change");
+$filename = '/home/smartrack/smartrack-pi/smartrack_pi/config.json';
+$config["static_ip"] =$ip_address;
+$config["gateway"]  =$gateway;
 $config["mode"] = "S";
 $json = json_encode($config);
-file_put_contents($filename, $json) or die("asdfjk");
-
-// $command = "smartrackcli dhcp";
-// $output = shell_exec($command);
-// echo $output
-
-header("Location: index.php");
+file_put_contents($filename, $json) or die("Failed Writing JSON");
 exit;
 ?>
