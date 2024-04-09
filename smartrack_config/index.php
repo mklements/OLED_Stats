@@ -3,9 +3,9 @@
 <?php
 $json = file_get_contents('/home/smartrack/smartrack-pi/smartrack_pi/config.json');
 $config = json_decode($json, true);
-$static_ip = $data['static_ip']; 
-$gateway = $data['gateway'];
-$mode = $data['mode'];
+$static_ip = $config['static_ip']; 
+$gateway = $config['gateway'];
+$mode = $config['mode'];
 ?>
 
 <html>
