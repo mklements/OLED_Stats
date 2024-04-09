@@ -35,9 +35,6 @@ sudo a2ensite smartrack-config
 sudo a2enmod rewrite
 sudo a2dissite 000-default
 
-# chmod +x /home/smartrack
-# sudo chmod 0777 /home/smartrack/smartrack-pi/smartrack_pi/.env
-
 sudo service apache2 reload
 
 alias="smartrackcli"
