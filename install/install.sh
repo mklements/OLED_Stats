@@ -14,7 +14,7 @@ function set_alias() {
 set_config "usb_max_current_enable=1"
 
 sudo apt-get update -y
-sudp apt-get full-upgrade -y
+sudo apt-get full-upgrade -y
 
 sudo apt-get -y install python3.11
 sudo apt-get -y install python3-pip
