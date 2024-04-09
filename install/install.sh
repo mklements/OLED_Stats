@@ -2,10 +2,10 @@
 function set_config() {
   local line=$1
 
-  if sudo grep -q "$line" /boot/config.txt; then
-    sudo sed -i "s@$line'.*'@$line@" /boot/config.txt
+  if sudo grep -q "$line" /boot/firmware/config.txt; then
+    sudo sed -i "s@$line'.*'@$line@" /boot/firmware/config.txt
   else
-    sudo sed -i '$a'"$line"'' /boot/config.txt
+    sudo sed -i '$a'"$line"'' /boot/firmware/config.txt
   fi
 }
 
