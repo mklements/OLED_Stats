@@ -1,20 +1,18 @@
 <?php 
-error_reporting(E_ALL);
+$filename = '/home/smartrack/smartrack-pi/smartrack_pi/config.json';
+$json = file_get_contents($filename);
+$config = json_decode($json, true);
 
-$ip_address = $_POST['ip_address'];
-$gateway = $_POST['gateway'];
-// Open the file for writing
-$filename = '/home/smartrack/smartrack-pi/smartrack_pi/.env';
+$config["static_ip"] = $_POST['ip_address'];
+$config["gateway"]  = $_POST['gateway'];
+$config["mode"] = "S";
+$json = json_encode($config);
+file_put_contents($filename, $json) or die("asdfjk");
 
-$file = fopen($filename, 'w'); 
+// $command = "smartrackcli dhcp";
+// $output = shell_exec($command);
+// echo $output
 
-$content = "STATIC_IP=$ip_address\nGATEWAY=$gateway";
-// Write new data to the file
-fwrite($file, "$content");
-
-// Close the file
-fclose($file);
-
-echo "IP Set to: $ip_address!, Gateway Set to: $gateway";
-
+header("Location: index.php");
+exit;
 ?>

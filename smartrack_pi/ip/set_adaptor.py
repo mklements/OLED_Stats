@@ -10,7 +10,6 @@ class Adaptor:
         self.pre_commands = ["sudo", "nmcli", "con"]
 
     def _run_process(self, commands):
-        print("test")
         return subprocess.run(
             commands,
             check=False,

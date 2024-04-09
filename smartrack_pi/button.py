@@ -1,35 +1,45 @@
+import json
 import os
 import subprocess
 from signal import pause
 from time import sleep
 
-from dotenv import find_dotenv, load_dotenv, set_key
 from gpiozero import Button
 from ip.set_adaptor import Adaptor
 
 WAS_HELD = False
-DOTENV_FILE = find_dotenv()
+
 adaptor = Adaptor()
 
 
-def _set_mode_env(mode):
-    os.environ["MODE"] = mode
-    set_key(DOTENV_FILE, "MODE", os.environ["MODE"])
+def _get_config():
+    with open(
+        "/home/smartrack/smartrack-pi/smartrack_pi/config.json", encoding="utf-8"
+    ) as f:
+        return json.load(f)
+
+
+def _set_config(key, value):
+    config = _get_config()
+    config[key] = value
+    with open(
+        "/home/smartrack/smartrack-pi/smartrack_pi/config.json", "w", encoding="utf-8"
+    ) as f:
+        json.dump(config, f)
 
 
 def released():
     global WAS_HELD
-    print("take action")
     WAS_HELD = False
-    load_dotenv(override=True)
-    if os.environ["MODE"] == "D":
+    config = _get_config()
+    if config.get("mode") == "D":
         print("Setting to Static")
-        adaptor.set_adaptor_static(os.getenv("STATIC_IP"), os.getenv("GATEWAY"))
-        _set_mode_env("S")
+        adaptor.set_adaptor_static(config.get("static_ip"), config.get("gateway"))
+        _set_config("mode", "S")
     else:
         print("Setting to DHCP")
         adaptor.set_adaptor_dhcp()
-        _set_mode_env("D")
+        _set_config("mode", "D")
 
 
 def held():

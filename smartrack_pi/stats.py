@@ -1,5 +1,6 @@
 """Interface for retreiving stats and displaying on an OLED"""
 
+import json
 import os
 import socket
 import time
@@ -8,7 +9,6 @@ from pathlib import Path
 import adafruit_ssd1306
 import board
 import psutil as ps
-from dotenv import load_dotenv
 from PIL import Image, ImageDraw, ImageFont
 
 KB = 1024
@@ -20,6 +20,13 @@ HEIGHT = 64
 FONTSIZE = 16
 
 LOOPTIME = 1.0
+
+
+def get_config():
+    with open(
+        "/home/smartrack/smartrack-pi/smartrack_pi/config.json", encoding="utf-8"
+    ) as f:
+        return json.load(f)
 
 
 def get_ip():
@@ -68,8 +75,7 @@ font = ImageFont.truetype(
 count = 0
 
 while True:
-    load_dotenv(override=True)
-
+    config = get_config()
     title = ""
     count += 1
     if 1 <= count <= 5:
@@ -94,7 +100,7 @@ while True:
     # Draw a black filled box to clear the image.
     draw.rectangle((0, 0, oled.width, oled.height), outline=0, fill=0)
     draw.text((x, top), title, font=font, fill=255)
-    draw.text((x + 118, top), os.environ["MODE"], font=font, fill=255)
+    draw.text((x + 118, top), config.get("mode", "!"), font=font, fill=255)
     draw.text((x, top + FONTSIZE), cpu, font=font, fill=255)
     draw.text((x + 80, top + FONTSIZE), temp, font=font, fill=255)
     draw.text((x, top + 2 * FONTSIZE), mem_usage, font=font, fill=255)

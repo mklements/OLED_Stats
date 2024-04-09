@@ -36,6 +36,8 @@ sudo raspi-config nonint do_spi 0
 sudo raspi-config nonint do_ssh 0
 sudo raspi-config nonint disable_raspi_config_at_boot 0
 
+sudo nmcli connection delete id ipstatic
+sudo nmcli connection delete id dhcp
 sudo nmcli c add ifname eth0 type ethernet con-name ipstatic
 sudo nmcli c add ifname eth0 type ethernet con-name dhcp
 sudo nmcli con mod ipstatic ipv4.method manual ipv4.addresses 192.168.1.241/24 ipv4.gateway 192.168.1.1 ipv4.may-fail no ipv6.method disabled connection.autoconnect no connection.autoconnect-priority -1
@@ -44,7 +46,7 @@ sudo nmcli con mod dhcp ipv4.method auto ipv4.addresses '' ipv4.gateway '' ipv4.
 python -m venv .venv --system-site-packages
 source .venv/bin/activate
 pip install --upgrade -r requirements.txt
-sudo chown smartrack:smartrack smartrack_pi/.env
+chmod 0777 smartrack_pi/config.json # allows webpage to write to config
 
 sudo cp install/stats.service /etc/systemd/system/stats.service
 sudo cp install/button.service /etc/systemd/system/button.service
@@ -67,7 +69,7 @@ sudo a2dissite 000-default
 sudo chmod +x /home/smartrack # needed for apache access
 sudo service apache2 reload
 
-alias="smartrackcli"
+alias="smartrack"
 alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
 
 set_alias "$alias" "$alias_target"

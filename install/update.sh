@@ -16,7 +16,7 @@ function set_alias() {
 python -m venv .venv --system-site-packages
 source .venv/bin/activate
 pip install --upgrade -r requirements.txt
-sudo chown smartrack:smartrack smartrack_pi/.env
+chmod 0777 smartrack_pi/config.json # allows webpage to write to config
 
 sudo cp install/stats.service /etc/systemd/system/stats.service
 sudo cp install/button.service /etc/systemd/system/button.service
@@ -37,7 +37,7 @@ sudo a2dissite 000-default
 sudo chmod +x /home/smartrack # needed for apache access
 sudo service apache2 reload
 
-alias="smartrackcli"
+alias="smartrack"
 alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
 
 set_alias "$alias" "$alias_target"
