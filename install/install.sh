@@ -1,5 +1,13 @@
 #!/bin/bash
+function set_config() {
+  local line=$1
 
+  if sudo grep -q "$line" /boot/firmware/config.txt; then
+    sudo sed -i "s@$line'.*'@$line@" /boot/firmware/config.txt
+  else
+    sudo sed -i '$a'"$line"'' /boot/firmware/config.txt
+  fi
+}
 function set_alias() {
   local alias=$1
   local alias_target=$2
