@@ -56,7 +56,7 @@ sudo cp install/apache/envvars /etc/apache2/envvars
 sudo a2ensite smartrack-config
 sudo a2enmod rewrite
 sudo a2dissite 000-default
-
+sudo chmod +x /home/smartrack # needed for apache access
 sudo service apache2 reload
 
 alias="smartrackcli"
