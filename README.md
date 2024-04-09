@@ -22,3 +22,9 @@ cd smartrack-pi
 chmod +x install/update.sh
 install/update.sh
 ```
+
+## Post install or update
+
+```
+sudo reboot
+```
