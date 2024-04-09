@@ -69,7 +69,7 @@ x = 0
 
 # font = ImageFont.load_default()
 font = ImageFont.truetype(
-    f"{Path(__file__).parent / 'lib' / 'PixelOperator.ttf'}", FONTSIZE
+    f"{Path(__file__).parent / 'fonts' / 'PixelOperator.ttf'}", FONTSIZE
 )
 
 count = 0
