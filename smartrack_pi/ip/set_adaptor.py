@@ -10,10 +10,10 @@ class Adaptor:
         self.pre_commands = ["sudo", "nmcli", "con"]
 
     def _run_process(self, commands):
-        # return subprocess.run(
-        #     commands,
-        #     check=False,
-        # )
+        return subprocess.run(
+            commands,
+            check=False,
+        )
 
     def _set_adaptor_status(self, status, adaptor):
         commands = copy(self.pre_commands)
