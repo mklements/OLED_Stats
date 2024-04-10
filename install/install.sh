@@ -19,6 +19,7 @@ function set_alias() {
   fi
 }
 
+# updates and packages
 sudo apt-get update -y
 sudo apt-get full-upgrade -y
 
@@ -28,12 +29,14 @@ sudo apt-get -y install python3.11-venv
 sudo apt-get -y install python-is-python3
 sudo apt-get -y install  i2c-tools libgpiod-dev python3-libgpiod
 
+# pi configs
 sudo raspi-config nonint do_i2c 0
 sudo raspi-config nonint do_spi 0
 sudo raspi-config nonint do_ssh 0
 sudo raspi-config nonint disable_raspi_config_at_boot 0
 set_config "usb_max_current_enable=1"
 
+# network manager interfaces and defaults
 sudo nmcli connection delete id ipstatic
 sudo nmcli connection delete id dhcp
 sudo nmcli c add ifname eth0 type ethernet con-name ipstatic
@@ -43,14 +46,15 @@ sudo nmcli con mod dhcp ipv4.method auto ipv4.addresses '' ipv4.gateway '' ipv4.
 sudo nmcli con down ipstatic
 sudo nmcli con up dhcp
 
+# smartrack pi module and webserver
 python -m venv .venv --system-site-packages
 source .venv/bin/activate
 pip install --upgrade -r requirements.txt
 chmod 0777 smartrack_pi/config.json # allows webpage to write to config
 
+# python script as services
 sudo cp install/stats.service /etc/systemd/system/stats.service
 sudo cp install/button.service /etc/systemd/system/button.service
-
 sudo systemctl daemon-reload
 sudo systemctl enable stats.service
 sudo systemctl enable button.service
@@ -69,7 +73,7 @@ sudo a2dissite 000-default
 sudo chmod +x /home/smartrack # needed for apache access
 sudo service apache2 reload
 
+# alias for cli
 alias="smartrack"
 alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
-
 set_alias "$alias" "$alias_target"

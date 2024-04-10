@@ -28,3 +28,13 @@ install/update.sh
 ```
 sudo reboot
 ```
+
+## Operation
+
+### CLI
+
+```
+smartrack dhcp
+
+smartrack static 192.168.1.100 192.168.1.1
+```
