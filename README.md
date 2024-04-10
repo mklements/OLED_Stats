@@ -12,7 +12,14 @@ install/install.sh
 
 ### Update
 
-Testing another method
+-   After 04-10-2024
+
+```
+cd ~/smartrack-pi
+smartrack update
+```
+
+-   Pre update
 
 ```
 smartrack display message "Updating..."
