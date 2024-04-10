@@ -19,7 +19,7 @@ cd ~/smartrack-pi
 smartrack update
 ```
 
--   Pre update
+-   Pre 4/10 install
 
 ```
 smartrack display message "Updating..."
