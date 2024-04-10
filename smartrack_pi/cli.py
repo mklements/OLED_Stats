@@ -93,7 +93,7 @@ def set_display():
                 except IndexError:
                     messages = []
                 print(f"Displaying message: {messages}")
-                change_display.display_text(messages)
+                change_display.display_text(*messages)
             case _:
                 print("Not a valid command (commands: stats, message)")
 
