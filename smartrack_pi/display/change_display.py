@@ -26,7 +26,8 @@ def stats_status(status=True):
     )
 
 
-def display_text(message):
+def display_text(*messages):
+    stats_status(False)
     i2c = board.I2C()
     oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c, addr=0x3C)
     oled.fill(0)
@@ -45,6 +46,7 @@ def display_text(message):
         f"{Path(__file__).parent.parent / 'fonts' / 'PixelOperator.ttf'}", FONTSIZE
     )
     draw.rectangle((0, 0, oled.width, oled.height), outline=0, fill=0)
-    draw.text((x, top), message, font=font, fill=255)
+    for i, line in enumerate(messages):
+        draw.text((x, top + i * FONTSIZE), line, font=font, fill=255)
     oled.image(image)
     oled.show()

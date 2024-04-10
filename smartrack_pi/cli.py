@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+from time import sleep
 
 from display import change_display
 from ip.set_adaptor import Adaptor
@@ -48,9 +49,12 @@ def set_net():
     if net_type:
         match net_type:
             case "dhcp":
+                change_display.display_text("Setting Net Mode", "to DHCP...")
                 set_dhcp()
             case "static":
+
                 try:
+                    change_display.display_text("Setting Net Mode", "to Static...")
                     ip = sys.argv[3]
                     gateway = sys.argv[4]
                     set_static(ip, gateway)
@@ -58,6 +62,10 @@ def set_net():
                     print(
                         "Please ip and gateway: ('smartrack net static 192.168.1.100 10.1.1.1')"
                     )
+            case _:
+                print("Net type is either 'dhcp' or 'static'")
+        sleep(5)
+        change_display.stats_status()
 
 
 def set_display():
@@ -81,11 +89,11 @@ def set_display():
                     change_display.stats_status()
             case "message":
                 try:
-                    message = sys.argv[3]
+                    messages = sys.argv[3].split("+")
                 except IndexError:
-                    message = ""
-                print(f"Displaying message: {message}")
-                change_display.display_text(message)
+                    messages = []
+                print(f"Displaying message: {messages}")
+                change_display.display_text(messages)
             case _:
                 print("Not a valid command (commands: stats, message)")
 
