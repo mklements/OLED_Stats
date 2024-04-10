@@ -19,15 +19,7 @@ source .venv/bin/activate
 pip install --upgrade -r requirements.txt
 chmod 0777 smartrack_pi/config.json # allows webpage to write to config
 
-# services
-sudo cp install/stats.service /etc/systemd/system/stats.service
-sudo cp install/button.service /etc/systemd/system/button.service
 
-sudo systemctl daemon-reload
-sudo systemctl enable stats.service
-sudo systemctl enable button.service
-sudo systemctl start stats.service
-sudo systemctl start button.service
 
 # webserver
 
@@ -44,4 +36,12 @@ alias="smartrack"
 alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
 set_alias "$alias" "$alias_target"
 
-smartrack display stats
+# services
+sudo cp install/stats.service /etc/systemd/system/stats.service
+sudo cp install/button.service /etc/systemd/system/button.service
+
+sudo systemctl daemon-reload
+sudo systemctl enable stats.service
+sudo systemctl enable button.service
+sudo systemctl start stats.service
+sudo systemctl start button.service
