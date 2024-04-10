@@ -12,6 +12,8 @@ install/install.sh
 
 ### Update
 
+Testing another method
+
 ```
 smartrack display message "Updating..."
 sudo systemctl stop stats.service
