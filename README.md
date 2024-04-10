@@ -1,4 +1,4 @@
-# CTUS Smartrack PI
+# CTUS Smartrack
 
 ## Install
 
@@ -10,7 +10,7 @@ chmod +x install/install.sh
 install/install.sh
 ```
 
-## Update
+### Update
 
 ```
 sudo systemctl stop stats.service
@@ -23,7 +23,7 @@ chmod +x install/update.sh
 install/update.sh
 ```
 
-## Post install or update
+### Post install or update
 
 ```
 sudo reboot

@@ -42,7 +42,7 @@ sudo nmcli connection delete id dhcp
 sudo nmcli c add ifname eth0 type ethernet con-name ipstatic
 sudo nmcli c add ifname eth0 type ethernet con-name dhcp
 sudo nmcli con mod ipstatic ipv4.method manual ipv4.addresses 192.168.1.241/24 ipv4.gateway 192.168.1.1 ipv4.may-fail no ipv6.method disabled connection.autoconnect no connection.autoconnect-priority -1
-sudo nmcli con mod dhcp ipv4.method auto ipv4.addresses '' ipv4.gateway '' ipv4.may-fail no ipv4.dhcp-timeout 20 ipv6.method disabled connection.autoconnect no connection.autoconnect-priority -1 connection.autoconnect-retries 3
+sudo nmcli con mod dhcp ipv4.method auto ipv4.addresses '' ipv4.gateway '' ipv4.may-fail no ipv4.dhcp-timeout 20 ipv6.method disabled connection.autoconnect yes connection.autoconnect-priority 10 connection.autoconnect-retries 3
 sudo nmcli con down ipstatic
 sudo nmcli con up dhcp
 
