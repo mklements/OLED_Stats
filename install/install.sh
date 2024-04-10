@@ -19,8 +19,6 @@ function set_alias() {
   fi
 }
 
-set_config "usb_max_current_enable=1"
-
 sudo apt-get update -y
 sudo apt-get full-upgrade -y
 
@@ -28,13 +26,13 @@ sudo apt-get -y install python3.11
 sudo apt-get -y install python3-pip
 sudo apt-get -y install python3.11-venv
 sudo apt-get -y install python-is-python3
-
 sudo apt-get -y install  i2c-tools libgpiod-dev python3-libgpiod
 
 sudo raspi-config nonint do_i2c 0
 sudo raspi-config nonint do_spi 0
 sudo raspi-config nonint do_ssh 0
 sudo raspi-config nonint disable_raspi_config_at_boot 0
+set_config "usb_max_current_enable=1"
 
 sudo nmcli connection delete id ipstatic
 sudo nmcli connection delete id dhcp
@@ -42,6 +40,8 @@ sudo nmcli c add ifname eth0 type ethernet con-name ipstatic
 sudo nmcli c add ifname eth0 type ethernet con-name dhcp
 sudo nmcli con mod ipstatic ipv4.method manual ipv4.addresses 192.168.1.241/24 ipv4.gateway 192.168.1.1 ipv4.may-fail no ipv6.method disabled connection.autoconnect no connection.autoconnect-priority -1
 sudo nmcli con mod dhcp ipv4.method auto ipv4.addresses '' ipv4.gateway '' ipv4.may-fail no ipv4.dhcp-timeout 20 ipv6.method disabled connection.autoconnect no connection.autoconnect-priority -1 connection.autoconnect-retries 3
+sudo nmcli con down ipstatic
+sudo nmcli con up dhcp
 
 python -m venv .venv --system-site-packages
 source .venv/bin/activate
