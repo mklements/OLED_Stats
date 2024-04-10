@@ -78,12 +78,12 @@ while True:
     config = get_config()
     title = ""
     count += 1
-    if 1 <= count <= 5:
+    if 1 <= count <= 3:
         title = get_hostname()
-    elif 6 <= count <= 9:
+    elif 4 <= count <= 5:
         title = get_ip()
 
-    if count == 9:
+    if count == 6:
         count = 0
 
     cpu = f"CPU: {ps.cpu_percent():.1f} %"
