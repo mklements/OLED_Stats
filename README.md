@@ -42,14 +42,22 @@ smartrack dhcp
 smartrack static 192.168.1.100 192.168.1.1
 ```
 
-- Display Stats (true or false)
+-   Display Stats
 
 ```
-smartrack display stats true
+smartrack display stats
+
+smartrack display stats false
 ```
 
-- Display Message
+-   Display Message
 
 ```
 smartrack display message "A Test Message"
+```
+
+-   Display Message Multi Line ('+' between lines)
+
+```
+smartrack display message "A Test Message+Line 2"
 ```
