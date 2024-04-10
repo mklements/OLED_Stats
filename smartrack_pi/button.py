@@ -4,6 +4,7 @@ import subprocess
 from signal import pause
 from time import sleep
 
+from display import change_display
 from gpiozero import Button
 from ip.set_adaptor import Adaptor
 
@@ -34,12 +35,16 @@ def released():
     config = _get_config()
     if config.get("mode") == "D":
         print("Setting to Static")
+        change_display.display_text("Setting Net Mode to Static...")
         adaptor.set_adaptor_static(config.get("static_ip"), config.get("gateway"))
         _set_config("mode", "S")
     else:
         print("Setting to DHCP")
+        change_display.display_text("Setting Net Mode to DHCP...")
         adaptor.set_adaptor_dhcp()
         _set_config("mode", "D")
+    sleep(5)
+    change_display.stats_status()
 
 
 def held():

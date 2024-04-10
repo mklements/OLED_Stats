@@ -13,6 +13,7 @@ install/install.sh
 ### Update
 
 ```
+smartrack display message "Updating..."
 sudo systemctl stop stats.service
 sudo systemctl stop button.service
 cd ~

@@ -2,6 +2,7 @@ import json
 import os
 import sys
 
+from display import change_display
 from ip.set_adaptor import Adaptor
 
 adaptor = Adaptor()
@@ -38,15 +39,68 @@ def set_static(ip_address, gateway):
     _set_config("mode", "S")
 
 
+def set_net():
+    try:
+        net_type = sys.argv[2].lower()
+    except IndexError:
+        net_type = None
+        print("Please supply type: ('dhcp' or 'static')")
+    if net_type:
+        match net_type:
+            case "dhcp":
+                set_dhcp()
+            case "static":
+                try:
+                    ip = sys.argv[3]
+                    gateway = sys.argv[4]
+                    set_static(ip, gateway)
+                except IndexError:
+                    print(
+                        "Please ip and gateway: ('smartrack net static 192.168.1.100 10.1.1.1')"
+                    )
+
+
+def set_display():
+    try:
+        display_command = sys.argv[2].lower()
+    except IndexError:
+        display_command = None
+        print("Please supply a display command: ('stats' or 'message')")
+    if display_command:
+        match display_command:
+            case "stats":
+                try:
+                    status = sys.argv[3].lower()
+                except IndexError:
+                    status = True
+                if status == "false":
+                    print("Stopping Stats Display...")
+                    change_display.stats_status(False)
+                else:
+                    print("Starting Stats Display...")
+                    change_display.stats_status()
+            case "message":
+                try:
+                    message = sys.argv[3]
+                except IndexError:
+                    message = ""
+                print(f"Displaying message: {message}")
+                change_display.display_text(message)
+            case _:
+                print("Not a valid command (commands: stats, message)")
+
+
 if __name__ == "__main__":
-    command = sys.argv[1]
+    try:
+        command = sys.argv[1]
+    except IndexError:
+        command = None
+        print("Please Supply Command: ('net' or 'display')")
 
     match command:
-        case "dhcp":
-            set_dhcp()
-        case "static":
-            ip = sys.argv[2]
-            gateway = sys.argv[3]
-            set_static(ip, gateway)
+        case "net":
+            set_net()
+        case "display":
+            set_display()
         case _:
             print("Command Not Found")
