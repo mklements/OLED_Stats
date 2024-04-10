@@ -34,8 +34,22 @@ sudo reboot
 
 ### CLI
 
+-   Network Mode
+
 ```
 smartrack dhcp
 
 smartrack static 192.168.1.100 192.168.1.1
+```
+
+- Display Stats (true or false)
+
+```
+smartrack display stats true
+```
+
+- Display Message
+
+```
+smartrack display message "A Test Message"
 ```
