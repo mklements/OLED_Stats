@@ -80,7 +80,7 @@ while True:
     count += 1
     if 1 <= count <= 3:
         title = get_hostname()
-    elif 4 <= count <= 5:
+    elif 4 <= count <= 6:
         title = get_ip()
 
     if count == 6:
