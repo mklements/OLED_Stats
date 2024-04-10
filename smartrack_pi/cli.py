@@ -5,6 +5,7 @@ from time import sleep
 
 from display import change_display
 from ip.set_adaptor import Adaptor
+from settings import software
 
 adaptor = Adaptor()
 
@@ -110,5 +111,7 @@ if __name__ == "__main__":
             set_net()
         case "display":
             set_display()
+        case "update":
+            software.update()
         case _:
             print("Command Not Found")
