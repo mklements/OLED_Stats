@@ -13,6 +13,8 @@ function set_alias() {
 }
 
 # smartrack module
+# shellcheck source=/dev/null
+source .venv/bin/activate
 pip install --upgrade -r requirements.txt
 chmod 0777 smartrack_pi/config.json # allows webpage to write to config
 
