@@ -1,11 +1,10 @@
 import time
 from ipaddress import IPv4Network
 
+import streamlit as st
 from netaddr import IPAddress
 
-import streamlit as st
-
-st.image("static/tempsnip.png")
+st.image("config/static/tempsnip.png")
 st.header("Smartrack Static IP", divider="grey")
 
 
