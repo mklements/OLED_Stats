@@ -1,6 +1,3 @@
-import json
-import os
-import subprocess
 from signal import pause
 from time import sleep
 
@@ -11,8 +8,6 @@ from ip.set_adaptor import Adaptor
 WAS_HELD = False
 
 
-
-
 def released():
     global WAS_HELD
     WAS_HELD = False
@@ -20,11 +15,11 @@ def released():
     if adaptor.config.get("mode") == "D":
         print("Setting to Static")
         change_display.display_text("Setting Net Mode", "to Static...")
-        adaptor.set_adaptor_static()
+        print(adaptor.set_adaptor_static())
     else:
         print("Setting to DHCP")
         change_display.display_text("Setting Net Mode", "to DHCP...")
-        adaptor.set_adaptor_dhcp()
+        print(adaptor.set_adaptor_dhcp())
     sleep(5)
     change_display.stats_status()
 

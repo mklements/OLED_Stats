@@ -18,7 +18,6 @@ class Adaptor:
 
     def _write_config(self):
         with open(f"{dir_path}/config.json", "w", encoding="utf-8") as f:
-            print(json.dumps(self.config, indent=4, sort_keys=True, ensure_ascii=False))
             f.write(
                 json.dumps(self.config, indent=4, sort_keys=True, ensure_ascii=False)
             )
@@ -77,7 +76,7 @@ class Adaptor:
         self._set_adaptor_status("up", "dhcp")
         self.config["mode"] = "D"
         self._write_config()
-
+        return self.config
     def set_adaptor_static(self, ip_address=None, gateway=None):
         """Sets the adaptor for static
         Args:
@@ -99,4 +98,6 @@ class Adaptor:
         self.config["static_ip"] = ip_address
         self.config["gateway"] = gateway
         self.config["mode"] = "S"
+    
         self._write_config()
+        return self.config
