@@ -88,7 +88,7 @@ class Adaptor:
             ip_address = self.config.get("static_ip", "192.168.1.241/24")
             
         if not gateway:
-            gateway = self.config.get("static_ip", "192.168.1.1")            
+            gateway = self.config.get("gateway", "192.168.1.1")            
         
         self._set_adaptor_address(ip_address, gateway)
         self._set_adaptor_priority("up", "ipstatic")
