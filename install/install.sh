@@ -53,30 +53,30 @@ source .venv/bin/activate
 pip install --upgrade -r requirements.txt
 chmod 0777 smartrack_pi/config.json # allows webpage to write to config
 
-# python script as services
-sudo cp install/stats.service /etc/systemd/system/stats.service
-sudo cp install/button.service /etc/systemd/system/button.service
-sudo systemctl daemon-reload
-sudo systemctl enable stats.service
-sudo systemctl enable button.service
-sudo systemctl start stats.service
-sudo systemctl start button.service
+# # python script as services
+# sudo cp install/stats.service /etc/systemd/system/stats.service
+# sudo cp install/button.service /etc/systemd/system/button.service
+# sudo systemctl daemon-reload
+# sudo systemctl enable stats.service
+# sudo systemctl enable button.service
+# sudo systemctl start stats.service
+# sudo systemctl start button.service
 
-# webserver
-sudo apt-get -y install apache2
-sudo apt-get -y install php
+# # webserver
+# sudo apt-get -y install apache2
+# sudo apt-get -y install php
 
-sudo cp install/apache/smartrack-config.conf /etc/apache2/sites-available/smartrack-config.conf
-sudo cp install/apache/envvars /etc/apache2/envvars
-sudo a2ensite smartrack-config
-sudo a2enmod rewrite
-sudo a2dissite 000-default
-sudo chmod +x /home/smartrack # needed for apache access
-sudo service apache2 reload
+# sudo cp install/apache/smartrack-config.conf /etc/apache2/sites-available/smartrack-config.conf
+# sudo cp install/apache/envvars /etc/apache2/envvars
+# sudo a2ensite smartrack-config
+# sudo a2enmod rewrite
+# sudo a2dissite 000-default
+# sudo chmod +x /home/smartrack # needed for apache access
+# sudo service apache2 reload
 
-# alias for cli
-alias="smartrack"
-alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
-set_alias "$alias" "$alias_target"
+# # alias for cli
+# alias="smartrack"
+# alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
+# set_alias "$alias" "$alias_target"
 
-sudo reboot
+# sudo reboot

@@ -1,0 +1,8 @@
+adafruit-circuitpython-ssd1306
+psutil
+pillow
+adafruit-python-shell
+RPi.GPIO
+adafruit-blinka
+streamlit
+netaddr
