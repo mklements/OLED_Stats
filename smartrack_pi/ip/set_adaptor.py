@@ -17,7 +17,6 @@ class Adaptor:
             return json.load(f)
 
     def _write_config(self):
-        print(self.config)
         with open(f"{dir_path}/config.json", "w", encoding="utf-8") as f:
             print(json.dumps(self.config, indent=4, sort_keys=True, ensure_ascii=False))
             f.write(
@@ -26,11 +25,10 @@ class Adaptor:
 
 
     def _run_process(self, commands):
-        print(commands)
-        # return subprocess.run(
-        #     commands,
-        #     check=False,
-        # )
+        return subprocess.run(
+            commands,
+            check=False,
+        )
 
     def _set_adaptor_status(self, status, adaptor):
         commands = copy(self.pre_commands)
