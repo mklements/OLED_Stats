@@ -3,7 +3,7 @@ from ipaddress import IPv4Network
 import streamlit as st
 from netaddr import IPAddress
 
-st.image("static/tempsnip.png")
+st.image("config/static/tempsnip.png")
 st.header("Smartrack Static IP", divider="grey")
 
 
