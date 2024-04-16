@@ -253,3 +253,4 @@ Error: no active connection provided.
 Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/50)
 Error: 'dhcp' is not an active connection.
 Error: no active connection provided.
+  Stopping...
