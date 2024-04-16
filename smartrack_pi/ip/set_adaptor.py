@@ -1,19 +1,36 @@
+import json
 import os
 import subprocess
 from copy import copy
 
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
 class Adaptor:
     """Handles adaptor settings"""
 
     def __init__(self):
         self.pre_commands = ["sudo", "nmcli", "con"]
+        self.config = self._get_config()
+
+    def _get_config(self):
+        with open(f"{dir_path}/config.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    def _write_config(self):
+        print(self.config)
+        with open(f"{dir_path}/config.json", "w", encoding="utf-8") as f:
+            print(json.dumps(self.config, indent=4, sort_keys=True, ensure_ascii=False))
+            f.write(
+                json.dumps(self.config, indent=4, sort_keys=True, ensure_ascii=False)
+            )
+
 
     def _run_process(self, commands):
-        return subprocess.run(
-            commands,
-            check=False,
-        )
+        print(commands)
+        # return subprocess.run(
+        #     commands,
+        #     check=False,
+        # )
 
     def _set_adaptor_status(self, status, adaptor):
         commands = copy(self.pre_commands)
@@ -60,15 +77,28 @@ class Adaptor:
         self._set_adaptor_priority("up", "dhcp")
         self._set_adaptor_status("down", "ipstatic")
         self._set_adaptor_status("up", "dhcp")
+        self.config["mode"] = "D"
+        self._write_config()
 
-    def set_adaptor_static(self, ip_address, gateway):
+    def set_adaptor_static(self, ip_address=None, gateway=None):
         """Sets the adaptor for static
         Args:
             ip_address(str)
             gateway(str)
         """
+        if not ip_address:
+            ip_address = self.config.get("static_ip", "192.168.1.241/24")
+            
+        if not gateway:
+            gateway = self.config.get("static_ip", "192.168.1.1")            
+        
         self._set_adaptor_address(ip_address, gateway)
         self._set_adaptor_priority("up", "ipstatic")
         self._set_adaptor_priority("down", "dhcp")
         self._set_adaptor_status("up", "ipstatic")
         self._set_adaptor_status("down", "dhcp")
+
+        self.config["static_ip"] = ip_address
+        self.config["gateway"] = gateway
+        self.config["mode"] = "S"
+        self._write_config()

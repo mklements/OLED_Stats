@@ -9,6 +9,7 @@ from pathlib import Path
 import adafruit_ssd1306
 import board
 import psutil as ps
+
 from PIL import Image, ImageDraw, ImageFont
 
 KB = 1024
@@ -21,10 +22,10 @@ FONTSIZE = 16
 
 LOOPTIME = 1.0
 
-
+dir_path = os.path.dirname(os.path.realpath(__file__))
 def get_config():
     with open(
-        "/home/smartrack/smartrack-pi/smartrack_pi/config.json", encoding="utf-8"
+        f"{dir_path}/ip/config.json", encoding="utf-8"
     ) as f:
         return json.load(f)
 
