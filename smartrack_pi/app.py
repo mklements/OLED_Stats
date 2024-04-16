@@ -1,11 +1,10 @@
 from ipaddress import IPv4Network
 
 import streamlit as st
+from ip.set_adaptor import Adaptor
 from netaddr import IPAddress
 
-from smartrack_pi.ip.set_adaptor import Adaptor
-
-st.image("config/static/tempsnip.png")
+st.image("static/tempsnip.png")
 st.header("Smartrack Static IP", divider="grey")
 
 adaptor = Adaptor()

@@ -4,3 +4,5 @@ pillow
 adafruit-python-shell
 RPi.GPIO
 adafruit-blinka
+streamlit
+netaddr
