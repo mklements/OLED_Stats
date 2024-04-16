@@ -1,10 +1,12 @@
 from ipaddress import IPv4Network
-
+import os
 import streamlit as st
 from ip.set_adaptor import Adaptor
 from netaddr import IPAddress
 
-st.image("static/tempsnip.png")
+dir_path = os.path.dirname(os.path.realpath(__file__))
+st.set_page_config(initial_sidebar_state="collapsed")
+st.image(f"{dir_path}/static/1. Super Landscape - Without Box - Colour With Black Text - PNG.png")
 st.header("Smartrack Static IP", divider="grey")
 
 adaptor = Adaptor()

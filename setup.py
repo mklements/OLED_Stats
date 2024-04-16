@@ -1,4 +1,4 @@
-"""Setup for ct-schemas"""
+"""Setup for smartrack-pi"""
 
 from setuptools import find_packages, setup
 
@@ -9,7 +9,7 @@ def _readme():
 
 
 setup(
-    name="oled-stats",
+    name="smartrack-pi",
     version="1.0.0",
     description="Pi Oled config",
     long_description=_readme(),
@@ -18,7 +18,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.11",
     ],
-    url="http://github.com/ctus-dev/oled-stats",
+    url="http://github.com/ctus-dev/smartrack-pi",
     author="Craig Mitchell",
     author_email="craig.mitchell@ctus.com",
     license="GNU",
