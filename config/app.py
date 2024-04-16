@@ -3,10 +3,12 @@ from ipaddress import IPv4Network
 import streamlit as st
 from netaddr import IPAddress
 
+from smartrack_pi.ip.set_adaptor import Adaptor
+
 st.image("config/static/tempsnip.png")
 st.header("Smartrack Static IP", divider="grey")
 
-
+adaptor = Adaptor()
 mask_bit = st.sidebar.slider("Subnet Calculator", 0, 32, value=24)
 mask = IPv4Network(f"0.0.0.0/{mask_bit}").netmask
 st.sidebar.write(f"The subnet mask is {mask}")
@@ -19,3 +21,4 @@ with st.form(key="my-form"):
 if submit:
     mask_bit = IPAddress(mask).netmask_bits()
     st.write(f"{ip}/{mask_bit}")
+    adaptor.set_adaptor_static(f"{ip}/{mask_bit}", "192.168.1.1")
