@@ -14,9 +14,10 @@ function set_alias() {
 
 # smartrack module
 # shellcheck source=/dev/null
-cd smartrack_pi
+cd /home/smartrack/smartrack-pi/smartrack_pi
 source .venv/bin/activate
 pip install --upgrade -r requirements.txt
+cd /home/smartrack/smartrack-pi
 
 # webserver
 sudo cp install/nginx/smartrack-settings /etc/nginx/sites-available

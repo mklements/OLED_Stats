@@ -12,7 +12,7 @@ def update():
     print("Updating...")
     _run_process(
         [
-            "/home/smartrack/smartrack-pi/.venv/bin/python",
+            "/home/smartrack/smartrack-pi/smartrack_pi/.venv/bin/python",
             "/home/smartrack/smartrack-pi/smartrack_pi/cli.py",
             "display",
             "message",
