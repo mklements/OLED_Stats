@@ -112,7 +112,10 @@ if __name__ == "__main__":
         case "display":
             set_display()
         case "update":
-            print("hello")
             software.update()
+        case "factory":
+            prompt = input("This will reset all companion settings, and set to dhcp.  Enter Y to continue... \n")
+            if prompt.lower() == "y":
+                software.factory_reset()
         case _:
             print("Command Not Found")

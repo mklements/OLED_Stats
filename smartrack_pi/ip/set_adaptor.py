@@ -101,3 +101,9 @@ class Adaptor:
     
         self._write_config()
         return self.config
+
+    def factory_reset(self):        
+        self.config["static_ip"] = "192.168.1.241"
+        self.config["gateway"] = "192.168.1.1"
+        self.set_adaptor_dhcp()   
+        self._write_config()

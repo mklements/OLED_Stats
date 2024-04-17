@@ -27,3 +27,20 @@ def update():
     _run_process(["/home/smartrack/smartrack-pi/install/update.sh"])
     print("Update complete.")
     return
+
+def factory_reset():    
+    print("Resetting...")
+    _run_process(
+        [
+            "/home/smartrack/smartrack-pi/smartrack_pi/.venv/bin/python",
+            "/home/smartrack/smartrack-pi/smartrack_pi/cli.py",
+            "display",
+            "message",
+            "Resetting...",
+        ]
+    )
+    _run_process(["sudo", "cp", "/home/smartrack/smartrack-pi/companion/db", "/home/companion/.config/companion-nodejs/v3.2/db"])
+    _run_process(["sudo", "reboot"])
+
+    print("Update complete.")
+    return
