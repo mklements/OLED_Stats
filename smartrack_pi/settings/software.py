@@ -36,14 +36,18 @@ def update_companion_repo():
     print("Updating Companion...")
     _run_process(["git", "config", "--global", "user.name", "Smartrack"])
     _run_process(["git", "config", "--global", "user.email", "Automation"])
+
     companion_db = "/home/companion/.config/companion-nodejs/v3.2/db"
     repo_db = "/home/smartrack/smartrack-pi/companion/db"
     repo_archive_dir = f"/home/smartrack/smartrack-pi/companion/archive/{datetime.strftime(datetime.now(), '%Y%m%d%H%M')}"
+    repo_archive_file = f"{repo_archive_dir}/db"
+
     pathlib.Path(repo_archive_dir).mkdir(parents=True, exist_ok=True)
-    shutil.copy(repo_db, f"{repo_archive_dir}/db")
+    shutil.copy(repo_db, repo_archive_file)
     _run_process(["sudo", "cp", companion_db, repo_db])
-    _run_process(["git", "add", "companion"])
-    _run_process(["git", "commit", "-am", "companion update"])
+
+    _run_process(["git", "commit", "-m", "companion update", repo_db])
+    _run_process(["git", "commit", "-m", "companion update", repo_archive_file])
     _run_process(["git", "push", "origin", "master"])
     print("Update complete.")
     return
