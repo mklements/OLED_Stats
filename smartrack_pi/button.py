@@ -29,7 +29,7 @@ def held():
     global WAS_HELD
     WAS_HELD = True
     adaptor = Adaptor()
-    change_display.display_text("Factory Resetting....")
+    change_display.display_text("Factory Resetting",  "Net Adaptors....")
     adaptor.factory_reset()
     sleep(5)
     factory_reset()
