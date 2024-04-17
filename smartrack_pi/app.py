@@ -70,4 +70,12 @@ def main():
     if def_form_submit:
         st.write(f"Selected: {select}! Restarting!")
         software.restore_companion_file(select)
+
+    st.header("Update Software", divider="grey")
+    st.write("Will not overwrite an companion configs")
+    with st.form(key="update"):
+        update_submit = st.form_submit_button("Update")
+    if update_submit:
+        st.write("Updating!")
+        software.update()
 main()
