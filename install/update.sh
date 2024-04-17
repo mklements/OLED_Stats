@@ -27,7 +27,7 @@ sudo systemctl restart nginx
 
 # set alias for smartrack cli
 alias="smartrack"
-alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
+alias_target="'/home/smartrack/smartrack-pi/smartrack_pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
 set_alias "$alias" "$alias_target"
 
 # services

@@ -112,6 +112,7 @@ if __name__ == "__main__":
         case "display":
             set_display()
         case "update":
+            print("hello")
             software.update()
         case _:
             print("Command Not Found")
