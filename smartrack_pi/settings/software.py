@@ -36,7 +36,7 @@ def factory_reset():
             "/home/smartrack/smartrack-pi/smartrack_pi/cli.py",
             "display",
             "message",
-            "Resetting Companion...",
+            "Factory Resetting,Companion...",
         ]
     )
     _run_process(["sudo", "cp", "/home/smartrack/smartrack-pi/companion/db", "/home/companion/.config/companion-nodejs/v3.2/db"])
