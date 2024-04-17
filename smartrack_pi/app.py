@@ -11,7 +11,9 @@ def get_mask(mask_bit):
     return IPv4Network(f"0.0.0.0/{mask_bit}").netmask
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-st.set_page_config(initial_sidebar_state="collapsed")
+st.set_page_config(initial_sidebar_state="collapsed", page_title="Smartrack Settings", page_icon=f"{dir_path}/app/static/4. CT Mark - Colour PNG.png")
+with open( f"{dir_path}/app/style.css" ) as css:
+    st.markdown( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
 
 adaptor = Adaptor()
 current_cidr = adaptor.config.get("static_ip")
@@ -21,7 +23,7 @@ current_mask_bit = int(current_cidr.split("/")[1])
 
 
 st.image(
-    f"{dir_path}/static/1. Super Landscape - Without Box - Colour With Black Text - PNG.png"
+    f"{dir_path}/app/static/1. Super Landscape - Without Box - Colour With Black Text - PNG.png"
 )
 link = f"http://{current_ip}:8000"
 st.markdown("""
@@ -34,7 +36,7 @@ st.markdown("""
 st.markdown(f'<a class="big-font" href="http://{current_ip}:8000" target="_self">Go To Companion</a>', unsafe_allow_html=True)
 
 st.divider()
-st.header("Smartrack Static IP", divider="grey")
+st.header("Static IP", divider="grey")
 
 
 mask_bit = st.sidebar.slider("Subnet Calculator", 0, 32, value=current_mask_bit)

@@ -1,25 +1,18 @@
+
 server {
- listen 80;
- listen [::]:80;
-location /settings/ {
-         include /etc/nginx/proxy_params;
-         proxy_pass http://localhost:8501/;
-        proxy_redirect /settings/ /;
-        proxy_http_version 1.1;
-        # Also requires websocket:
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-     }
-# location /control/ {
-#          include /etc/nginx/proxy_params;
-#          proxy_pass http://localhost:8000/;
-#         proxy_redirect /control/ /;
-#         proxy_http_version 1.1;
-#         # Also requires websocket:
-#         proxy_set_header Upgrade $http_upgrade;
-#         proxy_set_header Connection "upgrade";
-#      }
-location / {
-  return 301 /settings;
-}
+  listen 80;
+  listen [::]:80;
+  location /settings/ {
+      include /etc/nginx/proxy_params;
+      proxy_pass http://localhost:8501/;
+      proxy_redirect /settings/ /;
+      proxy_http_version 1.1;
+      # Also requires websocket:
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+      }
+  location / {
+
+    return 301 /settings;
+  }
 }
