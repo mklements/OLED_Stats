@@ -42,7 +42,8 @@ def update_companion_repo():
     pathlib.Path(repo_archive_dir).mkdir(parents=True, exist_ok=True)
     shutil.copy(repo_db, f"{repo_archive_dir}/db")
     _run_process(["sudo", "cp", companion_db, repo_db])
-    _run_process(["git", "commit", "-m", "companion update", "companion/db"])
+    _run_process(["git", "commit", "add", "companion"])
+    _run_process(["git", "commit", "-am", "companion update"])
     _run_process(["git", "push", "origin", "master"])
     print("Update complete.")
     return
