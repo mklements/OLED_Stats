@@ -4,6 +4,6 @@ After=multi-user.target
 [Service]
 Type=simple
 Restart=always
-ExecStart=/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/stats.py
+ExecStart=/home/smartrack/smartrack-pi/smartrack_pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/stats.py
 [Install]
 WantedBy=multi-user.target
