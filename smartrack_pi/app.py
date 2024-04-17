@@ -6,7 +6,7 @@ import streamlit as st
 from ip.set_adaptor import Adaptor
 from netaddr import IPAddress
 from streamlit_js_eval import get_page_location
-
+from settings import software
 
 
 def get_mask(mask_bit):
@@ -62,4 +62,12 @@ def main():
         sleep(5)
         adaptor.set_adaptor_static(f"{ip}/{mask_bit}", gateway)
 
+    st.header("Recall Default Files", divider="grey")
+    st.write("Will replace entire companion config with the folowing")
+    with st.form(key="default-file"):
+        select = st.selectbox("File Name", ["default", "more_pearls"])
+        def_form_submit = st.form_submit_button("Overwrite config and restart")
+    if def_form_submit:
+        st.write(f"Selected: {select}! Restarting!")
+        software.restore_companion_file(select)
 main()
