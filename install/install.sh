@@ -69,6 +69,7 @@ sudo systemctl start smartrack-settings.service
 
 # # webserver
 sudo cp install/nginx/smartrack-settings /etc/nginx/sites-available
+sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/smartrack-settings /etc/nginx/sites-enabled
 sudo systemctl restart nginx
 
