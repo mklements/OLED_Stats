@@ -28,3 +28,11 @@ def factory_reset():
 
     print("Update complete.")
     return
+
+def update_companion_repo():
+    print("Updating Companion...")
+    _run_process(["git", "config", "--global", "user.name", "Smartrack"])
+    _run_process(["git", "config", "--global", "user.email", "Automation"])
+
+    print("Update complete.")
+    return

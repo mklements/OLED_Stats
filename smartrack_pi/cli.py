@@ -98,6 +98,8 @@ def set_display():
             case _:
                 print("Not a valid command (commands: stats, message)")
 
+def update_companion_repo():
+    ...
 
 if __name__ == "__main__":
     try:
@@ -111,6 +113,8 @@ if __name__ == "__main__":
             set_net()
         case "display":
             set_display()
+        case "companion":
+            software.update_companion_repo()
         case "update":
             software.update()
         case "factory":
