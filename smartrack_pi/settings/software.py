@@ -3,6 +3,9 @@ from display import change_display
 import shutil
 import pathlib
 from datetime import datetime
+
+COMPANION_DB = "/home/companion/.config/companion-nodejs/v3.2/db"
+
 def _run_process(commands):
     return subprocess.run(
         commands,
@@ -32,19 +35,19 @@ def factory_reset():
     print("Update complete.")
     return
 
-def update_companion_repo():
+def update_companion_default():
     print("Updating Companion...")
     _run_process(["git", "config", "--global", "user.name", "Smartrack"])
     _run_process(["git", "config", "--global", "user.email", "Automation"])
 
-    companion_db = "/home/companion/.config/companion-nodejs/v3.2/db"
-    repo_db = "/home/smartrack/smartrack-pi/companion/db"
+    
+    repo_db = "/home/smartrack/smartrack-pi/companion/default"
     repo_archive_dir = f"/home/smartrack/smartrack-pi/companion/archive/{datetime.strftime(datetime.now(), '%Y%m%d%H%M')}"
     repo_archive_file = f"{repo_archive_dir}/db"
 
     pathlib.Path(repo_archive_dir).mkdir(parents=True, exist_ok=True)
     shutil.copy(repo_db, repo_archive_file)
-    _run_process(["sudo", "cp", companion_db, repo_db])
+    _run_process(["sudo", "cp", COMPANION_DB, repo_db])
 
     _run_process(["git", "commit", "-m", "companion update", repo_db])
     _run_process(["git", "add", repo_archive_file])
@@ -52,3 +55,11 @@ def update_companion_repo():
     _run_process(["git", "push", "origin", "master"])
     print("Update complete.")
     return
+
+def restore_companion_file(file_name):
+    print("Updating Companion...")
+    file_path =f"/home/smartrack/smartrack-pi/companion/{file_name}"
+    change_display.display_text(["Restoring Companion File", file_name])
+    _run_process(["sudo", "cp", file_path, COMPANION_DB])
+    _run_process(["sudo", "reboot"])
+    return(f"Restoring {file_name}")

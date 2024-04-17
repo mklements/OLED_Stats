@@ -98,8 +98,28 @@ def set_display():
             case _:
                 print("Not a valid command (commands: stats, message)")
 
-def update_companion_repo():
-    ...
+def companion():
+    try:
+        companion_command = sys.argv[2].lower()
+    except IndexError:
+        companion_command = None
+        print("Please supply type: ('set_default' or 'restore')")
+    if companion_command:
+        match companion_command:
+            case "set_default":
+                software.update_companion_default()
+            case "restore":
+                try:
+                    file_name = sys.argv[3].lower()
+                    file_path =f"/home/smartrack/smartrack-pi/companion/{file_name}"
+                    if os.path.isfile(file_path):
+                        return software.restore_companion_file(file_name)
+                    return f"No valid file path supplied: {file_path}"      
+                except IndexError:
+                    return "No file path supplied"
+                
+            case _:
+                print("Not a valid command (commands: set_default, restore)")
 
 if __name__ == "__main__":
     try:
@@ -114,7 +134,7 @@ if __name__ == "__main__":
         case "display":
             set_display()
         case "companion":
-            software.update_companion_repo()
+            print(companion())
         case "update":
             software.update()
         case "factory":
