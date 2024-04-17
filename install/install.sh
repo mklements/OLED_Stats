@@ -48,11 +48,11 @@ sudo nmcli con down ipstatic
 sudo nmcli con up dhcp
 
 # smartrack pi module and webserver
+cd smartrack_pi
 python -m venv .venv --system-site-packages
 # shellcheck source=/dev/null
 source .venv/bin/activate
 pip install --upgrade -r requirements.txt
-chmod 0777 smartrack_pi/config.json # allows webpage to write to config
 
 # python script as services
 sudo cp install/services/stats.service /etc/systemd/system/stats.service
