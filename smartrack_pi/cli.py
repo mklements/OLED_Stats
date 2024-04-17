@@ -98,28 +98,37 @@ def set_display():
             case _:
                 print("Not a valid command (commands: stats, message)")
 
+def check_file(file_name):
+    file_path =f"/home/smartrack/smartrack-pi/companion/{file_name}"
+    if os.path.isfile(file_path):
+        return True
+    return False
+
 def companion():
+    
+
+
     try:
         companion_command = sys.argv[2].lower()
     except IndexError:
         companion_command = None
-        print("Please supply type: ('set_default' or 'restore')")
+        return("Please supply type: ('backup' or 'restore')")
     if companion_command:
+        try:
+            file_name = sys.argv[3].lower()
+        except IndexError:
+            file_name = None
         match companion_command:
-            case "set_default":
-                software.update_companion_default()
+            case "backup":
+                if file_name:
+                    return software.backup_companion_file(file_name)                
+                return "Please Supply a File Name"
             case "restore":
-                try:
-                    file_name = sys.argv[3].lower()
-                    file_path =f"/home/smartrack/smartrack-pi/companion/{file_name}"
-                    if os.path.isfile(file_path):
-                        return software.restore_companion_file(file_name)
-                    return f"No valid file path supplied: {file_path}"      
-                except IndexError:
-                    return "No file path supplied"
-                
+                if file_name:
+                    return software.restore_companion_file(file_name)
+                return "Please Supply a File Name"
             case _:
-                print("Not a valid command (commands: set_default, restore)")
+                return("Not a valid command (commands: backup, restore)")
 
 if __name__ == "__main__":
     try:

@@ -41,3 +41,7 @@ sudo systemctl enable smartrack-settings.service
 sudo systemctl start stats.service
 sudo systemctl start button.service
 sudo systemctl start smartrack-settings.service
+
+#set git
+git config --global user.name "Smartrack"
+git config --global user.email "Smartrack"

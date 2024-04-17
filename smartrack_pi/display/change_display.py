@@ -47,6 +47,7 @@ def display_text(*messages):
     )
     draw.rectangle((0, 0, oled.width, oled.height), outline=0, fill=0)
     for i, line in enumerate(messages):
+        print(line)
         draw.text((x, top + i * FONTSIZE), line, font=font, fill=255)
     oled.image(image)
     oled.show()

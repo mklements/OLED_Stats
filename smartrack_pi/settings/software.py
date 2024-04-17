@@ -28,20 +28,17 @@ def update():
 
 def factory_reset():    
     print("Resetting...")
-    change_display.display_text(["Factory Resetting", "Companion..."])
+    change_display.display_text("Factory Resetting", "Companion...")
     _run_process(["sudo", "cp", "/home/smartrack/smartrack-pi/companion/db", "/home/companion/.config/companion-nodejs/v3.2/db"])
     _run_process(["sudo", "reboot"])
 
     print("Update complete.")
     return
 
-def update_companion_default():
-    print("Updating Companion...")
-    _run_process(["git", "config", "--global", "user.name", "Smartrack"])
-    _run_process(["git", "config", "--global", "user.email", "Automation"])
-
+def backup_companion_file(file_name):
+    print("Backing up Companion...")
+    repo_db =f"/home/smartrack/smartrack-pi/companion/{file_name}"
     
-    repo_db = "/home/smartrack/smartrack-pi/companion/default"
     repo_archive_dir = f"/home/smartrack/smartrack-pi/companion/archive/{datetime.strftime(datetime.now(), '%Y%m%d%H%M')}"
     repo_archive_file = f"{repo_archive_dir}/db"
 
@@ -59,7 +56,7 @@ def update_companion_default():
 def restore_companion_file(file_name):
     print("Updating Companion...")
     file_path =f"/home/smartrack/smartrack-pi/companion/{file_name}"
-    change_display.display_text(["Restoring Companion File", file_name])
+    change_display.display_text("Restoring Companion File", file_name)
     _run_process(["sudo", "cp", file_path, COMPANION_DB])
     _run_process(["sudo", "reboot"])
     return(f"Restoring {file_name}")
