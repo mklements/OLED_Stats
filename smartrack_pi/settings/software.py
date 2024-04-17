@@ -25,7 +25,7 @@ def update():
 
 def factory_reset():    
     print("Resetting...")
-    change_display.display_text("Factory Resetting",  "Companion....")
+    change_display.display_text(["Factory Resetting", "Companion..."])
     _run_process(["sudo", "cp", "/home/smartrack/smartrack-pi/companion/db", "/home/companion/.config/companion-nodejs/v3.2/db"])
     _run_process(["sudo", "reboot"])
 
