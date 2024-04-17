@@ -4,6 +4,7 @@
 
 ```
 cd ~
+sudo rm -d -r smartrack-pi
 git clone https://github.com/ctus-dev/smartrack-pi.git
 cd smartrack-pi
 chmod +x install/install.sh
