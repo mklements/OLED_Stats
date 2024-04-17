@@ -2,6 +2,7 @@ import subprocess
 from display import change_display
 import shutil
 import pathlib
+from datetime import datetime
 def _run_process(commands):
     return subprocess.run(
         commands,
@@ -37,11 +38,11 @@ def update_companion_repo():
     _run_process(["git", "config", "--global", "user.email", "Automation"])
     companion_db = "/home/companion/.config/companion-nodejs/v3.2/db"
     repo_db = "/home/smartrack/smartrack-pi/companion/db"
-    repo_archive_dir = "/home/smartrack/smartrack-pi/companion/archive123"
+    repo_archive_dir = f"/home/smartrack/smartrack-pi/companion/archive/{datetime.strftime(datetime.now(), '%Y%m%d %H:%M')}"
     pathlib.Path(repo_archive_dir).mkdir(parents=True, exist_ok=True)
     shutil.copy(repo_db, f"{repo_archive_dir}/db")
     _run_process(["sudo", "cp", companion_db, repo_db])
-    _run_process(["git", "commit", "-am", 'companion update', "companion/db"])
+    _run_process(["git", "commit", "-m", "companion update", "companion/db"])
     _run_process(["git", "push", "origin", "master"])
     print("Update complete.")
     return
