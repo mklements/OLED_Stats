@@ -47,6 +47,7 @@ def update_companion_repo():
     _run_process(["sudo", "cp", companion_db, repo_db])
 
     _run_process(["git", "commit", "-m", "companion update", repo_db])
+    _run_process(["git", "add", repo_archive_file])
     _run_process(["git", "commit", "-m", "companion update", repo_archive_file])
     _run_process(["git", "push", "origin", "master"])
     print("Update complete.")
