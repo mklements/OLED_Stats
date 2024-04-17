@@ -11,12 +11,6 @@ chmod +x install/install.sh
 install/install.sh
 ```
 
-### Post install or update
-
-```
-sudo reboot
-```
-
 ## Operation
 
 ### CLI
@@ -48,3 +42,21 @@ smartrack display message "A Test Message"
 ```
 smartrack display message "A Test Message+Line 2"
 ```
+
+- Software Update
+```
+smartrack update
+```
+
+- Factory Reset
+```
+smartrack factory
+```
+
+### Companion Config
+
+Database is contained at /home/companion/.config/companion-nodejs/v3.2/db (note the version number if image changes).  This command will copy the current config 
+
+## Notes
+
+- If companion image changes database folder needs to be changed in install.sh

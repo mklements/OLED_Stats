@@ -1,5 +1,5 @@
 import subprocess
-
+from display import change_display
 
 def _run_process(commands):
     return subprocess.run(
@@ -10,15 +10,7 @@ def _run_process(commands):
 
 def update():
     print("Updating...")
-    _run_process(
-        [
-            "/home/smartrack/smartrack-pi/smartrack_pi/.venv/bin/python",
-            "/home/smartrack/smartrack-pi/smartrack_pi/cli.py",
-            "display",
-            "message",
-            "Updating...",
-        ]
-    )
+    change_display.display_text("Updating")
     _run_process(["sudo", "systemctl", "stop", "stats.service"])
     _run_process(["sudo", "systemctl", "stop", "button.service"])
     _run_process(["git", "fetch", "--all"])
@@ -30,15 +22,7 @@ def update():
 
 def factory_reset():    
     print("Resetting...")
-    _run_process(
-        [
-            "/home/smartrack/smartrack-pi/smartrack_pi/.venv/bin/python",
-            "/home/smartrack/smartrack-pi/smartrack_pi/cli.py",
-            "display",
-            "message",
-            "Factory Resetting,Companion...",
-        ]
-    )
+    change_display.display_text("Factory Resetting",  "Companion....")
     _run_process(["sudo", "cp", "/home/smartrack/smartrack-pi/companion/db", "/home/companion/.config/companion-nodejs/v3.2/db"])
     _run_process(["sudo", "reboot"])
 
