@@ -1,10 +1,12 @@
 import subprocess
 from display import change_display
-
+import shutil
+import pathlib
 def _run_process(commands):
     return subprocess.run(
         commands,
         check=False,
+        cwd="/home/smartrack/smartrack-pi"
     )
 
 
@@ -33,6 +35,13 @@ def update_companion_repo():
     print("Updating Companion...")
     _run_process(["git", "config", "--global", "user.name", "Smartrack"])
     _run_process(["git", "config", "--global", "user.email", "Automation"])
-
+    companion_db = "/home/companion/.config/companion-nodejs/v3.2/db"
+    repo_db = "/home/smartrack/smartrack-pi/companion/db"
+    repo_archive_dir = "/home/smartrack/smartrack-pi/companion/archive123"
+    pathlib.Path(repo_archive_dir).mkdir(parents=True, exist_ok=True)
+    shutil.copy(repo_db, f"{repo_archive_dir}/db")
+    _run_process(["sudo", "cp", companion_db, repo_db])
+    _run_process(["git", "commit", "-am", 'companion update', "companion/db"])
+    _run_process(["git", "push", "origin", "master"])
     print("Update complete.")
     return
