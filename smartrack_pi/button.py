@@ -3,9 +3,9 @@ from time import sleep
 
 from gpiozero import Button
 
-from smartrack_pi.display import change_display
-from smartrack_pi.ip.set_adaptor import Adaptor
-from smartrack_pi.settings.software import factory_reset
+from display import change_display
+from ip.set_adaptor import Adaptor
+from settings.software import factory_reset
 
 WAS_HELD = False
 

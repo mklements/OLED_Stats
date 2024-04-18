@@ -7,8 +7,8 @@ import streamlit as st
 from netaddr import IPAddress
 from streamlit_js_eval import get_page_location
 
-from smartrack_pi.ip.set_adaptor import Adaptor
-from smartrack_pi.settings import software
+from ip.set_adaptor import Adaptor
+from settings import software
 
 
 def get_mask(mask_bit):

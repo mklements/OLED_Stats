@@ -3,9 +3,9 @@ import os
 import sys
 from time import sleep
 
-from smartrack_pi.display import change_display
-from smartrack_pi.ip.set_adaptor import Adaptor
-from smartrack_pi.settings import software
+from display import change_display
+from ip.set_adaptor import Adaptor
+from settings import software
 
 adaptor = Adaptor()
 
