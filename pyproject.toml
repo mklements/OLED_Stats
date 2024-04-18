@@ -16,11 +16,6 @@ adafruit-blinka = "^8.39.1"
 streamlit = "^1.33.0"
 netaddr = "^1.2.1"
 streamlit-js-eval = "^0.1.7"
-
-[tool.poetry.group.pi]
-optional = true
-
-[tool.poetry.group.pi.dependencies]
 rpi-gpio = "^0.7.1"
 
 [build-system]
