@@ -26,3 +26,6 @@ rpi-gpio = "^0.7.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+smartrack = "smartrack_pi.cli:cli"
