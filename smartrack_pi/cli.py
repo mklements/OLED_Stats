@@ -1,4 +1,4 @@
-from display import change_display
+from smartrack_pi.display import change_display
 
 
 def cli():
