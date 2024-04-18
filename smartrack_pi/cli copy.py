@@ -3,9 +3,9 @@ import os
 import sys
 from time import sleep
 
-from display import change_display
-from ip.set_adaptor import Adaptor
-from settings import software
+from smartrack_pi.display import change_display
+from smartrack_pi.ip.set_adaptor import Adaptor
+from smartrack_pi.settings import software
 
 adaptor = Adaptor()
 
@@ -98,21 +98,21 @@ def set_display():
             case _:
                 print("Not a valid command (commands: stats, message)")
 
+
 def check_file(file_name):
-    file_path =f"/home/smartrack/smartrack-pi/companion/{file_name}"
+    file_path = f"/home/smartrack/smartrack-pi/companion/{file_name}"
     if os.path.isfile(file_path):
         return True
     return False
 
-def companion():
-    
 
+def companion():
 
     try:
         companion_command = sys.argv[2].lower()
     except IndexError:
         companion_command = None
-        return("Please supply type: ('backup' or 'restore')")
+        return "Please supply type: ('backup' or 'restore')"
     if companion_command:
         try:
             file_name = sys.argv[3].lower()
@@ -121,14 +121,15 @@ def companion():
         match companion_command:
             case "backup":
                 if file_name:
-                    return software.backup_companion_file(file_name)                
+                    return software.backup_companion_file(file_name)
                 return "Please Supply a File Name"
             case "restore":
                 if file_name:
                     return software.restore_companion_file(file_name)
                 return "Please Supply a File Name"
             case _:
-                return("Not a valid command (commands: backup, restore)")
+                return "Not a valid command (commands: backup, restore)"
+
 
 if __name__ == "__main__":
     try:
@@ -147,7 +148,9 @@ if __name__ == "__main__":
         case "update":
             software.update()
         case "factory":
-            prompt = input("This will reset all companion settings, and set to dhcp.  Enter Y to continue... \n")
+            prompt = input(
+                "This will reset all companion settings, and set to dhcp.  Enter Y to continue... \n"
+            )
             if prompt.lower() == "y":
                 software.factory_reset()
         case _:
