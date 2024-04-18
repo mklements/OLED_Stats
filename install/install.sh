@@ -19,6 +19,7 @@ function set_alias() {
   fi
 }
 
+cd /home/smartrack/smartrack-pi
 # updates and packages
 sudo apt-get update -y
 sudo apt-get full-upgrade -y
@@ -48,14 +49,12 @@ sudo nmcli con down ipstatic
 sudo nmcli con up dhcp
 
 # smartrack pi module and webserver
-cd /home/smartrack/smartrack-pi/smartrack_pi
 python -m venv .venv --system-site-packages
 # shellcheck source=/dev/null
 source .venv/bin/activate
 pip install --upgrade -r requirements.txt
 
 # python script as services
-cd /home/smartrack/smartrack-pi
 sudo cp install/services/stats.service /etc/systemd/system/stats.service
 sudo cp install/services/button.service /etc/systemd/system/button.service
 sudo cp install/services/smartrack-settings.service /etc/systemd/system/smartrack-settings.service
@@ -75,8 +74,11 @@ sudo systemctl restart nginx
 
 # # set alias for smartrack cli
 # alias="smartrack"
-# alias_target="'/home/smartrack/smartrack-pi/smartrack_pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
+# alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
 # set_alias "$alias" "$alias_target"
+alias="smartrack"
+alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/main.py'"
+set_alias "$alias" "$alias_target"
 
 #set git
 git config --global user.name "Smartrack"
@@ -86,6 +88,4 @@ git config --global user.email "Smartrack"
 sudo cp /home/smartrack/smartrack-pi/companion/default /home/companion/.config/companion-nodejs/v3.2/db
 sudo reboot
 
-alias="smartrack"
-alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/main.py'"
-set_alias "$alias" "$alias_target"
+
