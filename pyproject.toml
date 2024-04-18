@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "smartrack-pi"
+version = "0.1.0"
+description = ""
+authors = ["cubs818 <craigmitchell18@gmail.com>"]
+license = "MIT"
+readme = "docs/README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+adafruit-circuitpython-ssd1306 = "^2.12.17"
+psutil = "^5.9.8"
+pillow = "^10.3.0"
+adafruit-python-shell = "^1.8.1"
+adafruit-blinka = "^8.39.1"
+streamlit = "^1.33.0"
+netaddr = "^1.2.1"
+streamlit-js-eval = "^0.1.7"
+
+[tool.poetry.group.pi]
+optional = true
+
+[tool.poetry.group.pi.dependencies]
+rpi-gpio = "^0.7.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

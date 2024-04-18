@@ -85,3 +85,4 @@ git config --global user.email "Smartrack"
 #set companion
 sudo cp /home/smartrack/smartrack-pi/companion/db /home/companion/.config/companion-nodejs/v3.2/db
 sudo reboot
+
