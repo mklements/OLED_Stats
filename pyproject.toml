@@ -15,6 +15,7 @@ dependencies = [
     "streamlit >= 1.33.0",
     "netaddr >= 1.2.1",
     "streamlit-js-eval >= 0.1.7",
+    "typer"
     
 ]
 [project.optional-dependencies]
