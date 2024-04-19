@@ -31,4 +31,4 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
-hello-world = "timmins:hello_world"
+smartrack = "smartrack_pi.cli:main"

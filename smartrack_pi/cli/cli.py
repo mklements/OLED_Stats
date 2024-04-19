@@ -1,13 +1,18 @@
-"""This module provides the RP To-Do CLI."""
-# rptodo/cli.py
+"""This module provides the Smartrack CLI."""
+# smartrack/cli/cli.py
 
 from typing import Optional
 
 import typer
 
 from smartrack_pi import __app_name__, __version__
+import display
+import net
 
 app = typer.Typer()
+app.add_typer(display.app, name="display")
+app.add_typer(net.app, name="net")
+
 
 def _version_callback(value: bool) -> None:
     if value:
@@ -26,3 +31,4 @@ def main(
     )
 ) -> None:
     return
+

@@ -72,12 +72,8 @@ sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/smartrack-settings /etc/nginx/sites-enabled
 sudo systemctl restart nginx
 
-# # set alias for smartrack cli
-# alias="smartrack"
-# alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
-# set_alias "$alias" "$alias_target"
 alias="smartrack"
-alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli/main.py'"
+alias_target="/home/smartrack/smartrack-pi/.venv/bin/smartrack"
 set_alias "$alias" "$alias_target"
 
 #set git
