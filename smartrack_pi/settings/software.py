@@ -9,6 +9,9 @@ import os
 COMPANION_DB = "/home/companion/.config/companion-nodejs/v3.2/db"
 SYSTEM_CONFIGS = ["default"]
 
+def get_companion_configs():
+    folder = "/home/smartrack/smartrack-pi/companion"
+    return [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
 
 def _run_process(commands):
     return subprocess.run(
@@ -38,7 +41,10 @@ def update():
 def factory_reset():    
     print("Resetting...")
     show.text("Factory Resetting Companion...")
-    _run_process(["sudo", "cp", "/home/smartrack/smartrack-pi/companion/default", "/home/companion/.config/companion-nodejs/v3.2/db"])
+    for config in get_companion_configs():
+        if not config.startswith("system-"):
+            _run_process(["sudo", "rm", f"/home/smartrack/smartrack-pi/companion/{config}"])
+    _run_process(["sudo", "cp", "/home/smartrack/smartrack-pi/companion/system-default", "/home/companion/.config/companion-nodejs/v3.2/db"])
     _run_process(["sudo", "reboot"])
 
     print("Update complete.")
@@ -82,4 +88,3 @@ def push_companion_config(file_name):
     _run_process(["git", "push", "origin", "master"])
     return("Update complete.")
 
-push_companion_config("user-testonetwo")

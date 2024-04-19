@@ -115,7 +115,8 @@ def main():
             )
             st.page_link(f"http://{ip}", label="Click to Open This page at New Address")
             sleep(5)
-            adaptor.set_adaptor_static(f"{ip}/{mask_bit}", gateway)            
+            adaptor.set_adaptor_static(f"{ip}/{mask_bit}", gateway)
+
     with tab3:
         system_tab_1,system_tab_2 = st.tabs(["Software Update", "Factory Reset"])
         with system_tab_1:
@@ -126,7 +127,7 @@ def main():
                 st.write("Updating!")
                 software.update()
         with system_tab_2:
-            st.write("Overwrites companion configs, and reset to DHCP")
+            st.write("Overwrites companion, deletes user configs, and reset to DHCP")
             with st.form(key="reset"):
                 reset_submit = st.form_submit_button("Reset")
             if reset_submit:

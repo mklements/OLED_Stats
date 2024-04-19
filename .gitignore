@@ -1,5 +1,7 @@
 .vscode
 
+companion/user-*
+
 .lg*
 
 # Byte-compiled / optimized / DLL files
