@@ -1,10 +1,12 @@
-import typer
+import json
+import os
 from typing import Annotated
-from smartrack_pi.net import Adaptor
+
+import typer
+
+from smartrack_pi.settings import software
 
 app = typer.Typer()
-
-adaptor = Adaptor()
 
 
 def _get_config():
@@ -24,16 +26,31 @@ def _set_config(key, value):
 
 
 @app.command()
-def dhcp():
-    print("Warning: You will need to reconnect")
-    print("Setting Net Mode to DHCP")
-    adaptor.set_adaptor_dhcp()
+def backup(
+    file_name: Annotated[
+        str,
+        typer.Argument(
+            help="Please enter the file name (Folder Location /home/smartrack/smartrack-pi/companion)"
+        ),
+    ]
+):
+    print(f"Backing up file to: /home/smartrack/smartrack-pi/companion/{file_name}")
+    print("Warning: Unit Rebooting!")
+    software.backup_companion_file(file_name)
+
 
 @app.command()
-def static(ip_address: Annotated[str, typer.Option(help="please enter ip with bit mask i.e. '192.168.1.241/24'")]='192.168.1.241/24', gateway: Annotated[str, typer.Option(help="Please enter gateway")]="192.168.1.1"):
-    print("Warning: You will need to reconnect")
-    print(f"Setting Net Mode to Static Ip: {ip_address} and Gateway: {gateway}")
-    adaptor.set_adaptor_static(ip_address, gateway)
+def restore(
+    file_name: Annotated[
+        str,
+        typer.Argument(
+            help="Please enter the file name (Folder Location /home/smartrack/smartrack-pi/companion)"
+        ),
+    ]
+):
+    print(f"Restoring file file: /home/smartrack/smartrack-pi/companion/{file_name}")
+    print("Warning: Unit Rebooting!")
+    software.restore_companion_file(file_name)
 
 
 if __name__ == "__main__":

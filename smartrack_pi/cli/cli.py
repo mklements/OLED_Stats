@@ -6,13 +6,13 @@ from typing import Optional
 
 import typer
 
-import smartrack_pi.cli.display as display
-import smartrack_pi.cli.net as net
 from smartrack_pi import __app_name__, __version__
+from smartrack_pi.cli import companion, display, net
 
 app = typer.Typer()
 app.add_typer(display.app, name="display")
 app.add_typer(net.app, name="net")
+app.add_typer(companion.app, name="companion")
 
 
 def _version_callback(value: bool) -> None:
