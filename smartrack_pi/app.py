@@ -91,8 +91,7 @@ def main():
             
 
     with tab2:
-        st.header("Static IP", divider="grey")
-        st.write("Sets unit to static IP address, for DHCP press button on the unit")
+        st.write("Set Static Ip")
         with st.expander("Bit Mask Calculator", expanded=False):
             mask_bit = st.slider("Subnet Calculator", 0, 32, value=current_mask_bit)
             mask = get_mask(mask_bit)
