@@ -34,7 +34,7 @@ def update():
 def factory_reset():    
     print("Resetting...")
     show.text("Factory Resetting Companion...")
-    _run_process(["sudo", "cp", "/home/smartrack/smartrack-pi/companion/db", "/home/companion/.config/companion-nodejs/v3.2/db"])
+    _run_process(["sudo", "cp", "/home/smartrack/smartrack-pi/companion/default", "/home/companion/.config/companion-nodejs/v3.2/db"])
     _run_process(["sudo", "reboot"])
 
     print("Update complete.")

@@ -16,9 +16,16 @@ app.add_typer(companion.app, name="companion")
 
 @app.command()
 def update():
+    confirm = typer.confirm("This will update all software to current version, with no changes to companion file. OK?")
     print("Updating Software")
     software.update()
-    
+
+@app.command()
+def factory():
+    confirm = typer.confirm("This will factory reset device you will lose all companion settings, OK?")
+    print("Factory Resetting Device")
+    software.factory_reset()
+
 def _version_callback(value: bool) -> None:
     if value:
         typer.echo(f"{__app_name__} v{__version__}")
