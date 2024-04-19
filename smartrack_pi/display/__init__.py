@@ -33,7 +33,11 @@ def split_message(message):
     line = ""
     for i, text in enumerate(message_list):
         new_line = f"{line}{text}"
+        # print(text, "|", line, "|", new_line, "|", len(new_line))
         if len(new_line.rstrip()) < CHAR_WIDTH:
+            if i == len(message_list) - 1:
+                output.append(new_line)
+                break
             line = f"{new_line} "
             continue
         if len(new_line.rstrip()) == CHAR_WIDTH:
@@ -53,6 +57,7 @@ def split_message(message):
 
 def display_text(message):
     lines = split_message(message)
+
     stats_status(False)
     i2c = board.I2C()
     oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c, addr=0x3C)
