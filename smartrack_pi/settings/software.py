@@ -58,7 +58,7 @@ def backup_companion_file(file_name):
         file_name = f"user-{file_name}"    
     repo_db =f"/home/smartrack/smartrack-pi/companion/{file_name}"
     _run_process(["sudo", "cp", COMPANION_DB, repo_db])
-    return("Update complete.")
+    return("Back up Complete")
 
 def restore_companion_file(file_name):
     print("Updating Companion...")
