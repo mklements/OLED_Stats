@@ -1,5 +1,5 @@
 import subprocess
-from display import change_display
+from smartrack_pi.display import show
 import shutil
 import pathlib
 from datetime import datetime
@@ -21,7 +21,7 @@ def check_file(file_name):
 
 def update():
     print("Updating...")
-    change_display.display_text("Updating")
+    show.text("Updating")
     _run_process(["sudo", "systemctl", "stop", "stats.service"])
     _run_process(["sudo", "systemctl", "stop", "button.service"])
     _run_process(["git", "fetch", "--all"])
@@ -33,7 +33,7 @@ def update():
 
 def factory_reset():    
     print("Resetting...")
-    change_display.display_text("Factory Resetting", "Companion...")
+    show.text("Factory Resetting", "Companion...")
     _run_process(["sudo", "cp", "/home/smartrack/smartrack-pi/companion/db", "/home/companion/.config/companion-nodejs/v3.2/db"])
     _run_process(["sudo", "reboot"])
 
@@ -60,7 +60,7 @@ def backup_companion_file(file_name):
 def restore_companion_file(file_name):
     print("Updating Companion...")
     file_path =f"/home/smartrack/smartrack-pi/companion/{file_name}"
-    change_display.display_text("Restoring Companion File", file_name)
+    show.text("Restoring Companion File", file_name)
     _run_process(["sudo", "cp", file_path, COMPANION_DB])
     _run_process(["sudo", "reboot"])
     return(f"Restoring {file_name}")

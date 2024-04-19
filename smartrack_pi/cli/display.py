@@ -2,7 +2,7 @@ from typing import Annotated
 
 import typer
 
-from smartrack_pi.display import display_text, stats_status
+from smartrack_pi.display import show
 
 app = typer.Typer()
 
@@ -15,14 +15,14 @@ def stats(
     Turns on stats loop displaying IP, Hostname, CPU, Temp, Mem and Disk
     """
     print(f"Setting stats display to {enable}")
-    stats_status(enable)
+    show.stats(enable)
 
 
 @app.command()
 def message(text: Annotated[str, typer.Argument(help="Message to display")]):
     print(f"Displaying Message: {text}")
     print("Warning:  Stats will be disabled, to re-enable 'smartrack display stats'")
-    display_text(text)
+    show.text(text)
 
 
 if __name__ == "__main__":

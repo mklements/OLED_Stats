@@ -3,8 +3,8 @@ import os
 import sys
 from time import sleep
 
-from display import change_display
-from net.set_adaptor import Adaptor
+from display import show
+from net.adaptor import Adaptor
 from settings import software
 
 adaptor = Adaptor()
@@ -50,12 +50,12 @@ def set_net():
     if net_type:
         match net_type:
             case "dhcp":
-                change_display.display_text("Setting Net Mode", "to DHCP...")
+                show.text("Setting Net Mode", "to DHCP...")
                 set_dhcp()
             case "static":
 
                 try:
-                    change_display.display_text("Setting Net Mode", "to Static...")
+                    show.text("Setting Net Mode", "to Static...")
                     ip = sys.argv[3]
                     gateway = sys.argv[4]
                     set_static(ip, gateway)
@@ -66,7 +66,7 @@ def set_net():
             case _:
                 print("Net type is either 'dhcp' or 'static'")
         sleep(5)
-        change_display.stats_status()
+        show.stats_status()
 
 
 def set_display():
@@ -84,17 +84,17 @@ def set_display():
                     status = True
                 if status == "false":
                     print("Stopping Stats Display...")
-                    change_display.stats_status(False)
+                    show.stats_status(False)
                 else:
                     print("Starting Stats Display...")
-                    change_display.stats_status()
+                    show.stats_status()
             case "message":
                 try:
                     messages = sys.argv[3].split("+")
                 except IndexError:
                     messages = []
                 print(f"Displaying message: {messages}")
-                change_display.display_text(*messages)
+                show.text(*messages)
             case _:
                 print("Not a valid command (commands: stats, message)")
 

@@ -55,7 +55,7 @@ def split_message(message):
     return output
 
 
-def display_text(message):
+def text(message):
     lines = split_message(message)
 
     stats_status(False)

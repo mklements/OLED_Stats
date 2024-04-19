@@ -1,9 +1,9 @@
 from signal import pause
 from time import sleep
 
-from display import change_display
+from display import show
 from gpiozero import Button
-from net.set_adaptor import Adaptor
+from net.adaptor import Adaptor
 from settings.software import factory_reset
 
 WAS_HELD = False
@@ -16,14 +16,14 @@ def released():
         adaptor = Adaptor()
         if adaptor.config.get("mode") == "D":
             print("Setting to Static")
-            change_display.display_text("Setting Net Mode", "to Static...")
+            show.text("Setting Net Mode", "to Static...")
             print(adaptor.set_adaptor_static())
         else:
             print("Setting to DHCP")
-            change_display.display_text("Setting Net Mode", "to DHCP...")
+            show.text("Setting Net Mode", "to DHCP...")
             print(adaptor.set_adaptor_dhcp())
         sleep(5)
-        change_display.stats_status()
+        show.stats_status()
     WAS_HELD = False
 
 
@@ -31,7 +31,7 @@ def held():
     global WAS_HELD
     WAS_HELD = True
     adaptor = Adaptor()
-    change_display.display_text("Factory Resetting", "Net Adaptors....")
+    show.text("Factory Resetting", "Net Adaptors....")
     adaptor.factory_reset()
     sleep(5)
     factory_reset()
