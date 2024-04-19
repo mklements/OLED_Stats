@@ -52,7 +52,7 @@ sudo nmcli con up dhcp
 python -m venv .venv --system-site-packages
 # shellcheck source=/dev/null
 source .venv/bin/activate
-pip install --upgrade -r requirements.txt
+python -m pip install .[pi]
 
 # python script as services
 sudo cp install/services/stats.service /etc/systemd/system/stats.service
@@ -77,7 +77,7 @@ sudo systemctl restart nginx
 # alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli.py'"
 # set_alias "$alias" "$alias_target"
 alias="smartrack"
-alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/main.py'"
+alias_target="'/home/smartrack/smartrack-pi/.venv/bin/python /home/smartrack/smartrack-pi/smartrack_pi/cli/main.py'"
 set_alias "$alias" "$alias_target"
 
 #set git
