@@ -4,7 +4,11 @@ import shutil
 import pathlib
 from datetime import datetime
 import os
+
+
 COMPANION_DB = "/home/companion/.config/companion-nodejs/v3.2/db"
+SYSTEM_CONFIGS = ["default"]
+
 
 def _run_process(commands):
     return subprocess.run(
@@ -41,22 +45,13 @@ def factory_reset():
     return
 
 def backup_companion_file(file_name):
-    if file_name.lower() == "default":
-        return f"File Name not allowed: {file_name}"
     print("Backing up Companion...")
+    if file_name.find("system-") != -1:
+        return f"File Name not allowed: {file_name}"
+    elif not file_name.startswith("user-"):
+        file_name = f"user-{file_name}"    
     repo_db =f"/home/smartrack/smartrack-pi/companion/{file_name}"
-    if check_file(repo_db):
-        repo_archive_dir = f"/home/smartrack/smartrack-pi/companion/archive/{datetime.strftime(datetime.now(), '%Y%m%d%H%M')}"
-        repo_archive_file = f"{repo_archive_dir}/{file_name}"
-        pathlib.Path(repo_archive_dir).mkdir(parents=True, exist_ok=True)
-        shutil.copy(repo_db, repo_archive_file)
-        _run_process(["git", "add", repo_archive_file])
-        _run_process(["git", "commit", "-m", "companion update", repo_archive_file])
     _run_process(["sudo", "cp", COMPANION_DB, repo_db])
-    _run_process(["git", "add", repo_db])
-    _run_process(["git", "commit", "-m", "companion update", repo_db])
-
-    _run_process(["git", "push", "origin", "master"])
     return("Update complete.")
 
 def restore_companion_file(file_name):
@@ -72,3 +67,19 @@ def delete_companion_file(file_name):
     file_path =f"/home/smartrack/smartrack-pi/companion/{file_name}"
     _run_process(["sudo", "rm", file_path])
     return(f"Deleted {file_name}")
+
+def push_companion_config(file_name):
+    print("Saving System File...")
+    if not file_name.startswith("user-"):
+        file_name = f"user-{file_name}" 
+    user_db =f"/home/smartrack/smartrack-pi/companion/{file_name}"
+    file_name = file_name.lower().replace("user-", "system-")
+    system_db = f"/home/smartrack/smartrack-pi/companion/{file_name}"
+
+    _run_process(["sudo", "cp", user_db, system_db])
+    _run_process(["git", "add", system_db])
+    _run_process(["git", "commit", "-m", "companion update", system_db])
+    _run_process(["git", "push", "origin", "master"])
+    return("Update complete.")
+
+push_companion_config("user-testonetwo")
