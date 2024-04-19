@@ -28,8 +28,7 @@ def check_file(file_name):
 
 def update():
     print("Updating...")
-    show.text("Updating")
-    _run_process(["sudo", "systemctl", "stop", "stats.service"])
+    show.text("Updating...")
     _run_process(["sudo", "systemctl", "stop", "button.service"])
     _run_process(["git", "fetch", "--all"])
     _run_process(["git", "reset", "--hard", "origin/master"])
