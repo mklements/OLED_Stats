@@ -17,12 +17,18 @@ app.add_typer(companion.app, name="companion")
 @app.command()
 def update():
     confirm = typer.confirm("This will update all software to current version, with no changes to companion file. OK?")
+    if not confirm:
+        print("Aborting...")
+        raise typer.Abort()
     print("Updating Software")
     software.update()
 
 @app.command()
 def factory():
     confirm = typer.confirm("This will factory reset device you will lose all companion settings, OK?")
+    if not confirm:
+        print("Aborting...")
+        raise typer.Abort()
     print("Factory Resetting Device")
     software.factory_reset()
 
