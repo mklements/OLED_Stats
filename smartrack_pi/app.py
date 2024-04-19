@@ -124,8 +124,15 @@ def main():
             with st.form(key="update"):
                 update_submit = st.form_submit_button("Update")
             if update_submit:
-                st.write("Updating!")
-                software.update()
+                with st.status("Downloading data..."):
+                    software.update()
+                    st.write("Downloading update...")
+                    sleep(3)
+                    st.write("Found URL.")
+                    sleep(7)
+                    st.write("Downloading data...")
+                    sleep(5)
+
         with system_tab_2:
             st.write("Overwrites companion, deletes user configs, and reset to DHCP")
             with st.form(key="reset"):
