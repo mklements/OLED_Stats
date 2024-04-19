@@ -4,11 +4,10 @@ from ipaddress import IPv4Network
 from time import sleep
 
 import streamlit as st
-from netaddr import IPAddress
-from streamlit_js_eval import get_page_location
-
 from net.adaptor import Address
+from netaddr import IPAddress
 from settings import software
+from streamlit_js_eval import get_page_location
 
 
 def get_mask(mask_bit):
@@ -16,15 +15,22 @@ def get_mask(mask_bit):
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
+print(dir_path)
+
+
+def get_companion_configs():
+    folder = "/home/smartrack/smartrack-pi"
+
+    files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
 
 
 def main():
     st.set_page_config(
         initial_sidebar_state="collapsed",
         page_title="Smartrack Settings",
-        page_icon=f"{dir_path}/app/static/4. CT Mark - Colour PNG.png",
+        page_icon=f"{dir_path}/assets/app/static/4. CT Mark - Colour PNG.png",
     )
-    with open(f"{dir_path}/app/style.css") as css:
+    with open(f"{dir_path}/assets/app/style.css", encoding="utf-8") as css:
         st.markdown(f"<style>{css.read()}</style>", unsafe_allow_html=True)
 
     adaptor = Address()
@@ -33,10 +39,10 @@ def main():
     current_mask_bit = int(current_cidr.split("/")[1])
 
     st.image(
-        f"{dir_path}/app/static/1. Super Landscape - Without Box - Colour With Black Text - PNG.png"
+        f"{dir_path}/assets/app/static/1. Super Landscape - Without Box - Colour With Black Text - PNG.png"
     )
 
-    page_loc = get_page_location() or {"origin":"localhost"}
+    page_loc = get_page_location() or {"origin": "localhost"}
     link = f"{page_loc.get('origin')}:8000"
     st.markdown(
         """
@@ -92,7 +98,7 @@ def main():
         software.restore_companion_file(select)
 
     st.header("Update Software", divider="grey")
-    st.write("Will not overwrite an companion configs")
+    st.write("Updates software, Will not overwrite an companion configs")
     with st.form(key="update"):
         update_submit = st.form_submit_button("Update")
     if update_submit:

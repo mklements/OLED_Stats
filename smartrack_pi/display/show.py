@@ -74,7 +74,8 @@ def text(message):
 
     # font = ImageFont.load_default()
     font = ImageFont.truetype(
-        f"{Path(__file__).parent.parent / 'fonts' / 'PixelOperator.ttf'}", FONTSIZE
+        f"{Path(__file__).parent.parent / 'assets' / 'fonts' / 'PixelOperator.ttf'}",
+        FONTSIZE,
     )
     draw.rectangle((0, 0, oled.width, oled.height), outline=0, fill=0)
     for i, line in enumerate(lines):

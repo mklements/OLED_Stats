@@ -9,7 +9,6 @@ from pathlib import Path
 import adafruit_ssd1306
 import board
 import psutil as ps
-
 from PIL import Image, ImageDraw, ImageFont
 
 KB = 1024
@@ -23,10 +22,10 @@ FONTSIZE = 16
 LOOPTIME = 1.0
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
+
+
 def get_config():
-    with open(
-        f"{dir_path}/net/config.json", encoding="utf-8"
-    ) as f:
+    with open(f"{dir_path}/net/config.json", encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -70,7 +69,7 @@ x = 0
 
 # font = ImageFont.load_default()
 font = ImageFont.truetype(
-    f"{Path(__file__).parent / 'fonts' / 'PixelOperator.ttf'}", FONTSIZE
+    f"{Path(__file__).parent / 'assets' / 'fonts' / 'PixelOperator.ttf'}", FONTSIZE
 )
 
 count = 0
