@@ -60,7 +60,7 @@ def backup_companion_file(file_name):
 def restore_companion_file(file_name):
     print("Updating Companion...")
     file_path =f"/home/smartrack/smartrack-pi/companion/{file_name}"
-    show.text("Restoring Companion File", file_name)
+    show.text(f"Restoring Companion File: {file_name}")
     _run_process(["sudo", "cp", file_path, COMPANION_DB])
     _run_process(["sudo", "reboot"])
     return(f"Restoring {file_name}")
