@@ -3,7 +3,7 @@ from time import sleep
 
 smartrack_pi.display import show
 from gpiozero import Button
-from net.adaptor import Adaptor
+from net.adaptor import Address
 from settings.software import factory_reset
 
 WAS_HELD = False
@@ -13,7 +13,7 @@ def released():
     global WAS_HELD
     print("released")
     if not WAS_HELD:
-        adaptor = Adaptor()
+        adaptor = Address()
         if adaptor.config.get("mode") == "D":
             print("Setting to Static")
             show.text("Setting Net Mode", "to Static...")
@@ -30,7 +30,7 @@ def released():
 def held():
     global WAS_HELD
     WAS_HELD = True
-    adaptor = Adaptor()
+    adaptor = Address()
     show.text("Factory Resetting", "Net Adaptors....")
     adaptor.factory_reset()
     sleep(5)

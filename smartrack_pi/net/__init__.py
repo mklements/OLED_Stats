@@ -6,7 +6,7 @@ import re
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-class Adaptor:
+class Address:
     """Handles adaptor settings"""
 
     def __init__(self):

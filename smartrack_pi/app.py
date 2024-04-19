@@ -7,7 +7,7 @@ import streamlit as st
 from netaddr import IPAddress
 from streamlit_js_eval import get_page_location
 
-from net.adaptor import Adaptor
+from net.adaptor import Address
 from settings import software
 
 
@@ -27,7 +27,7 @@ def main():
     with open(f"{dir_path}/app/style.css") as css:
         st.markdown(f"<style>{css.read()}</style>", unsafe_allow_html=True)
 
-    adaptor = Adaptor()
+    adaptor = Address()
     current_cidr = adaptor.config.get("static_ip")
     current_ip = current_cidr.split("/")[0]
     current_mask_bit = int(current_cidr.split("/")[1])

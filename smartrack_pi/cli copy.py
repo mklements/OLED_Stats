@@ -4,10 +4,10 @@ import sys
 from time import sleep
 
 smartrack_pi.display import show
-from net.adaptor import Adaptor
+from net.adaptor import Address
 from settings import software
 
-adaptor = Adaptor()
+adaptor = Address()
 
 
 def _get_config():

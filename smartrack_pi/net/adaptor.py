@@ -2,10 +2,11 @@ import json
 import os
 import subprocess
 from copy import copy
+import re
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-class Adaptor:
+class Address:
     """Handles adaptor settings"""
 
     def __init__(self):
@@ -77,6 +78,7 @@ class Adaptor:
         self.config["mode"] = "D"
         self._write_config()
         return self.config
+        
     def set_adaptor_static(self, ip_address=None, gateway=None):
         """Sets the adaptor for static
         Args:
@@ -87,23 +89,33 @@ class Adaptor:
             ip_address = self.config.get("static_ip", "192.168.1.241/24")
             
         if not gateway:
-            gateway = self.config.get("gateway", "192.168.1.1")            
-        
-        self._set_adaptor_address(ip_address, gateway)
-        self._set_adaptor_priority("up", "ipstatic")
-        self._set_adaptor_priority("down", "dhcp")
-        self._set_adaptor_status("up", "ipstatic")
-        self._set_adaptor_status("down", "dhcp")
+            gateway = self.config.get("gateway", "192.168.1.1")
+        if self.check_ip(ip_address, gateway):
+            self._set_adaptor_address(ip_address, gateway)
+            self._set_adaptor_priority("up", "ipstatic")
+            self._set_adaptor_priority("down", "dhcp")
+            self._set_adaptor_status("up", "ipstatic")
+            self._set_adaptor_status("down", "dhcp")
 
-        self.config["static_ip"] = ip_address
-        self.config["gateway"] = gateway
-        self.config["mode"] = "S"
-    
-        self._write_config()
-        return self.config
+            self.config["static_ip"] = ip_address
+            self.config["gateway"] = gateway
+            self.config["mode"] = "S"
+        
+            self._write_config()
+            return self.config
+        else:
+            raise ValueError("Ip or Gateway not Valid")
 
     def factory_reset(self):        
         self.config["static_ip"] = "192.168.1.241/24"
         self.config["gateway"] = "192.168.1.1"
         self.set_adaptor_dhcp()   
         self._write_config()
+
+    def check_ip(self, ip_address, gateway):
+        pattern = r"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[0-2]|[12]?[0-9]))?$"
+        gateway_pattern =  r"^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"
+        check = (bool(re.match(pattern, ip_address)))
+        if check:
+            check = (bool(re.match(gateway_pattern, gateway)))
+        return check
