@@ -8,13 +8,17 @@ import typer
 
 from smartrack_pi import __app_name__, __version__
 from smartrack_pi.cli import companion, display, net
-
+from smartrack_pi.settings import software
 app = typer.Typer()
 app.add_typer(display.app, name="display")
 app.add_typer(net.app, name="net")
 app.add_typer(companion.app, name="companion")
 
-
+@app.command()
+def update():
+    print("Updating Software")
+    software.update()
+    
 def _version_callback(value: bool) -> None:
     if value:
         typer.echo(f"{__app_name__} v{__version__}")

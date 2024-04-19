@@ -16,7 +16,7 @@ function set_alias() {
 # shellcheck source=/dev/null
 cd /home/smartrack/smartrack-pi/smartrack_pi
 source .venv/bin/activate
-pip install --upgrade -r requirements.txt
+python -m pip install -e .[pi]
 cd /home/smartrack/smartrack-pi
 
 # webserver
