@@ -52,7 +52,7 @@ sudo nmcli con up dhcp
 python -m venv .venv --system-site-packages
 # shellcheck source=/dev/null
 source .venv/bin/activate
-python -m pip install .[pi]
+python -m pip install -e .[pi]
 
 # python script as services
 sudo cp install/services/stats.service /etc/systemd/system/stats.service
@@ -87,5 +87,6 @@ git config --global user.email "Smartrack"
 #set companion
 sudo cp /home/smartrack/smartrack-pi/companion/default /home/companion/.config/companion-nodejs/v3.2/db
 sudo reboot
+
 
 

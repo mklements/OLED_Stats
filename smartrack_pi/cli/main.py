@@ -1,16 +1,7 @@
 import typer
-from display import change_display
+from smartrack_pi.display import change_display
 from typing import Annotated, Optional
 app = typer.Typer()
-import sys
-import os
-
-# # Get the current script's directory
-# current_dir = os.path.dirname(os.path.abspath(__file__))
-# # Get the parent directory by going one level up
-# parent_dir = os.path.dirname(current_dir)
-# # Add the parent directory to sys.path
-# sys.path.append(parent_dir)
 
 @app.command()
 def display(command: Annotated[str, typer.Argument()], stats: bool = False):
