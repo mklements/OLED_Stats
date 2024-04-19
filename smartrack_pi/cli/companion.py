@@ -6,6 +6,23 @@ app = typer.Typer()
 
 adaptor = Adaptor()
 
+
+def _get_config():
+    with open(
+        "/home/smartrack/smartrack-pi/smartrack_pi/config.json", encoding="utf-8"
+    ) as f:
+        return json.load(f)
+
+
+def _set_config(key, value):
+    config = _get_config()
+    config[key] = value
+    with open(
+        "/home/smartrack/smartrack-pi/smartrack_pi/config.json", "w", encoding="utf-8"
+    ) as f:
+        json.dump(config, f)
+
+
 @app.command()
 def dhcp():
     print("Warning: You will need to reconnect")

@@ -7,7 +7,7 @@ import streamlit as st
 from netaddr import IPAddress
 from streamlit_js_eval import get_page_location
 
-from ip.set_adaptor import Adaptor
+from net.set_adaptor import Adaptor
 from settings import software
 
 

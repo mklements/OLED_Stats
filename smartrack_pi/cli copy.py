@@ -4,7 +4,7 @@ import sys
 from time import sleep
 
 from display import change_display
-from ip.set_adaptor import Adaptor
+from net.set_adaptor import Adaptor
 from settings import software
 
 adaptor = Adaptor()

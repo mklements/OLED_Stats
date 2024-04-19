@@ -11,6 +11,9 @@ app = typer.Typer()
 def stats(
     enable: Annotated[bool, typer.Option(help="Turns Stats Loop on or off")] = True
 ):
+    """
+    Turns on stats loop displaying IP, Hostname, CPU, Temp, Mem and Disk
+    """
     print(f"Setting stats display to {enable}")
     stats_status(enable)
 

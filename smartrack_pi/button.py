@@ -3,7 +3,7 @@ from time import sleep
 
 from display import change_display
 from gpiozero import Button
-from ip.set_adaptor import Adaptor
+from net.set_adaptor import Adaptor
 from settings.software import factory_reset
 
 WAS_HELD = False

@@ -25,7 +25,7 @@ LOOPTIME = 1.0
 dir_path = os.path.dirname(os.path.realpath(__file__))
 def get_config():
     with open(
-        f"{dir_path}/ip/config.json", encoding="utf-8"
+        f"{dir_path}/net/config.json", encoding="utf-8"
     ) as f:
         return json.load(f)
 
