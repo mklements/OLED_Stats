@@ -50,7 +50,7 @@ def factory_reset():
     return
 
 def backup_companion_file(file_name):
-    file_name= file_name.replace(" ", "")
+    file_name= file_name.replace(" ", "").lower()
     print("Backing up Companion...")
     if file_name.find("system-") != -1:
         return f"File Name not allowed to start with 'system-'"
