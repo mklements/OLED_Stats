@@ -41,6 +41,8 @@ def factory_reset():
     return
 
 def backup_companion_file(file_name):
+    if file_name.lower() == "default":
+        return f"File Name not allowed: {file_name}"
     print("Backing up Companion...")
     repo_db =f"/home/smartrack/smartrack-pi/companion/{file_name}"
     if check_file(repo_db):
@@ -64,3 +66,9 @@ def restore_companion_file(file_name):
     _run_process(["sudo", "cp", file_path, COMPANION_DB])
     _run_process(["sudo", "reboot"])
     return(f"Restoring {file_name}")
+
+def delete_companion_file(file_name):
+    print("Deleting Companion File...")
+    file_path =f"/home/smartrack/smartrack-pi/companion/{file_name}"
+    _run_process(["sudo", "rm", file_path])
+    return(f"Deleted {file_name}")

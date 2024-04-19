@@ -15,14 +15,11 @@ def get_mask(mask_bit):
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-print(dir_path)
 
 
 def get_companion_configs():
-    folder = "/home/smartrack/smartrack-pi"
-
-    files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
-
+    folder = "/home/smartrack/smartrack-pi/companion"
+    return [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
 
 def main():
     st.set_page_config(
@@ -60,50 +57,80 @@ def main():
     )
 
     st.divider()
-    st.header("Static IP", divider="grey")
-    st.write("Sets unit to static IP address, for DHCP press button on the unit")
+    tab1, tab2, tab3 = st.tabs(["Companion", "Network", "System"])
 
-    mask_bit = st.sidebar.slider("Subnet Calculator", 0, 32, value=current_mask_bit)
-    mask = get_mask(mask_bit)
-    st.sidebar.write(f"The subnet mask is {mask}")
+    with tab1:
+        file_tab_1,file_tab_2,file_tab_3 = st.tabs(["Backup", "Restore", "Delete"])
+        with file_tab_1:
+            st.write("Backup to file")
+            with st.form(key="backup-file"):
+                name = st.text_input("File Name", value="")
+                def_form_submit = st.form_submit_button("Backup Config")
+            if def_form_submit:
+                st.write(software.backup_companion_file(name))
+                
+        with file_tab_2:
+            st.write("Load from file")
+            with st.form(key="store-file"):
+                select = st.selectbox("File Name", get_companion_configs())
+                def_form_submit = st.form_submit_button("Overwrite config and restart")
+            if def_form_submit:
+                st.write(f"{software.restore_companion_file(select)} \nRestarting!")
+                
 
-    with st.form(key="my-form"):
-        ip = st.text_input("Enter the static ip address", value=current_ip)
-        mask = st.text_input(
-            "Enter the subnet mask (Click the Arrow in the Top Left for Bit Mask Calculator)",
-            value=mask,
-        )
-        gateway = st.text_input(
-            "Enter the gateway", value=adaptor.config.get("gateway", "192.168.1.1")
-        )
-        submit = st.form_submit_button("Set to Static IP")
+        with file_tab_3:
+            st.write("Delete file")
+            with st.form(key="delete-file"):
+                configs = get_companion_configs()
+                configs.remove('default') if 'default' in configs else ""
+                select = st.selectbox("File Name", configs)
+                def_form_submit = st.form_submit_button("Delete File")
+            if def_form_submit:
+                st.write(software.delete_companion_file(select))
+                st.rerun()
+            
 
-    if submit:
-        mask_bit = IPAddress(mask).netmask_bits()
-        st.write("Changing IP!! Please use the following links... (Takes 5-10 Seconds)")
-        st.page_link(
-            f"http://{ip}:8000", label="Click to Open Companion at New Address"
-        )
-        st.page_link(f"http://{ip}", label="Click to Open This page at New Address")
-        sleep(5)
-        adaptor.set_adaptor_static(f"{ip}/{mask_bit}", gateway)
+    with tab2:
+        st.header("Static IP", divider="grey")
+        st.write("Sets unit to static IP address, for DHCP press button on the unit")
+        with st.expander("Bit Mask Calculator", expanded=False):
+            mask_bit = st.slider("Subnet Calculator", 0, 32, value=current_mask_bit)
+            mask = get_mask(mask_bit)
+            st.write(f"The subnet mask is {mask}")    
+        with st.form(key="my-form"):
+            ip = st.text_input("Enter the static ip address", value=current_ip)
+            mask = st.text_input(
+                "Enter the subnet mask (Click the Arrow in the Top Left for Bit Mask Calculator)",
+                value=mask,
+            )
+            gateway = st.text_input(
+                "Enter the gateway", value=adaptor.config.get("gateway", "192.168.1.1")
+            )
+            submit = st.form_submit_button("Set to Static IP")
 
-    st.header("Recall Default Files", divider="grey")
-    st.write("Will replace entire companion config with the folowing")
-    with st.form(key="default-file"):
-        select = st.selectbox("File Name", ["default", "more_pearls"])
-        def_form_submit = st.form_submit_button("Overwrite config and restart")
-    if def_form_submit:
-        st.write(f"Selected: {select}! Restarting!")
-        software.restore_companion_file(select)
-
-    st.header("Update Software", divider="grey")
-    st.write("Updates software, Will not overwrite an companion configs")
-    with st.form(key="update"):
-        update_submit = st.form_submit_button("Update")
-    if update_submit:
-        st.write("Updating!")
-        software.update()
-
-
+        if submit:
+            mask_bit = IPAddress(mask).netmask_bits()
+            st.write("Changing IP!! Please use the following links... (Takes 5-10 Seconds)")
+            st.page_link(
+                f"http://{ip}:8000", label="Click to Open Companion at New Address"
+            )
+            st.page_link(f"http://{ip}", label="Click to Open This page at New Address")
+            sleep(5)
+            adaptor.set_adaptor_static(f"{ip}/{mask_bit}", gateway)            
+    with tab3:
+        system_tab_1,system_tab_2 = st.tabs(["Software Update", "Factory Reset"])
+        with system_tab_1:
+            st.write("Software for device, no changes to companion")
+            with st.form(key="update"):
+                update_submit = st.form_submit_button("Update")
+            if update_submit:
+                st.write("Updating!")
+                software.update()
+        with system_tab_2:
+            st.write("Overwrites companion configs, and reset to DHCP")
+            with st.form(key="reset"):
+                reset_submit = st.form_submit_button("Reset")
+            if reset_submit:
+                st.write("Resetting!")
+                software.factory_reset()
 main()
