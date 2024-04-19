@@ -33,7 +33,7 @@ def update():
 
 def factory_reset():    
     print("Resetting...")
-    show.text("Factory Resetting", "Companion...")
+    show.text("Factory Resetting Companion...")
     _run_process(["sudo", "cp", "/home/smartrack/smartrack-pi/companion/db", "/home/companion/.config/companion-nodejs/v3.2/db"])
     _run_process(["sudo", "reboot"])
 
@@ -60,7 +60,7 @@ def backup_companion_file(file_name):
 def restore_companion_file(file_name):
     print("Updating Companion...")
     file_path =f"/home/smartrack/smartrack-pi/companion/{file_name}"
-    show.text(f"Restoring Companion File: {file_name}")
+    show.text(f"Restoring Companion File: {file_name} & Rebooting")
     _run_process(["sudo", "cp", file_path, COMPANION_DB])
     _run_process(["sudo", "reboot"])
     return(f"Restoring {file_name}")
