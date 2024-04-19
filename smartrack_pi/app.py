@@ -36,9 +36,7 @@ def main():
         f"{dir_path}/app/static/1. Super Landscape - Without Box - Colour With Black Text - PNG.png"
     )
 
-    page_loc = get_page_location()
-    sleep(0.2)
-
+    page_loc = get_page_location() or {"origin":"localhost"}
     link = f"{page_loc.get('origin')}:8000"
     st.markdown(
         """
