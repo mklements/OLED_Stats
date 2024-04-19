@@ -1,9 +1,8 @@
 from signal import pause
 from time import sleep
 
-from gpiozero import Button
-
 from display import change_display
+from gpiozero import Button
 from ip.set_adaptor import Adaptor
 from settings.software import factory_reset
 
