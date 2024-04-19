@@ -1,7 +1,7 @@
 from signal import pause
 from time import sleep
 
-from display import show
+smartrack_pi.display import show
 from gpiozero import Button
 from net.adaptor import Adaptor
 from settings.software import factory_reset

@@ -35,7 +35,6 @@ def backup(
     ]
 ):
     print(f"Backing up file to: /home/smartrack/smartrack-pi/companion/{file_name}")
-    print("Warning: Unit Rebooting!")
     software.backup_companion_file(file_name)
 
 

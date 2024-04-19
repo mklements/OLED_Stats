@@ -3,7 +3,7 @@ import os
 import sys
 from time import sleep
 
-from display import show
+smartrack_pi.display import show
 from net.adaptor import Adaptor
 from settings import software
 
