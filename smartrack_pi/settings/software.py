@@ -50,9 +50,10 @@ def factory_reset():
     return
 
 def backup_companion_file(file_name):
+    file_name= file_name.replace(" ", "")
     print("Backing up Companion...")
     if file_name.find("system-") != -1:
-        return f"File Name not allowed: {file_name}"
+        return f"File Name not allowed to start with 'system-'"
     elif not file_name.startswith("user-"):
         file_name = f"user-{file_name}"    
     repo_db =f"/home/smartrack/smartrack-pi/companion/{file_name}"
