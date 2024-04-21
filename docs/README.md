@@ -52,10 +52,6 @@ _Web GUI address x.x.x.x/settings_
 
 -   System
 
-    -   Update (Requires Internet) - Gets latest web gui, button, and display software. No changes to companion or stored user files
-
-        > <img src="assets/update.png" alt="update" width="500"/>
-
     -   Reset - Same function as holding button for 5 seconds
 
         > <img src="assets/reset.png" alt="reset" width="500"/>
