@@ -28,5 +28,12 @@ def static(
     adaptor_address.set_adaptor_static(ip_address, gateway)
 
 
+@app.command()
+def reset():
+    print("Warning: You will need to reconnect")
+    print("Resetting default static ip and setting to DHCP")
+    adaptor_address.factory_reset()
+
+
 if __name__ == "__main__":
     app()

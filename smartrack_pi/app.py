@@ -17,9 +17,12 @@ def get_mask(mask_bit):
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
-def get_companion_configs():
+def get_companion_configs(include_system=True):
     folder = "/home/smartrack/smartrack-pi/companion"
-    return [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
+    files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
+    if include_system:
+        return [file for file in files if not file.startswith("system-")]
+
 
 def main():
     st.set_page_config(
@@ -60,7 +63,7 @@ def main():
     tab1, tab2, tab3 = st.tabs(["Companion", "Network", "System"])
 
     with tab1:
-        file_tab_1,file_tab_2,file_tab_3 = st.tabs(["Backup", "Restore", "Delete"])
+        file_tab_1, file_tab_2, file_tab_3 = st.tabs(["Backup", "Restore", "Delete"])
         with file_tab_1:
             st.write("Backup to file")
             with st.form(key="backup-file"):
@@ -68,7 +71,7 @@ def main():
                 def_form_submit = st.form_submit_button("Backup Config")
             if def_form_submit:
                 st.write(software.backup_companion_file(name))
-                
+
         with file_tab_2:
             st.write("Load from file")
             with st.form(key="store-file"):
@@ -76,26 +79,24 @@ def main():
                 def_form_submit = st.form_submit_button("Overwrite config and restart")
             if def_form_submit:
                 st.write(f"{software.restore_companion_file(select)} \nRestarting!")
-                
 
         with file_tab_3:
             st.write("Delete file")
             with st.form(key="delete-file"):
                 configs = get_companion_configs()
-                configs.remove('default') if 'default' in configs else ""
+                configs = configs.remove("default") if "default" in configs else ""
                 select = st.selectbox("File Name", configs)
                 def_form_submit = st.form_submit_button("Delete File")
             if def_form_submit:
                 st.write(software.delete_companion_file(select))
                 st.rerun()
-            
 
     with tab2:
         st.write("Set Static Ip")
         with st.expander("Bit Mask Calculator", expanded=False):
             mask_bit = st.slider("Subnet Calculator", 0, 32, value=current_mask_bit)
             mask = get_mask(mask_bit)
-            st.write(f"The subnet mask is {mask}")    
+            st.write(f"The subnet mask is {mask}")
         with st.form(key="my-form"):
             ip = st.text_input("Enter the static ip address", value=current_ip)
             mask = st.text_input(
@@ -109,7 +110,9 @@ def main():
 
         if submit:
             mask_bit = IPAddress(mask).netmask_bits()
-            st.write("Changing IP!! Please use the following links... (Takes 5-10 Seconds)")
+            st.write(
+                "Changing IP!! Please use the following links... (Takes 5-10 Seconds)"
+            )
             st.page_link(
                 f"http://{ip}:8000", label="Click to Open Companion at New Address"
             )
@@ -118,7 +121,7 @@ def main():
             adaptor.set_adaptor_static(f"{ip}/{mask_bit}", gateway)
 
     with tab3:
-        system_tab_1,system_tab_2 = st.tabs(["Software Update", "Factory Reset"])
+        system_tab_1, system_tab_2 = st.tabs(["Software Update", "Factory Reset"])
         with system_tab_1:
             st.write("Software for device, no changes to companion")
             with st.form(key="update"):
@@ -134,4 +137,6 @@ def main():
             if reset_submit:
                 st.write("Resetting!")
                 software.factory_reset()
+
+
 main()

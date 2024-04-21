@@ -1,4 +1,4 @@
-# CTUS Smartrack
+# CT Smartrack
 
 ## Install
 
@@ -64,58 +64,21 @@ _Web GUI address x.x.x.x/settings_
 
 ### CLI
 
-| Title             | Command                                        | Description                                         |
-| ----------------- | ---------------------------------------------- | --------------------------------------------------- |
-| Version           | `smartrack --version`                          | Returns current cli version                         |
-| Update            | `smartrack update`                             | Software Update                                     |
-| Factory Reset     | `smartrack factory`                            | Factory Reset                                       |
-| Display - Stats   | `smartrack display stats --enable/--no-enable` | Runs system stats on device screen                  |
-| Display - Message | `smartrack display message *text*`             | Stops Stats and displays a message on device screen |
-
--   Network Mode
-
-```
-smartrack dhcp
-
-smartrack static 192.168.1.100 192.168.1.1
-```
-
--   Display Stats
-
-```
-smartrack display stats
-
-smartrack display stats false
-```
-
--   Display Message
-
-```
-smartrack display message "A Test Message"
-```
-
--   Display Message Multi Line ('+' between lines)
-
-```
-smartrack display message "A Test Message+Line 2"
-```
-
--   Software Update
-
-```
-smartrack update
-```
-
--   Factory Reset
-
-```
-smartrack factory
-```
-
-### Companion Config
-
-Database is contained at /home/companion/.config/companion-nodejs/v3.2/db (note the version number if image changes). This command will copy the current config
+| Title                   | Command                                        | Description                                                                                                                        |
+| ----------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Version                 | `smartrack --version`                          | Returns current cli version                                                                                                        |
+| Update                  | `smartrack update`                             | Software Update                                                                                                                    |
+| Factory Reset           | `smartrack factory`                            | Factory Reset                                                                                                                      |
+| Display - Stats         | `smartrack display stats --enable/--no-enable` | Runs system stats on device screen                                                                                                 |
+| Display - Message       | `smartrack display message *text*`             | Stops Stats and displays a message on device screen                                                                                |
+| Net - DHCP              | `smartrack net dhcp`                           | Switches device to DHCP mode                                                                                                       |
+| Net - Static            | `smartrack net static *ip address* *gateway*`  | Switches device to static and sets address                                                                                         |
+| Net - Reset             | `smartrack net reset`                          | Resets to static ip and sets mode to DHCP                                                                                          |
+| Companion - Backup      | `smartrack companion backup *file name*`       | Prefixes 'user-' and stores config (file name only, no folder)                                                                     |
+| Companion - Restore     | `smartrack companion restore *file name*`      | Restores config and reboots unit (file name including system-/user-only, no folder)                                                |
+| Companion - Delete      | `smartrack companion delete *file name*`       | Deletes config (file name only, no folder)                                                                                         |
+| Companion - Push Config | `smartrack companion pushconfig *file name*`   | Takes a user file copies it to system file, pushes to repo for next software update (file name only, no folder, requires internet) |
 
 ## Notes
 
--   If companion image changes database folder needs to be changed in install.sh
+-   If companion image changes database folder needs to be changed in install.sh, and settings/software.py
