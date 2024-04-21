@@ -121,22 +121,23 @@ def main():
             adaptor.set_adaptor_static(f"{ip}/{mask_bit}", gateway)
 
     with tab3:
-        system_tab_1, system_tab_2 = st.tabs(["Software Update", "Factory Reset"])
-        with system_tab_1:
-            st.write("Software for device, no changes to companion")
-            with st.form(key="update"):
-                update_submit = st.form_submit_button("Update")
-            if update_submit:
-                with st.spinner(text="Update In progress..."):
-                    software.update()
+        # system_tab_1, system_tab_2 = st.tabs(["Software Update", "Factory Reset"])
+        # with system_tab_1:
+        #     st.write("Software for device, no changes to companion")
+        #     with st.form(key="update"):
+        #         update_submit = st.form_submit_button("Update")
+        #     if update_submit:
+        #         with st.spinner(text="Update In progress..."):
+        #             software.update()
 
-        with system_tab_2:
-            st.write("Overwrites companion, deletes user configs, and reset to DHCP")
-            with st.form(key="reset"):
-                reset_submit = st.form_submit_button("Reset")
-            if reset_submit:
-                st.write("Resetting!")
-                software.factory_reset()
+        # with system_tab_2:
+        st.write("Factory Reset")
+        st.write("Overwrites companion, deletes user configs, and reset to DHCP")
+        with st.form(key="reset"):
+            reset_submit = st.form_submit_button("Reset")
+        if reset_submit:
+            st.write("Resetting!")
+            software.factory_reset()
 
 
 main()
