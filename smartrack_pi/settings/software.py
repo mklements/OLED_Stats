@@ -1,8 +1,5 @@
 import os
-import pathlib
-import shutil
 import subprocess
-from datetime import datetime
 
 from smartrack_pi.display import show
 from smartrack_pi.net import adaptor
@@ -67,8 +64,8 @@ def backup_companion_file(file_name):
     file_name = file_name.replace(" ", "").lower()
     print("Backing up Companion...")
     if file_name.find("system-") != -1:
-        return f"File Name not allowed to start with 'system-'"
-    elif not file_name.startswith("user-"):
+        return "File Name not allowed to start with 'system-'"
+    if not file_name.startswith("user-"):
         file_name = f"user-{file_name}"
     repo_db = f"/home/smartrack/smartrack-pi/companion/{file_name}"
     _run_process(["sudo", "cp", COMPANION_DB, repo_db])

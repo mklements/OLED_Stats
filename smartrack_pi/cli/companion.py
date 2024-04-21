@@ -35,6 +35,7 @@ def restore(
     print("Warning: Unit Rebooting!")
     software.restore_companion_file(file_name)
 
+
 @app.command()
 def delete(
     file_name: Annotated[
@@ -47,6 +48,7 @@ def delete(
     print(f"Deleting file: /home/smartrack/smartrack-pi/companion/{file_name}")
     software.delete_companion_file(file_name)
 
+
 @app.command()
 def pushconfig(
     file_name: Annotated[
@@ -56,7 +58,11 @@ def pushconfig(
         ),
     ]
 ):
-    print(f"Pushing user file to system file: /home/smartrack/smartrack-pi/companion/{file_name}")
+    print(
+        f"Pushing user file to system file: /home/smartrack/smartrack-pi/companion/{file_name}"
+    )
     software.push_companion_config(file_name)
+
+
 if __name__ == "__main__":
     app()

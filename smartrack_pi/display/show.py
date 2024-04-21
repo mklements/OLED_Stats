@@ -1,13 +1,10 @@
 """Interface for retreiving stats and displaying on an OLED"""
 
-import os
 import subprocess
-import sys
 from pathlib import Path
 
 import adafruit_ssd1306
 import board
-import psutil as ps
 from PIL import Image, ImageDraw, ImageFont
 
 WIDTH = 128
