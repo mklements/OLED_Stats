@@ -21,7 +21,8 @@ def get_companion_configs(include_system=True):
     folder = "/home/smartrack/smartrack-pi/companion"
     files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
     if include_system:
-        return [file for file in files if not file.startswith("system-")]
+        return files
+    return [file for file in files if not file.startswith("system-")]
 
 
 def main():
@@ -83,8 +84,7 @@ def main():
         with file_tab_3:
             st.write("Delete file")
             with st.form(key="delete-file"):
-                configs = get_companion_configs()
-                configs = configs.remove("default") if "default" in configs else ""
+                configs = get_companion_configs(include_system=False)
                 select = st.selectbox("File Name", configs)
                 def_form_submit = st.form_submit_button("Delete File")
             if def_form_submit:
