@@ -100,7 +100,7 @@ def main():
         with st.form(key="my-form"):
             ip = st.text_input("Enter the static ip address", value=current_ip)
             mask = st.text_input(
-                "Enter the subnet mask (Click the Arrow in the Top Left for Bit Mask Calculator)",
+                "Enter the subnet mask",
                 value=mask,
             )
             gateway = st.text_input(

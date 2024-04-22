@@ -24,7 +24,7 @@ install/install.sh
 
 _Web GUI address x.x.x.x/settings_
 
--   Companion - Redirects to ip:8000 for Companion control
+-   Go To Companion - Redirects to ip:8000 for Companion control
 
 -   Files
 
@@ -60,7 +60,7 @@ _Web GUI address x.x.x.x/settings_
 
 ### CLI
 
-| Title                   | Command                                        | Description                                                                                                                        |
+| Title                   | Command                                        | Desscription                                                                                                                       |
 | ----------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | Version                 | `smartrack --version`                          | Returns current cli version                                                                                                        |
 | Update                  | `smartrack update`                             | Software Update                                                                                                                    |
