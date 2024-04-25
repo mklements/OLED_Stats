@@ -86,10 +86,10 @@ class Address:
             gateway(str)
         """
         if not ip_address:
-            ip_address = self.config.get("static_ip", "192.168.1.241/24")
+            ip_address = self.config.get("static_ip", "10.244.245.241/20")
 
         if not gateway:
-            gateway = self.config.get("gateway", "192.168.1.1")
+            gateway = self.config.get("gateway", "10.244.240.1")
         if self.check_ip(ip_address, gateway):
             self._set_adaptor_address(ip_address, gateway)
             self._set_adaptor_priority("up", "ipstatic")
@@ -108,8 +108,8 @@ class Address:
 
     def factory_reset(self):
         self.set_adaptor_dhcp()
-        self.config["static_ip"] = "192.168.1.241/24"
-        self.config["gateway"] = "192.168.1.1"
+        self.config["static_ip"] = "10.244.245.241/20"
+        self.config["gateway"] = "10.244.240.1"
         self._write_config()
 
     def check_ip(self, ip_address, gateway):

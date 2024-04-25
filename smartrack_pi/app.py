@@ -104,7 +104,7 @@ def main():
                 value=mask,
             )
             gateway = st.text_input(
-                "Enter the gateway", value=adaptor.config.get("gateway", "192.168.1.1")
+                "Enter the gateway", value=adaptor.config.get("gateway", "10.244.240.1")
             )
             submit = st.form_submit_button("Set to Static IP")
 

@@ -19,9 +19,9 @@ def dhcp():
 @app.command()
 def static(
     ip_address: Annotated[
-        str, typer.Option(help="please enter ip with bit mask i.e. '192.168.1.241/24'")
-    ] = "192.168.1.241/24",
-    gateway: Annotated[str, typer.Option(help="Please enter gateway")] = "192.168.1.1",
+        str, typer.Option(help="please enter ip with bit mask i.e. '10.244.245.241/20'")
+    ] = "10.244.245.241/20",
+    gateway: Annotated[str, typer.Option(help="Please enter gateway")] = "10.244.240.1",
 ):
     print("Warning: You will need to reconnect")
     print(f"Setting Net Mode to Static Ip: {ip_address} and Gateway: {gateway}")
