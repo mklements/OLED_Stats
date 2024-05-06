@@ -67,7 +67,7 @@ while True:
     cmd = "hostname -I | cut -d\' \' -f1 | head --bytes -1"
     IP = subprocess.check_output(cmd, shell = True )
 
-    cmd = "top -bn1 | grep load | awk '{printf \"%.2fLA\", $(NF-2)}'"
+    cmd = "top -bn1 | grep load | awk '{printf \"%.2f%%\", $(NF-2)}'"
     CPU = subprocess.check_output(cmd, shell = True )
 
     cmd = "free -m | awk 'NR==2{printf \"%.2f%%\", $3*100/$2 }'"    
