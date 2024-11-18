@@ -29,13 +29,13 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
 2. Upgrade your Raspberry Pi firmware and reboot:
 
 ```shell
-    sudo apt-get update
+sudo apt-get update
 ```
 ```shell
-    sudo sudo apt-get -y upgrade
+sudo apt-get -y upgrade
 ```
 ```shell
-    sudo reboot
+sudo reboot
 ```
 
 3. Install python3-pip & upgrade setuptools
