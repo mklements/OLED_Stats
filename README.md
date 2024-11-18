@@ -101,7 +101,7 @@ sudo raspi-config
 7. Next, we need to install the CircuitPython libraries specific to the display. Start by re-entering the created virtual environment and then enter the below commands to install the libraries
 
 ```shell
-source oled_env/bin/activate
+source stats_env/bin/activate
 ```
 ```shell
 pip3 install --upgrade adafruit_blinka
@@ -128,7 +128,7 @@ git clone https://github.com/mklements/OLED_Stats.git
 9. Now re-enter the virtual environment to run the stats script
 
 ```shell
-source oled_env/bin/activate
+source stats_env/bin/activate
 ```
 ```shell
 cd OLED_Stats
@@ -146,13 +146,10 @@ OR
 python3 monitor.py
 ```
 
-11. The script should now be running and your display showing your Pi's IP address and stats, but if you close the terminal window then it'll stop being updated. To get the script to run automatically on start-up and continue to update itself, we need to make an executable file.
+11. The script should now be running and your display showing your Pi's IP address and stats, but if you close the terminal window then it'll stop being updated. To get the script to run automatically on start-up and continue to update itself, we need to make an executable file. You'll need to open a new terminal window for the below steps.
 
 Remember to change your username ("pi" below) if you're not using a default username
 
-```shell
-cd ~
-```
 ```shell
 curl -OL https://raw.githubusercontent.com/mklements/OLED_Stats/main/OLED_display
 ```
