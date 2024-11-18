@@ -80,15 +80,17 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
     sudo i2cdetect -y 1
 ```
 
-    0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
-00:                         -- -- -- -- -- -- -- --
-10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-30: -- -- -- -- -- -- -- -- -- -- -- -- 3c -- -- --
-40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-70: -- -- -- -- -- -- -- --
+```shell
+        0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+    00:                         -- -- -- -- -- -- -- --
+    10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    30: -- -- -- -- -- -- -- -- -- -- -- -- 3c -- -- --
+    40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    70: -- -- -- -- -- -- -- --
+```
 
 If no address shows up, check your display connections to the Pi and that the I2C interface has been activated. Use the below command to open up configuration options, then select "3 Interfacing Options", then select "I5 I2C", "Yes" to enable the interface, "Ok" and then "Finish"
 
