@@ -44,7 +44,7 @@ sudo reboot
 sudo apt-get install python3-pip
 ```
 ```shell
-sudo pip3 install --upgrade setuptools
+sudo apt install --upgrade python3-setuptools
 ```
 
 4. Next, we need to create a virtual environment called stats_env. This is required as of the release of OS Bookworm. On completion, you should see (stats_env) at the start of your current terminal line
