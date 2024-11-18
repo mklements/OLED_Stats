@@ -29,9 +29,13 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
 2. Upgrade your Raspberry Pi firmware and reboot:
 
 ```shell
-    $ sudo apt-get update
-    $ sudo sudo apt-get -y upgrade
-    $ sudo reboot
+    sudo apt-get update
+```
+```shell
+    sudo sudo apt-get -y upgrade
+```
+```shell
+    sudo reboot
 ```
 
 3. Install python3-pip & upgrade setuptools
@@ -110,7 +114,7 @@ If no address shows up, check your display connections to the Pi and that the I2
     $ python3 stats.py
 ```
 
-    OR
+OR
 
 ```shell
     $ python3 monitor.py
