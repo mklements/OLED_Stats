@@ -157,6 +157,8 @@ curl -OL https://raw.githubusercontent.com/mklements/OLED_Stats/main/OLED_displa
 sudo chmod +x /home/pi/OLED_display
 ```
 
+The OLED_display script runs the stats.py file by default. To change this to the monitor.py file, you'll need to open it up in a text or code editor and change the target filename from stats.py to monitor.py.
+
 Now we need to tell the Pi to run this file on startup. We do this by opening up crontab using the below command and then adding a line at the bottom of the text file. If it's your first time opening up crontab, it'll prompt you to select an editor - enter 1 to open it up in nano.
 
 ```shell   
