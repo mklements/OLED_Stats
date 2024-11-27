@@ -2,8 +2,8 @@
 
 OLED Stats Display Script For A Raspberry Pi Running Raspberry Pi OS Bookworm. The installation process and script has been tested on a Pi 3, 4 and 5.
 
-Full setup instructions available on my blog - https://www.the-diy-life.com/add-an-oled-stats-display-to-raspberry-pi-os-bullseye/
-Or my Youtube Channel - https://youtu.be/lRTQ0NsXMuw
+Full setup instructions available on my blog - https://www.the-diy-life.com/add-an-oled-stats-display-to-raspberry-pi-os-bookworm/
+Or my Youtube Channel - https://youtu.be/pdaDvPCdAlY
 
 The script is pre-configured for 128x64 I2C OLED Display, but can easily be modified to run on a 128x32 I2C OLED Display
 
@@ -15,8 +15,8 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
     <th>monitor.py</th>
   </tr>
   <tr>
-    <td><img align="right" src="https://i.ytimg.com/vi/lRTQ0NsXMuw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA2eFunUPnMf_Cveih2-b_JEXZxig" height="220"></img></td>
-    <td><img align="right" src="https://i.ytimg.com/vi/94ZjxjmhBrY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBTY9ptxf2VqzErucUVVxqmK3Pw6g" height="220"></img></td>
+    <td><img align="right" src="https://www.the-diy-life.com/wp-content/uploads/2024/11/OLED-Text-Stats-Display-Stats.jpeg" height="220"></img></td>
+    <td><img align="right" src="https://www.the-diy-life.com/wp-content/uploads/2024/11/OLED-Icons-Stats-Display-Monitor.jpeg" height="220"></img></td>
   </tr>
   </table>
 
@@ -24,7 +24,7 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
 
 1. Connect **GND, VCC(3.3v), SCL, & SDA** ports of the display according to the picture shown below:
 
-<img src="https://www.the-diy-life.com/wp-content/uploads/2021/11/Screenshot-2021-11-14-at-22.16.39-1024x576.jpg">
+<img src="https://www.the-diy-life.com/wp-content/uploads/2024/11/Display-Connected-To-GPIO-Pins-Both-Sides.jpeg">
 
 2. Upgrade your Raspberry Pi firmware and reboot:
 
