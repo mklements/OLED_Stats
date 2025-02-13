@@ -1,3 +1,7 @@
+# Created by: Michael Klements
+# For Raspberry Pi Desktop Case with OLED Stats Display & SupTronics X1200 UPS
+# Base on Adafruit Blinka & SSD1306 Libraries
+# Installation & Setup Instructions - https://www.the-diy-life.com/add-an-oled-stats-display-to-raspberry-pi-os-bullseye/
 import time
 import board
 import busio
@@ -15,7 +19,9 @@ oled_reset = gpiozero.OutputDevice(4, active_high=False)  # GPIO 4 (D4) used for
 WIDTH = 128
 HEIGHT = 64
 BORDER = 5
-LOOPTIME = 5.0  # Switch display every 5 seconds
+
+# Switch between displays every 5 seconds
+LOOPTIME = 5.0
 
 i2c = board.I2C()
 oled_reset.on()
@@ -44,6 +50,7 @@ icon_font = ImageFont.truetype('lineawesome-webfont.ttf', 18)
 bus = smbus.SMBus(1)
 address = 0x36
 
+# Get UPS parameters
 def readVoltage():
     read = bus.read_word_data(address, 2)
     swapped = struct.unpack("<H", struct.pack(">H", read))[0]
@@ -59,7 +66,8 @@ def get_ups_status(voltage, ac_power):
 
 display_mode = 0  # Toggle between 0 (System Stats) and 1 (UPS Info)
 
-ups_power_status_pin = gpiozero.DigitalInputDevice(6)  # GPIO pin 6 used for power status detection
+# GPIO pin 6 used for power status detection
+ups_power_status_pin = gpiozero.DigitalInputDevice(6)  
 
 while True:
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
