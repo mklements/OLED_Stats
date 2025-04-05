@@ -13,7 +13,7 @@ import adafruit_ssd1306
 import subprocess
 
 # Define the Reset Pin
-oled_reset = digitalio.DigitalInOut(board.D4)
+# oled_reset = digitalio.DigitalInOut(board.D4)
 
 # Display Parameters
 WIDTH = 128
@@ -25,7 +25,7 @@ LOOPTIME = 1.0
 
 # Use for I2C.
 i2c = board.I2C()
-oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c, addr=0x3C, reset=oled_reset)
+oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c, addr=0x3C)
 
 # Clear display.
 oled.fill(0)
