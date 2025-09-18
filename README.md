@@ -20,6 +20,125 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
   </tr>
   </table>
 
+## Auto-Installation Script
+
+<details>
+<summary>🚀 <strong>Click here for automated installation guide</strong> (Recommended)</summary>
+
+### `>` Quick & Easy Installation
+
+For the fastest setup experience, use the installation script that handles everything for you!
+
+> [!TIP]
+> The average setup time on a Raspberry Pi 3B v1.2 is approximately 5 minutes.
+
+#### 🎯 **One-Line Installation**
+
+1. Run this command in your terminal to start the installation:
+```bash
+curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh | bash
+```
+
+2. When close to being done, the script will prompt you to select your preferred display script:
+
+![Script Selection Prompt](.img/script_selection.png)
+
+3. If everything goes well, you should receive a success message like this:
+
+![Success Message](.img/successful_install.png)
+
+4. As a final step, you will be prompted to reboot your Raspberry Pi to start using the display. You can choose **`y`** or **`n`**:
+
+![Reboot Prompt](.img/reboot_prompt.png)
+
+5. After rebooting, your OLED display should start showing system stats automatically after about 30 seconds.
+
+<h3><p align="center">🎉 Enjoy your new OLED stats display! 🎉</p></h3>
+
+<br>
+<br>
+
+## Some additional options for customization and troubleshooting:
+
+#### 🔍 **Verbose Installation** (see detailed output)
+```bash
+curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh | bash -s -- --verbose
+```
+
+> [!NOTE]  
+> Using the `--verbose` flag will show detailed installation progress.
+
+#### 🛠️ **Advanced Options**
+```bash
+# Combine verbose with custom theme
+curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh | bash -s -- --theme 2 --verbose
+
+# Show help
+curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh | bash -s -- --help
+
+# Show version
+curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh | bash -s -- --version
+```
+
+### What the Auto-Installer Does:
+
+- ✅ **System Check**: Verifies you're running on a Raspberry Pi
+- ✅ **Package Updates**: Updates system packages automatically
+- ✅ **Dependencies**: Installs all required packages (python3-pip, python3-venv, git, i2c-tools)
+- ✅ **Virtual Environment**: Creates and configures Python virtual environment
+- ✅ **Libraries**: Installs Adafruit CircuitPython libraries and dependencies
+- ✅ **Repository**: Clones this repository and downloads required fonts
+- ✅ **I2C Detection**: Checks for OLED display connectivity
+- ✅ **Script Selection**: Lets you choose between stats.py, monitor.py, or psutilstats.py
+- ✅ **Auto-Start**: Configures automatic startup on boot with 30-second delay
+- ✅ **Testing**: Tests your selected script for 5 seconds to verify functionality
+
+### Available Themes (🎨):
+
+| Theme | Description | Best For |
+|-------|-------------|----------|
+| **1 - Standard** | Classic terminal colors | Clean terminal |
+| **2 - HTB** | HackTheBox style | Security enthusiasts, bright displays |
+| **3 - Pastel** | Soft and pleasant colors | Easy on the eyes |
+
+### 📋 Prerequisites:
+
+> [!IMPORTANT]  
+> Before running the installation script, ensure your OLED display is properly connected to the Raspberry Pi I2C pins (GND, VCC, SDA, SCL).
+
+1. **Hardware Setup**: Connect your OLED display to the Raspberry Pi I2C pins
+2. **Fresh Pi**: Works best on a fresh Raspberry Pi OS Bookworm installation
+3. **Internet**: Stable internet connection for downloading packages
+4. **Sudo Access**: The script needs sudo privileges for system changes
+
+> [!WARNING]  
+> The script will make system-level changes including package installations and system configurations. Ensure you're running this on a system you're comfortable modifying.
+
+### ⚡ Installation Time:
+- **~3-5 minutes** (5 minutes average on an older Pi 3B v1.2)
+
+### 🔧 Post-Installation:
+After installation, your OLED display will:
+- Start automatically 30 seconds after boot
+- Display system stats continuously
+- Can be manually started with: `~/oled_display_start.sh`
+
+> [!TIP]
+> After installation completes, you can test your display immediately by running `~/oled_display_start.sh` without rebooting.
+
+### 🆘 Need Help?
+
+> [!CAUTION]
+> If the installation fails or your display doesn't work, avoid running the script multiple times without cleaning up first. Check the troubleshooting steps below.
+
+- Use `--verbose` flag to see detailed installation progress
+- Check the manual installation steps below if auto-install fails
+- Ensure I2C is enabled: `sudo raspi-config` → `Interface Options` → `I2C` → **Enable**
+
+
+<h3><p align="center">< End of Auto-Installation Guide /></p></h3>
+</details>
+
 ## Installation Steps:
 
 1. Connect **GND, VCC(3.3v), SCL, & SDA** ports of the display according to the picture shown below:
