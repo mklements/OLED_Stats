@@ -281,7 +281,7 @@ done
 
 # Function to print colored output
 print_status() {
-    echo -e "$(c_info)[📋 INFO >>>]${NC} $1"
+    echo -e "$(c_info)[📋 INFO >>]${NC} $1"
 }
 
 print_success() {
