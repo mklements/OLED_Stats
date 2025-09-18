@@ -47,7 +47,7 @@ STANDARD_SPECIAL='\033[1;32m'           # Green bold for special items
 # ================================================================================
 # HTB COLOR PALETTE (Hack The Box inspired)
 # ================================================================================
-HTB_PRIMARY="\033[38;5;51m"             # Bright cyan for borders
+HTB_PRIMARY="\033[38;5;19m"             # Deep blue for borders
 HTB_SECONDARY="\033[38;5;82m"           # Bright neon green for titles
 HTB_ACCENT="\033[38;5;226m"             # Bright yellow for labels
 HTB_SUCCESS="\033[38;5;46m"             # Matrix green for success
@@ -63,14 +63,15 @@ HTB_SPECIAL="\033[38;5;118m"            # Lime for special items
 # ================================================================================
 PASTEL_PRIMARY="\033[38;5;159m"         # Soft cyan for borders
 PASTEL_SECONDARY="\033[38;5;141m"       # Soft purple for titles
-PASTEL_ACCENT="\033[38;5;229m"          # Soft yellow for labels
+PASTEL_ACCENT="\033[38;5;110m"          # Pastel blue for version
 PASTEL_SUCCESS="\033[38;5;120m"         # Soft green for success
 PASTEL_WARNING="\033[38;5;215m"         # Soft orange for warnings
 PASTEL_ERROR="\033[38;5;203m"           # Soft red for errors
 PASTEL_INFO="\033[38;5;117m"            # Soft blue for info
 PASTEL_HIGHLIGHT="\033[38;5;123m"       # Soft cyan for verbose
-PASTEL_TEXT="\033[38;5;250m"            # Light grey for text
-PASTEL_SPECIAL="\033[38;5;218m"         # Soft pink for special items
+PASTEL_TEXT="\033[1;37m"                # White for text
+PASTEL_SPECIAL="\033[38;5;114m"         # Nice green for special items
+PASTEL_GOLD="\033[38;5;220m"            # Gold for credits
 
 # ================================================================================
 # DYNAMIC COLOR FUNCTIONS
@@ -90,6 +91,7 @@ get_color() {
                 "HIGHLIGHT") echo "$STANDARD_HIGHLIGHT" ;;
                 "TEXT") echo "$STANDARD_TEXT" ;;
                 "SPECIAL") echo "$STANDARD_SPECIAL" ;;
+                "GOLD") echo "$STANDARD_ACCENT" ;;
                 *) echo "$NC" ;;
             esac
             ;;
@@ -105,6 +107,7 @@ get_color() {
                 "HIGHLIGHT") echo "$HTB_HIGHLIGHT" ;;
                 "TEXT") echo "$HTB_TEXT" ;;
                 "SPECIAL") echo "$HTB_SPECIAL" ;;
+                "GOLD") echo "$HTB_ACCENT" ;;
                 *) echo "$NC" ;;
             esac
             ;;
@@ -120,6 +123,7 @@ get_color() {
                 "HIGHLIGHT") echo "$PASTEL_HIGHLIGHT" ;;
                 "TEXT") echo "$PASTEL_TEXT" ;;
                 "SPECIAL") echo "$PASTEL_SPECIAL" ;;
+                "GOLD") echo "$PASTEL_GOLD" ;;
                 *) echo "$NC" ;;
             esac
             ;;
@@ -140,6 +144,7 @@ c_info() { get_color "INFO"; }
 c_highlight() { get_color "HIGHLIGHT"; }
 c_text() { get_color "TEXT"; }
 c_special() { get_color "SPECIAL"; }
+c_gold() { get_color "GOLD"; }
 
 set_theme() {
     local theme_num="$1"
@@ -170,16 +175,16 @@ show_version() {
     echo -e "$(c_primary)║${NC} $(c_special)Script Author:${NC} $SCRIPT_AUTHOR                          $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC} $(c_special)Original Code:${NC} $ORIGINAL_AUTHOR                            $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_info)🔗 Repository:${NC}                                                 $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)🔗 Repository:${NC}                                                 $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}   https://github.com/4ngel2769/rpi_oled_stats                  $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_info)🔗 Original Code:${NC}                                              $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)🔗 Original Code:${NC}                                              $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}   https://github.com/mklements/OLED_Stats                      $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC} $(c_text)📋 Description:${NC}                                                $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}   Automates OLED Stats Display installation for                $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}   Raspberry Pi running Raspberry Pi OS Bookworm                $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_error)🏆 Credits:${NC}                                                    $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_gold)🏆 Credits:${NC}                                                    $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}   • Installation script by $SCRIPT_AUTHOR              $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}   • Original OLED Stats by $ORIGINAL_AUTHOR                $(c_primary)║${NC}"
     echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
@@ -657,7 +662,7 @@ EOF
     echo -e "$(c_primary)║${NC} 🔄 The display will start automatically 30 seconds             $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}    after boot.                                                 $(c_primary)║${NC}"
     echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
-    echo -e "$(c_primary)║$(c_error)                            🏆 CREDITS                          $(c_primary)║${NC}"
+    echo -e "$(c_primary)║$(c_gold)                            🏆 CREDITS                          $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC} 🛠️  Installation script: $SCRIPT_AUTHOR                $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC} 🎨 Original OLED Stats: $ORIGINAL_AUTHOR                   $(c_primary)║${NC}"
