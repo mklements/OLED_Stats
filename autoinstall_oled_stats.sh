@@ -97,7 +97,7 @@ check_i2c_enabled() {
     if ! lsmod | grep -q i2c_bcm2835; then
         print_warning "I2C interface is not enabled. Please enable it manually using 'sudo raspi-config'"
         print_warning "Go to: 3 Interfacing Options -> I5 I2C -> Yes -> Ok -> Finish"
-        read -p "Press Enter after enabling I2C and rebooting..."
+        read -p "Press Enter after enabling I2C and rebooting..." < /dev/tty
     else
         print_verbose "I2C interface is enabled"
     fi
@@ -284,7 +284,7 @@ main() {
     echo "2) monitor.py - Display with icons"
     echo "3) psutilstats.py - Enhanced compatibility (recommended)"
     echo ""
-    read -p "Which script would you like to use as default? (1-3): " SCRIPT_CHOICE
+    read -p "Which script would you like to use as default? (1-3): " SCRIPT_CHOICE < /dev/tty
     
     case $SCRIPT_CHOICE in
         1)
@@ -392,7 +392,7 @@ EOF
         print_verbose "Disk space available: $(df -h $HOME_DIR | tail -1 | awk '{print $4}')"
     fi
     
-    read -p "Would you like to reboot now to start the display? (y/n): " REBOOT_CHOICE
+    read -p "Would you like to reboot now to start the display? (y/n): " REBOOT_CHOICE < /dev/tty
     
     if [[ $REBOOT_CHOICE =~ ^[Yy]$ ]]; then
         print_status "Rebooting system..."
