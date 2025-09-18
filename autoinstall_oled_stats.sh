@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # OLED Stats Display Installation Script
-# Version: v0.8
+# Version: v0.9
 # Script Author: 4ngel2769 / @angeldev0
 # Original OLED Stats Code: MKlement (mklements)
 # Repository: https://github.com/4ngel2769/rpi_oled_stats
@@ -13,7 +13,7 @@
 set -e  # Exit on any error
 
 # Script version
-SCRIPT_VERSION="v0.8"
+SCRIPT_VERSION="v0.9"
 SCRIPT_AUTHOR="4ngel2769 / @angeldev0"
 ORIGINAL_AUTHOR="MKlement (mklements)"
 
@@ -24,7 +24,7 @@ VERBOSE=false
 # THEME CONFIGURATION
 # ================================================================================
 # Available themes: STANDARD, HTB, PASTEL
-COLOR_SCHEME="STANDARD"  # Change this to switch themes
+COLOR_SCHEME="PASTEL"  # Default theme
 
 # Color resets
 # WHITE='\033[1;37m'
@@ -141,6 +141,25 @@ c_highlight() { get_color "HIGHLIGHT"; }
 c_text() { get_color "TEXT"; }
 c_special() { get_color "SPECIAL"; }
 
+set_theme() {
+    local theme_num="$1"
+    case "$theme_num" in
+        1)
+            COLOR_SCHEME="STANDARD"
+            ;;
+        2)
+            COLOR_SCHEME="HTB"
+            ;;
+        3)
+            COLOR_SCHEME="PASTEL"
+            ;;
+        *)
+            echo "❌ Invalid theme number. Using default PASTEL theme."
+            COLOR_SCHEME="PASTEL"
+            ;;
+    esac
+}
+
 # Function to show version information
 show_version() {
     echo ""
@@ -184,9 +203,15 @@ show_help() {
     echo -e "$(c_primary)║${NC} | bash [OPTIONS]                                               $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC} $(c_accent)⚙️  OPTIONS:${NC}                                                   $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   $(c_special)-v, --verbose${NC}    Enable detailed output                      $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   $(c_special)--version${NC}        Show version information                    $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   $(c_special)-h, --help${NC}       Show this help message                      $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   $(c_special)-v, --verbose${NC}      Enable detailed output                    $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   $(c_special)-t, --theme <1-3>${NC}  Set color theme (1=Standard, 2=HTB, 3=Pastel) $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   $(c_special)--version${NC}          Show version information                  $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   $(c_special)-h, --help${NC}         Show this help message                    $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_secondary)🎨 AVAILABLE THEMES:${NC}                                           $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   $(c_special)1${NC} - STANDARD  (Classic terminal colors)                     $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   $(c_special)2${NC} - HTB       (Hack The Box cybersec style)               $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   $(c_special)3${NC} - PASTEL    (Soft and pleasant colors) [Default]        $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC} $(c_secondary)💡 EXAMPLES:${NC}                                                   $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
@@ -195,10 +220,15 @@ show_help() {
     echo -e "$(c_primary)║${NC} rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC} | bash                                                         $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)🔧 Verbose installation:${NC}                                       $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)🎨 HTB theme with verbose:${NC}                                     $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC} curl -fsSL https://raw.githubusercontent.com/4ngel2769/        $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC} rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} | bash -s -- --verbose                                         $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} | bash -s -- --theme 2 --verbose                              $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)🔧 Standard theme installation:${NC}                               $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} curl -fsSL https://raw.githubusercontent.com/4ngel2769/        $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} | bash -s -- -t 1                                             $(c_primary)║${NC}"
     echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
     echo ""
     exit 0
@@ -210,6 +240,27 @@ while [[ $# -gt 0 ]]; do
         -v|--verbose)
             VERBOSE=true
             shift
+            ;;
+        -t|--theme)
+            if [[ -n $2 && $2 =~ ^[1-3]$ ]]; then
+                set_theme "$2"
+                shift 2
+            else
+                echo "❌ Error: --theme requires a valid number (1-3)"
+                echo "   1 = Standard, 2 = HTB, 3 = Pastel"
+                exit 1
+            fi
+            ;;
+        --theme=*)
+            theme_value="${1#*=}"
+            if [[ $theme_value =~ ^[1-3]$ ]]; then
+                set_theme "$theme_value"
+                shift
+            else
+                echo "❌ Error: --theme requires a valid number (1-3)"
+                echo "   1 = Standard, 2 = HTB, 3 = Pastel"
+                exit 1
+            fi
             ;;
         --version)
             show_version
@@ -352,6 +403,7 @@ main() {
     
     if [ "$VERBOSE" = true ]; then
         print_verbose "🔧 Verbose mode enabled"
+        print_verbose "🎨 Using $COLOR_SCHEME theme"
         print_verbose "📋 Script arguments:" "$@"
     fi
     
