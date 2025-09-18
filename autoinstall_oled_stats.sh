@@ -110,15 +110,15 @@ detect_oled() {
     
     if [ "$VERBOSE" = true ]; then
         echo "I2C scan results:"
-        i2cdetect -y 1
+        sudo i2cdetect -y 1
     fi
     
-    if i2cdetect -y 1 | grep -q "3c"; then
+    if sudo i2cdetect -y 1 | grep -q "3c"; then
         print_success "OLED display detected at address 0x3c"
         return 0
     else
         print_error "OLED display not detected. Please check your connections:"
-        print_error "  GND -> Pin 6 (Ground)"
+        print_error "  GND -> Pin 9 (Ground)"
         print_error "  VCC -> Pin 1 (3.3V)"
         print_error "  SDA -> Pin 3 (GPIO 2)"
         print_error "  SCL -> Pin 5 (GPIO 3)"
@@ -305,7 +305,7 @@ main() {
     print_verbose "Selected script: $DEFAULT_SCRIPT"
     
     # Test the selected script for 5 seconds if OLED was detected
-    if i2cdetect -y 1 | grep -q "3c"; then
+    if sudo i2cdetect -y 1 | grep -q "3c"; then
         print_status "Testing $DEFAULT_SCRIPT for 5 seconds..."
         print_verbose "Running test command: timeout 5 python3 $DEFAULT_SCRIPT"
         
