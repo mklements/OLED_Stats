@@ -146,7 +146,8 @@ check_raspberry_pi() {
     fi
     
     if [ "$VERBOSE" = true ]; then
-        local pi_model=$(cat /proc/device-tree/model 2>/dev/null | tr -d '\0')
+        local pi_model 
+        pi_model=$(cat /proc/device-tree/model 2>/dev/null | tr -d '\0')
         print_verbose "Detected: $pi_model"
     fi
     
