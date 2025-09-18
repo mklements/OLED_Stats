@@ -51,7 +51,7 @@ show_version() {
 show_help() {
     echo ""
     echo -e "\033[1;36m╔════════════════════════════════════════════════════════════════╗\033[0m"
-    echo -e "\033[1;36m║\033[1;35m                    📖 HELP & USAGE GUIDE                       \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[1;35m                    📖 HELP & USAGE GUIDE                         \033[1;36m║\033[0m"
     echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
     echo -e "\033[1;36m║\033[0m \033[1;33mScript:\033[0m OLED Stats Installation Script $SCRIPT_VERSION                         \033[1;36m║\033[0m"
     echo -e "\033[1;36m║\033[0m \033[1;32mAuthor:\033[0m $SCRIPT_AUTHOR                               \033[1;36m║\033[0m"
