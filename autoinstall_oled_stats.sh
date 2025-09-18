@@ -20,29 +20,150 @@ ORIGINAL_AUTHOR="MKlement (mklements)"
 # Default verbosity level
 VERBOSE=false
 
+# ================================================================================
+# THEME CONFIGURATION
+# ================================================================================
+# Available themes: STANDARD, HTB, PASTEL
+COLOR_SCHEME="STANDARD"  # Change this to switch themes
+
+# Color resets
+# WHITE='\033[1;37m'
+NC='\033[0m'
+
+# ================================================================================
+# STANDARD COLOR PALETTE
+# ================================================================================
+STANDARD_PRIMARY='\033[1;36m'           # Cyan bold for borders/boxes
+STANDARD_SECONDARY='\033[1;35m'         # Magenta bold for titles
+STANDARD_ACCENT='\033[1;33m'            # Yellow bold for labels
+STANDARD_SUCCESS='\033[0;32m'           # Green for success
+STANDARD_WARNING='\033[1;33m'           # Yellow for warnings
+STANDARD_ERROR='\033[0;31m'             # Red for errors
+STANDARD_INFO='\033[0;34m'              # Blue for info
+STANDARD_HIGHLIGHT='\033[0;36m'         # Cyan for verbose
+STANDARD_TEXT='\033[1;37m'              # White bold for text
+STANDARD_SPECIAL='\033[1;32m'           # Green bold for special items
+
+# ================================================================================
+# HTB COLOR PALETTE (Hack The Box inspired)
+# ================================================================================
+HTB_PRIMARY="\033[38;5;51m"             # Bright cyan for borders
+HTB_SECONDARY="\033[38;5;82m"           # Bright neon green for titles
+HTB_ACCENT="\033[38;5;226m"             # Bright yellow for labels
+HTB_SUCCESS="\033[38;5;46m"             # Matrix green for success
+HTB_WARNING="\033[38;5;214m"            # HTB orange for warnings
+HTB_ERROR="\033[38;5;196m"              # Bright red for errors
+HTB_INFO="\033[38;5;33m"                # Vivid blue for info
+HTB_HIGHLIGHT="\033[38;5;51m"           # Bright cyan for verbose
+HTB_TEXT="\033[38;5;250m"               # Light grey for text
+HTB_SPECIAL="\033[38;5;118m"            # Lime for special items
+
+# ================================================================================
+# PASTEL COLOR PALETTE (Soft and pleasant)
+# ================================================================================
+PASTEL_PRIMARY="\033[38;5;159m"         # Soft cyan for borders
+PASTEL_SECONDARY="\033[38;5;141m"       # Soft purple for titles
+PASTEL_ACCENT="\033[38;5;229m"          # Soft yellow for labels
+PASTEL_SUCCESS="\033[38;5;120m"         # Soft green for success
+PASTEL_WARNING="\033[38;5;215m"         # Soft orange for warnings
+PASTEL_ERROR="\033[38;5;203m"           # Soft red for errors
+PASTEL_INFO="\033[38;5;117m"            # Soft blue for info
+PASTEL_HIGHLIGHT="\033[38;5;123m"       # Soft cyan for verbose
+PASTEL_TEXT="\033[38;5;250m"            # Light grey for text
+PASTEL_SPECIAL="\033[38;5;218m"         # Soft pink for special items
+
+# ================================================================================
+# DYNAMIC COLOR FUNCTIONS
+# ================================================================================
+get_color() {
+    local color_name="$1"
+    case "$COLOR_SCHEME" in
+        "STANDARD")
+            case "$color_name" in
+                "PRIMARY") echo "$STANDARD_PRIMARY" ;;
+                "SECONDARY") echo "$STANDARD_SECONDARY" ;;
+                "ACCENT") echo "$STANDARD_ACCENT" ;;
+                "SUCCESS") echo "$STANDARD_SUCCESS" ;;
+                "WARNING") echo "$STANDARD_WARNING" ;;
+                "ERROR") echo "$STANDARD_ERROR" ;;
+                "INFO") echo "$STANDARD_INFO" ;;
+                "HIGHLIGHT") echo "$STANDARD_HIGHLIGHT" ;;
+                "TEXT") echo "$STANDARD_TEXT" ;;
+                "SPECIAL") echo "$STANDARD_SPECIAL" ;;
+                *) echo "$NC" ;;
+            esac
+            ;;
+        "HTB")
+            case "$color_name" in
+                "PRIMARY") echo "$HTB_PRIMARY" ;;
+                "SECONDARY") echo "$HTB_SECONDARY" ;;
+                "ACCENT") echo "$HTB_ACCENT" ;;
+                "SUCCESS") echo "$HTB_SUCCESS" ;;
+                "WARNING") echo "$HTB_WARNING" ;;
+                "ERROR") echo "$HTB_ERROR" ;;
+                "INFO") echo "$HTB_INFO" ;;
+                "HIGHLIGHT") echo "$HTB_HIGHLIGHT" ;;
+                "TEXT") echo "$HTB_TEXT" ;;
+                "SPECIAL") echo "$HTB_SPECIAL" ;;
+                *) echo "$NC" ;;
+            esac
+            ;;
+        "PASTEL")
+            case "$color_name" in
+                "PRIMARY") echo "$PASTEL_PRIMARY" ;;
+                "SECONDARY") echo "$PASTEL_SECONDARY" ;;
+                "ACCENT") echo "$PASTEL_ACCENT" ;;
+                "SUCCESS") echo "$PASTEL_SUCCESS" ;;
+                "WARNING") echo "$PASTEL_WARNING" ;;
+                "ERROR") echo "$PASTEL_ERROR" ;;
+                "INFO") echo "$PASTEL_INFO" ;;
+                "HIGHLIGHT") echo "$PASTEL_HIGHLIGHT" ;;
+                "TEXT") echo "$PASTEL_TEXT" ;;
+                "SPECIAL") echo "$PASTEL_SPECIAL" ;;
+                *) echo "$NC" ;;
+            esac
+            ;;
+        *)
+            echo "$NC"
+            ;;
+    esac
+}
+
+# Convenient color functions
+c_primary() { get_color "PRIMARY"; }
+c_secondary() { get_color "SECONDARY"; }
+c_accent() { get_color "ACCENT"; }
+c_success() { get_color "SUCCESS"; }
+c_warning() { get_color "WARNING"; }
+c_error() { get_color "ERROR"; }
+c_info() { get_color "INFO"; }
+c_highlight() { get_color "HIGHLIGHT"; }
+c_text() { get_color "TEXT"; }
+c_special() { get_color "SPECIAL"; }
+
 # Function to show version information
 show_version() {
     echo ""
-    echo -e "\033[1;36m╔════════════════════════════════════════════════════════════════╗\033[0m"
-    echo -e "\033[1;36m║\033[1;35m              🚀 OLED Stats Installation Script                 \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;33mVersion:\033[0m $SCRIPT_VERSION                                                  \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;32mScript Author:\033[0m $SCRIPT_AUTHOR                          \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;32mOriginal Code:\033[0m $ORIGINAL_AUTHOR                            \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;34m🔗 Repository:\033[0m                                                 \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m   https://github.com/4ngel2769/rpi_oled_stats                  \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;34m🔗 Original Code:\033[0m                                              \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m   https://github.com/mklements/OLED_Stats                      \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;37m📋 Description:\033[0m                                                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m   Automates OLED Stats Display installation for                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m   Raspberry Pi running Raspberry Pi OS Bookworm                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;31m🏆 Credits:\033[0m                                                    \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m   • Installation script by $SCRIPT_AUTHOR              \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m   • Original OLED Stats by $ORIGINAL_AUTHOR                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╚════════════════════════════════════════════════════════════════╝\033[0m"
+    echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "$(c_primary)║$(c_secondary)              🚀 OLED Stats Installation Script                 $(c_primary)║${NC}"
+    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
+    echo -e "$(c_primary)║${NC} $(c_accent)Version:${NC} $SCRIPT_VERSION                                                  $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_special)Script Author:${NC} $SCRIPT_AUTHOR                          $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_special)Original Code:${NC} $ORIGINAL_AUTHOR                            $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_info)🔗 Repository:${NC}                                                 $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   https://github.com/4ngel2769/rpi_oled_stats                  $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_info)🔗 Original Code:${NC}                                              $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   https://github.com/mklements/OLED_Stats                      $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)📋 Description:${NC}                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   Automates OLED Stats Display installation for                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   Raspberry Pi running Raspberry Pi OS Bookworm                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_error)🏆 Credits:${NC}                                                    $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   • Installation script by $SCRIPT_AUTHOR              $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   • Original OLED Stats by $ORIGINAL_AUTHOR                $(c_primary)║${NC}"
+    echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
     echo ""
     exit 0
 }
@@ -50,35 +171,35 @@ show_version() {
 # Function to show help information
 show_help() {
     echo ""
-    echo -e "\033[1;36m╔════════════════════════════════════════════════════════════════╗\033[0m"
-    echo -e "\033[1;36m║\033[1;35m                    📖 HELP & USAGE GUIDE                       \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;33mScript:\033[0m OLED Stats Installation Script $SCRIPT_VERSION                    \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;32mAuthor:\033[0m $SCRIPT_AUTHOR                                 \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;32mOriginal:\033[0m $ORIGINAL_AUTHOR                                 \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;34m🚀 USAGE:\033[0m                                                      \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m curl -fsSL https://raw.githubusercontent.com/4ngel2769/        \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m | bash [OPTIONS]                                               \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;33m⚙️  OPTIONS:\033[0m                                                   \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m   \033[1;32m-v, --verbose\033[0m    Enable detailed output                      \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m   \033[1;32m--version\033[0m        Show version information                    \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m   \033[1;32m-h, --help\033[0m       Show this help message                      \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;35m💡 EXAMPLES:\033[0m                                                   \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;37m📦 Standard installation:\033[0m                                      \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m curl -fsSL https://raw.githubusercontent.com/4ngel2769/        \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m | bash                                                         \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;37m🔧 Verbose installation:\033[0m                                       \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m curl -fsSL https://raw.githubusercontent.com/4ngel2769/        \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m | bash -s -- --verbose                                         \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╚════════════════════════════════════════════════════════════════╝\033[0m"
+    echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "$(c_primary)║$(c_secondary)                    📖 HELP & USAGE GUIDE                       $(c_primary)║${NC}"
+    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
+    echo -e "$(c_primary)║${NC} $(c_accent)Script:${NC} OLED Stats Installation Script $SCRIPT_VERSION                    $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_special)Author:${NC} $SCRIPT_AUTHOR                                 $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_special)Original:${NC} $ORIGINAL_AUTHOR                                 $(c_primary)║${NC}"
+    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
+    echo -e "$(c_primary)║${NC} $(c_info)🚀 USAGE:${NC}                                                      $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} curl -fsSL https://raw.githubusercontent.com/4ngel2769/        $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} | bash [OPTIONS]                                               $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_accent)⚙️  OPTIONS:${NC}                                                   $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   $(c_special)-v, --verbose${NC}    Enable detailed output                      $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   $(c_special)--version${NC}        Show version information                    $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}   $(c_special)-h, --help${NC}       Show this help message                      $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_secondary)💡 EXAMPLES:${NC}                                                   $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)📦 Standard installation:${NC}                                      $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} curl -fsSL https://raw.githubusercontent.com/4ngel2769/        $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} | bash                                                         $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)🔧 Verbose installation:${NC}                                       $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} curl -fsSL https://raw.githubusercontent.com/4ngel2769/        $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} | bash -s -- --verbose                                         $(c_primary)║${NC}"
+    echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
     echo ""
     exit 0
 }
@@ -102,48 +223,38 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-MAGENTA='\033[0;35m'
-BOLD='\033[1m'
-NC='\033[0m'
-
 # Function to print colored output
 print_status() {
-    echo -e "${BLUE}[📋 INFO >>>]${NC} $1"
+    echo -e "$(c_info)[📋 INFO >>>]${NC} $1"
 }
 
 print_success() {
-    echo -e "${GREEN}[✅ SUCCESS]${NC} $1"
+    echo -e "$(c_success)[✅ SUCCESS]${NC} $1"
 }
 
 print_warning() {
-    echo -e "${YELLOW}[⚠️ WARNING]${NC} $1"
+    echo -e "$(c_warning)[⚠️ WARNING]${NC} $1"
 }
 
 print_error() {
-    echo -e "${RED}[❌ ERROR]${NC} $1"
+    echo -e "$(c_error)[❌ ERROR]${NC} $1"
 }
 
 print_verbose() {
     if [ "$VERBOSE" = true ]; then
-        echo -e "${CYAN}[🔍 VERBOSE]${NC} $1"
+        echo -e "$(c_highlight)[🔍 VERBOSE]${NC} $1"
     fi
 }
 
 print_version_info() {
     echo ""
-    echo -e "\033[1;36m╔════════════════════════════════════════════════════════════════╗\033[0m"
-    echo -e "\033[1;36m║\033[1;35m              🚀 Starting OLED Installation...               \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;37mScript Version:\033[0m $SCRIPT_VERSION                              \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;37mScript Author:\033[0m $SCRIPT_AUTHOR                       \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;37mOriginal Code:\033[0m $ORIGINAL_AUTHOR                     \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╚════════════════════════════════════════════════════════════════╝\033[0m"
+    echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "$(c_primary)║$(c_secondary)              🚀 Starting OLED Installation...               $(c_primary)║${NC}"
+    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)Script Version:${NC} $SCRIPT_VERSION                              $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)Script Author:${NC} $SCRIPT_AUTHOR                       $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)Original Code:${NC} $ORIGINAL_AUTHOR                     $(c_primary)║${NC}"
+    echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
 }
 
 # Function to run commands with optional verbose output
@@ -175,7 +286,8 @@ check_raspberry_pi() {
     fi
     
     if [ "$VERBOSE" = true ]; then
-        local pi_model=$(cat /proc/device-tree/model 2>/dev/null | tr -d '\0')
+        local pi_model
+        pi_model=$(cat /proc/device-tree/model 2>/dev/null | tr -d '\0')
         print_verbose "🍓 Detected: $pi_model"
     fi
     
@@ -375,13 +487,13 @@ main() {
     
     # Choose which script to run
     echo ""
-    echo -e "\033[1;36m╔════════════════════════════════════════════════════════════════╗\033[0m"
-    echo -e "\033[1;36m║\033[1;35m                      📱 SCRIPT SELECTION                       \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;32m1)\033[0m 📝 stats.py - Simple text-based display                     \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;32m2)\033[0m 🎨 monitor.py - Display with icons                          \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;32m3)\033[0m ⚡ psutilstats.py - Enhanced compatibility (recommended)    \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╚════════════════════════════════════════════════════════════════╝\033[0m"
+    echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "$(c_primary)║$(c_secondary)                      📱 SCRIPT SELECTION                       $(c_primary)║${NC}"
+    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
+    echo -e "$(c_primary)║${NC} $(c_special)1)${NC} 📝 stats.py - Simple text-based display                     $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_special)2)${NC} 🎨 monitor.py - Display with icons                          $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_special)3)${NC} ⚡ psutilstats.py - Enhanced compatibility (recommended)    $(c_primary)║${NC}"
+    echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
     echo ""
     read -p "🎯 Which script would you like to use as default? (1-3): " SCRIPT_CHOICE < /dev/tty
     
@@ -469,35 +581,35 @@ EOF
     # Step 10: Final instructions
     print_success "🎉 Installation completed successfully!"
     echo ""
-    echo -e "\033[1;36m╔════════════════════════════════════════════════════════════════╗\033[0m"
-    echo -e "\033[1;36m║\033[1;32m                    🎉 INSTALLATION COMPLETE!                   \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Script version: $SCRIPT_VERSION                                        \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Installation script by: $SCRIPT_AUTHOR              \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Original OLED Stats code by: $ORIGINAL_AUTHOR           \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ System updated                                              \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Required packages installed                                 \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Virtual environment created at: $HOME_DIR/stats_env          \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Scripts installed at: $HOME_DIR/rpi_oled_stats               \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Default script set to: $DEFAULT_SCRIPT                           \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Auto-start configured with 30-second boot delay             \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
-    echo -e "\033[1;36m║\033[1;33m                      🛠️  MANUAL COMMANDS                       \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m 🚀 Start manually:                                             \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m    $HOME_DIR/oled_display_start.sh                              \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m 🔧 Change script:                                              \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m    Edit $HOME_DIR/oled_display_start.sh                         \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m 🔄 The display will start automatically 30 seconds             \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m    after boot.                                                 \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
-    echo -e "\033[1;36m║\033[1;31m                            🏆 CREDITS                          \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m 🛠️  Installation script: $SCRIPT_AUTHOR                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m 🎨 Original OLED Stats: $ORIGINAL_AUTHOR                   \033[1;36m║\033[0m"
-    echo -e "\033[1;36m╚════════════════════════════════════════════════════════════════╝\033[0m"
+    echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "$(c_primary)║$(c_special)                    🎉 INSTALLATION COMPLETE!                   $(c_primary)║${NC}"
+    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
+    echo -e "$(c_primary)║${NC} ✅ Script version: $SCRIPT_VERSION                                        $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} ✅ Installation script by: $SCRIPT_AUTHOR              $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} ✅ Original OLED Stats code by: $ORIGINAL_AUTHOR           $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} ✅ System updated                                              $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} ✅ Required packages installed                                 $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} ✅ Virtual environment created at: $HOME_DIR/stats_env          $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} ✅ Scripts installed at: $HOME_DIR/rpi_oled_stats               $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} ✅ Default script set to: $DEFAULT_SCRIPT                           $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} ✅ Auto-start configured with 30-second boot delay             $(c_primary)║${NC}"
+    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
+    echo -e "$(c_primary)║$(c_accent)                      🛠️  MANUAL COMMANDS                       $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} 🚀 Start manually:                                             $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}    $HOME_DIR/oled_display_start.sh                              $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} 🔧 Change script:                                              $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}    Edit $HOME_DIR/oled_display_start.sh                         $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} 🔄 The display will start automatically 30 seconds             $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}    after boot.                                                 $(c_primary)║${NC}"
+    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
+    echo -e "$(c_primary)║$(c_error)                            🏆 CREDITS                          $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} 🛠️  Installation script: $SCRIPT_AUTHOR                $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} 🎨 Original OLED Stats: $ORIGINAL_AUTHOR                   $(c_primary)║${NC}"
+    echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
     echo ""
     
     if [ "$VERBOSE" = true ]; then
