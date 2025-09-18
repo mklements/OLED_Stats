@@ -249,11 +249,11 @@ print_verbose() {
 print_version_info() {
     echo ""
     echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "$(c_primary)║$(c_secondary)              🚀 Starting OLED Installation...               $(c_primary)║${NC}"
+    echo -e "$(c_primary)║$(c_secondary)                 🚀 Starting OLED Installation...               $(c_primary)║${NC}"
     echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)Script Version:${NC} $SCRIPT_VERSION                              $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)Script Author:${NC} $SCRIPT_AUTHOR                       $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)Original Code:${NC} $ORIGINAL_AUTHOR                     $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)Script Version:${NC} $SCRIPT_VERSION                                           $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)Script Author:${NC} $SCRIPT_AUTHOR                          $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_text)Original Code:${NC} $ORIGINAL_AUTHOR                            $(c_primary)║${NC}"
     echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
 }
 
