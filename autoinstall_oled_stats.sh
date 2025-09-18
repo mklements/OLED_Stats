@@ -114,7 +114,7 @@ NC='\033[0m'
 
 # Function to print colored output
 print_status() {
-    echo -e "${BLUE}[📋 INFO]${NC} $1"
+    echo -e "${BLUE}[📋 INFO >>>]${NC} $1"
 }
 
 print_success() {
@@ -122,7 +122,7 @@ print_success() {
 }
 
 print_warning() {
-    echo -e "${YELLOW}[⚠️  WARNING]${NC} $1"
+    echo -e "${YELLOW}[⚠️ WARNING]${NC} $1"
 }
 
 print_error() {
@@ -376,11 +376,11 @@ main() {
     # Choose which script to run
     echo ""
     echo -e "\033[1;36m╔════════════════════════════════════════════════════════════════╗\033[0m"
-    echo -e "\033[1;36m║\033[1;35m                    📱 SCRIPT SELECTION                       \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[1;35m                      📱 SCRIPT SELECTION                       \033[1;36m║\033[0m"
     echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;32m1)\033[0m 📝 stats.py - Simple text-based display                \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;32m2)\033[0m 🎨 monitor.py - Display with icons                     \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m \033[1;32m3)\033[0m ⚡ psutilstats.py - Enhanced compatibility (recommended)\033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m \033[1;32m1)\033[0m 📝 stats.py - Simple text-based display                     \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m \033[1;32m2)\033[0m 🎨 monitor.py - Display with icons                          \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m \033[1;32m3)\033[0m ⚡ psutilstats.py - Enhanced compatibility (recommended)    \033[1;36m║\033[0m"
     echo -e "\033[1;36m╚════════════════════════════════════════════════════════════════╝\033[0m"
     echo ""
     read -p "🎯 Which script would you like to use as default? (1-3): " SCRIPT_CHOICE < /dev/tty
@@ -470,33 +470,33 @@ EOF
     print_success "🎉 Installation completed successfully!"
     echo ""
     echo -e "\033[1;36m╔════════════════════════════════════════════════════════════════╗\033[0m"
-    echo -e "\033[1;36m║\033[1;32m                    🎉 INSTALLATION COMPLETE!                  \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[1;32m                    🎉 INSTALLATION COMPLETE!                   \033[1;36m║\033[0m"
     echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Script version: $SCRIPT_VERSION                              \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Installation script by: $SCRIPT_AUTHOR    \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Original OLED Stats code by: $ORIGINAL_AUTHOR        \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ System updated                                            \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Required packages installed                               \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Virtual environment created at: $HOME_DIR/stats_env      \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Scripts installed at: $HOME_DIR/rpi_oled_stats           \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Default script set to: $DEFAULT_SCRIPT                   \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m ✅ Auto-start configured with 30-second boot delay          \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m ✅ Script version: $SCRIPT_VERSION                                        \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m ✅ Installation script by: $SCRIPT_AUTHOR              \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m ✅ Original OLED Stats code by: $ORIGINAL_AUTHOR           \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m ✅ System updated                                              \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m ✅ Required packages installed                                 \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m ✅ Virtual environment created at: $HOME_DIR/stats_env          \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m ✅ Scripts installed at: $HOME_DIR/rpi_oled_stats               \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m ✅ Default script set to: $DEFAULT_SCRIPT                           \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m ✅ Auto-start configured with 30-second boot delay             \033[1;36m║\033[0m"
     echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
-    echo -e "\033[1;36m║\033[1;33m                      🛠️  MANUAL COMMANDS                      \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                              \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m 🚀 Start manually:                                         \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m    $HOME_DIR/oled_display_start.sh                        \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                              \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m 🔧 Change script:                                          \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m    Edit $HOME_DIR/oled_display_start.sh                   \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                              \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m 🔄 The display will start automatically 30 seconds         \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m    after boot.                                              \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[1;33m                      🛠️  MANUAL COMMANDS                       \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m 🚀 Start manually:                                             \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m    $HOME_DIR/oled_display_start.sh                              \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m 🔧 Change script:                                              \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m    Edit $HOME_DIR/oled_display_start.sh                         \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m 🔄 The display will start automatically 30 seconds             \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m    after boot.                                                 \033[1;36m║\033[0m"
     echo -e "\033[1;36m╠════════════════════════════════════════════════════════════════╣\033[0m"
-    echo -e "\033[1;36m║\033[1;31m                        🏆 CREDITS                           \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m                                                              \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m 🛠️  Installation script: $SCRIPT_AUTHOR       \033[1;36m║\033[0m"
-    echo -e "\033[1;36m║\033[0m 🎨 Original OLED Stats: $ORIGINAL_AUTHOR           \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[1;31m                            🏆 CREDITS                          \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m                                                                \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m 🛠️  Installation script: $SCRIPT_AUTHOR                \033[1;36m║\033[0m"
+    echo -e "\033[1;36m║\033[0m 🎨 Original OLED Stats: $ORIGINAL_AUTHOR                   \033[1;36m║\033[0m"
     echo -e "\033[1;36m╚════════════════════════════════════════════════════════════════╝\033[0m"
     echo ""
     
