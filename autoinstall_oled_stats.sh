@@ -204,54 +204,26 @@ main() {
     sudo -u "$USERNAME" python3 -m venv stats_env --system-site-packages
     print_success "Virtual environment created"
     
-    # Step 4: Install Adafruit Blinka
-    print_status "Installing Adafruit Blinka library..."
-    print_verbose "Installing adafruit-python-shell in virtual environment..."
+    # Step 4: Skip Blinka installer and install libraries directly
+    print_status "Installing required Python libraries..."
+    print_verbose "Installing libraries directly in virtual environment..."
     
     if [ "$VERBOSE" = true ]; then
-        sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install --upgrade adafruit-python-shell"
-    else
-        sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install --upgrade adafruit-python-shell" >/dev/null 2>&1
-    fi
-    
-    # Download and run Blinka installer
-    cd /tmp
-    print_verbose "Downloading Blinka installer script..."
-    wget -q https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
-    
-    print_warning "The Blinka installer may prompt for a reboot. Choose 'N' when asked to reboot - we'll handle it at the end."
-    print_verbose "Running Blinka installer..."
-    
-    if [ "$VERBOSE" = true ]; then
-        sudo -E env PATH=$PATH python3 raspi-blinka.py
-    else
-        sudo -E env PATH=$PATH python3 raspi-blinka.py >/dev/null 2>&1
-    fi
-    
-    print_success "Blinka library installed"
-    
-    # Step 5: Install CircuitPython libraries
-    print_status "Installing CircuitPython libraries..."
-    print_verbose "Installing adafruit_blinka..."
-    
-    if [ "$VERBOSE" = true ]; then
-        sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install --upgrade adafruit_blinka"
-        print_verbose "Installing adafruit-circuitpython-ssd1306..."
+        # Install libraries directly without the problematic Blinka installer
+        sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install --upgrade adafruit-blinka"
         sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install adafruit-circuitpython-ssd1306"
-        print_verbose "Installing python3-pil..."
-        sudo apt-get install -y python3-pil
-        print_verbose "Installing psutil..."
         sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install psutil"
+        sudo apt-get install -y python3-pil
     else
-        sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install --upgrade adafruit_blinka" >/dev/null 2>&1
+        sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install --upgrade adafruit-blinka" >/dev/null 2>&1
         sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install adafruit-circuitpython-ssd1306" >/dev/null 2>&1
-        sudo apt-get install -y python3-pil >/dev/null 2>&1
         sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install psutil" >/dev/null 2>&1
+        sudo apt-get install -y python3-pil >/dev/null 2>&1
     fi
     
-    print_success "CircuitPython libraries installed"
+    print_success "Python libraries installed"
     
-    # Step 6: Clone the repository
+    # Step 5: Clone the repository
     print_status "Downloading OLED Stats scripts..."
     cd "$HOME_DIR"
     
@@ -264,9 +236,9 @@ main() {
     
     print_verbose "Cloning repository from GitHub..."
     if [ "$VERBOSE" = true ]; then
-        sudo -u "$USERNAME" git clone https://github.com/mklements/OLED_Stats.git rpi_oled_stats
+        sudo -u "$USERNAME" git clone https://github.com/4ngel2769/rpi_oled_stats.git rpi_oled_stats
     else
-        sudo -u "$USERNAME" git clone https://github.com/mklements/OLED_Stats.git rpi_oled_stats >/dev/null 2>&1
+        sudo -u "$USERNAME" git clone https://github.com/4ngel2769/rpi_oled_stats.git rpi_oled_stats >/dev/null 2>&1
     fi
     
     cd rpi_oled_stats
@@ -296,14 +268,14 @@ main() {
     
     print_success "Scripts downloaded"
     
-    # Step 7: Detect OLED display
+    # Step 6: Detect OLED display
     if ! detect_oled; then
-        print_error "Cannot continue without OLED display. Please check connections and run script again."
-        exit 1
+        print_warning "OLED display not detected. The script will still create the startup configuration."
+        print_warning "Please check your connections and the display should work after reboot."
     fi
     
-    # Step 8: Test the scripts
-    print_status "Testing OLED display scripts..."
+    # Step 7: Choose and test the scripts
+    print_status "Selecting OLED display script..."
     
     # Choose which script to run
     echo ""
@@ -332,24 +304,29 @@ main() {
     
     print_verbose "Selected script: $DEFAULT_SCRIPT"
     
-    # Test the selected script for 10 seconds
-    print_status "Testing $DEFAULT_SCRIPT for 10 seconds..."
-    print_verbose "Running test command: timeout 10 python3 $DEFAULT_SCRIPT"
-    
-    if [ "$VERBOSE" = true ]; then
-        sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && cd $HOME_DIR/rpi_oled_stats && timeout 10 python3 $DEFAULT_SCRIPT || true"
+    # Test the selected script for 5 seconds if OLED was detected
+    if i2cdetect -y 1 | grep -q "3c"; then
+        print_status "Testing $DEFAULT_SCRIPT for 5 seconds..."
+        print_verbose "Running test command: timeout 5 python3 $DEFAULT_SCRIPT"
+        
+        if [ "$VERBOSE" = true ]; then
+            sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && cd $HOME_DIR/rpi_oled_stats && timeout 5 python3 $DEFAULT_SCRIPT || true"
+        else
+            sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && cd $HOME_DIR/rpi_oled_stats && timeout 5 python3 $DEFAULT_SCRIPT || true" >/dev/null 2>&1
+        fi
+        print_success "Script test completed"
     else
-        sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && cd $HOME_DIR/rpi_oled_stats && timeout 10 python3 $DEFAULT_SCRIPT || true" >/dev/null 2>&1
+        print_status "Skipping script test (OLED not detected)"
     fi
     
-    print_success "Script test completed"
-    
-    # Step 9: Create startup script
+    # Step 8: Create startup script
     print_status "Creating startup script..."
     print_verbose "Creating startup script at: $HOME_DIR/oled_display_start.sh"
     
     cat > "$HOME_DIR/oled_display_start.sh" << EOF
 #!/bin/bash
+# Wait for system to fully boot
+sleep 30
 source $HOME_DIR/stats_env/bin/activate
 cd $HOME_DIR/rpi_oled_stats
 python3 $DEFAULT_SCRIPT
@@ -365,7 +342,7 @@ EOF
     
     print_success "Startup script created"
     
-    # Step 10: Setup auto-start
+    # Step 9: Setup auto-start
     print_status "Setting up auto-start on boot..."
     
     # Add to crontab for the user
@@ -386,7 +363,7 @@ EOF
         print_warning "Auto-start already configured"
     fi
     
-    # Step 11: Final instructions
+    # Step 10: Final instructions
     print_success "Installation completed successfully!"
     echo ""
     echo "=========================================="
@@ -397,14 +374,14 @@ EOF
     echo "✓ Virtual environment created at: $HOME_DIR/stats_env"
     echo "✓ OLED Stats scripts installed at: $HOME_DIR/rpi_oled_stats"
     echo "✓ Default script set to: $DEFAULT_SCRIPT"
-    echo "✓ Auto-start configured"
-    echo "✓ OLED display detected and tested"
+    echo "✓ Auto-start configured with 30-second boot delay"
+    echo "✓ Installation completed"
     echo ""
     echo "MANUAL COMMANDS:"
     echo "Start manually: $HOME_DIR/oled_display_start.sh"
     echo "Change script: Edit $HOME_DIR/oled_display_start.sh"
     echo ""
-    echo "The display will start automatically on next boot."
+    echo "The display will start automatically 30 seconds after boot."
     echo ""
     
     if [ "$VERBOSE" = true ]; then
