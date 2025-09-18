@@ -1,5 +1,4 @@
 #!/bin/bash
-# filepath: install_oled_stats.sh
 
 # OLED Stats Display Installation Script
 # Automates the installation process for Raspberry Pi OS Bookworm
@@ -96,7 +95,7 @@ main() {
     # Step 1: Update system
     print_status "Updating system packages..."
     sudo apt-get update -qq
-    sudo apt-get upgrade -y -qq
+    # sudo apt-get upgrade -y -qq
     print_success "System updated"
     
     # Step 2: Install required packages
