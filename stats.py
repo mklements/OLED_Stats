@@ -69,7 +69,7 @@ while True:
     mem_display = f"Mem: {mem_used_gb}/{mem_total_gb}GB {mem_percent}%"
     cmd = "df -h | awk '$NF==\"/\"{printf \"Disk: %d/%dGB %s\", $3,$2,$5}'"
     Disk = subprocess.check_output(cmd, shell=True)
-    cmd = "vcgencmd measure_temp |cut -f 2 -d '='"
+    cmd = "cat /sys/class/thermal/thermal_zone*/temp | awk -v CONVFMT='%.1f' '{printf $1/1000}'"
     Temp = subprocess.check_output(cmd, shell=True)
 
     # Pi Stats Display

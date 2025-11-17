@@ -82,7 +82,7 @@ while True:
     cmd = "df -h | awk '$NF==\"/\"{printf \"%d/%dGB\", $3,$2}'"
     Disk = subprocess.check_output(cmd, shell=True)
 
-    cmd = "vcgencmd measure_temp | cut -d '=' -f 2 | head --bytes -1"
+    cmd = "cat /sys/class/thermal/thermal_zone*/temp | awk -v CONVFMT='%.1f' '{printf $1/1000}'"
     Temperature = subprocess.check_output(cmd, shell=True)
 
     # Icons
