@@ -13,10 +13,12 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
   <tr>
     <th>stats.py</th>
     <th>monitor.py</th>
+    <th>status.py</th>
   </tr>
   <tr>
     <td><img align="right" src="https://www.the-diy-life.com/wp-content/uploads/2024/11/OLED-Text-Stats-Display-Stats.jpeg" height="220"></img></td>
     <td><img align="right" src="https://www.the-diy-life.com/wp-content/uploads/2024/11/OLED-Icons-Stats-Display-Monitor.jpeg" height="220"></img></td>
+    <td><img align="right" src=".img/status.png" height="220"></img></td>
   </tr>
   </table>
 
@@ -289,6 +291,34 @@ Remember to change your username ("pi" below) if you're not using a default user
 ```
 @reboot /home/pi/OLED_display &
 ```
+
+### Docker install methode
+
+If you like to use the scripts but prefer to run them in a container, you first need to make sure you have docker aswell as have i2c enabled correctly:
+
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+rm get-docker.sh
+bash # New shell to have the docker command immediatly available to you!
+
+sudo raspi-config nonint do_i2c 0 # Enable i2c
+```
+
+To run the container with the default stats.py script:
+
+```bash
+docker run -d --privileged --network=host --restart=on-failure --name OLED_Stats mklements/oled_stats
+```
+
+But if you like to use a different one like `status.py`, you can do it like so:
+
+```bash
+docker run -d --privileged --network=host --restart=on-failure --name OLED_Stats mklements/oled_stats status.py
+```
+
+You can change `status.py` to `psutilstats.py` or `monitor.py`.
 
 ## Common Display Issues:
 

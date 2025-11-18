@@ -550,6 +550,7 @@ main() {
     echo -e "$(c_primary)║${NC} $(c_special)1)${NC} 📝 stats.py - Simple text-based display                     $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC} $(c_special)2)${NC} 🎨 monitor.py - Display with icons                          $(c_primary)║${NC}"
     echo -e "$(c_primary)║${NC} $(c_special)3)${NC} ⚡ psutilstats.py - Enhanced compatibility                  $(c_primary)║${NC}"
+    echo -e "$(c_primary)║${NC} $(c_special)1)${NC} 📝 status.py - Enhanced text-based display                  $(c_primary)║${NC}"
     echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
     echo ""
     read -p "🎯 Which script would you like to use as default? (1-3): " SCRIPT_CHOICE < /dev/tty
@@ -563,6 +564,9 @@ main() {
             ;;
         3)
             DEFAULT_SCRIPT="psutilstats.py"
+            ;;
+        4)
+            DEFAULT_SCRIPT="status.py"
             ;;
         *)
             print_warning "⚠️  Invalid choice, using psutilstats.py as default"
