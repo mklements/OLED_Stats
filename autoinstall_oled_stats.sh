@@ -1,24 +1,30 @@
 #!/bin/bash
 
 # OLED Stats Display Installation Script
-# Version: v0.9
+# Version: v0.14.3
 # Script Author: 4ngel2769 / @angeldev0
 # Original OLED Stats Code: MKlement (mklements)
 # Repository: https://github.com/4ngel2769/rpi_oled_stats
 # Original Code: https://github.com/mklements/OLED_Stats
 # Automates the installation process for Raspberry Pi OS Bookworm
-# Usage: curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh | bash
-# Usage with verbose: curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh | bash -s -- -v
+# Usage: curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/main/autoinstall_oled_stats.sh | bash
+# Usage with verbose: curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/main/autoinstall_oled_stats.sh | bash -s -- -v
 
 set -e  # Exit on any error
 
 # Script version
-SCRIPT_VERSION="v0.9"
+SCRIPT_VERSION="v0.14.3"
 SCRIPT_AUTHOR="4ngel2769 / @angeldev0"
 ORIGINAL_AUTHOR="MKlement (mklements)"
 
-# Default verbosity level
+# Default settings
 VERBOSE=false
+UNATTENDED=false
+SKIP_APT_UPDATE=false
+SILENT=false
+AUTO_REBOOT=true             # Auto-reboot behavior (works for both normal and unattended)
+DEFAULT_SCRIPT_CHOICE=2      # Default to monitor.py for unattended mode (1=stats.py, 2=monitor.py, 3=psutilstats.py, 4=status.py)
+ROTATION=1                   # Default rotation (1 = normal, 2 = upside down)
 
 # ================================================================================
 # THEME CONFIGURATION
@@ -170,24 +176,24 @@ show_version() {
     echo ""
     echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
     echo -e "$(c_primary)║$(c_secondary)              🚀 OLED Stats Installation Script                 $(c_primary)║${NC}"
-    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
-    echo -e "$(c_primary)║${NC} $(c_accent)Version:${NC} $SCRIPT_VERSION                                                  $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_special)Script Author:${NC} $SCRIPT_AUTHOR                          $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_special)Original Code:${NC} $ORIGINAL_AUTHOR                            $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)🔗 Repository:${NC}                                                 $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   https://github.com/4ngel2769/rpi_oled_stats                  $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)🔗 Original Code:${NC}                                              $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   https://github.com/mklements/OLED_Stats                      $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)📋 Description:${NC}                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   Automates OLED Stats Display installation for                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   Raspberry Pi running Raspberry Pi OS Bookworm                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_gold)🏆 Credits:${NC}                                                    $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   • Installation script by $SCRIPT_AUTHOR              $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   • Original OLED Stats by $ORIGINAL_AUTHOR                $(c_primary)║${NC}"
     echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
+    echo -e " $(c_accent)Version:${NC} $SCRIPT_VERSION${NC}"
+    echo -e " $(c_special)Script Author:${NC} $SCRIPT_AUTHOR${NC}"
+    echo -e " $(c_special)Original Code:${NC} $ORIGINAL_AUTHOR${NC}"
+    echo -e ""
+    echo -e " $(c_text)🔗 Repository:${NC}"
+    echo -e "   https://github.com/4ngel2769/rpi_oled_stats"
+    echo -e " $(c_text)🔗 Original Code:${NC}"
+    echo -e "   https://github.com/mklements/OLED_Stats"
+    echo -e ""
+    echo -e " $(c_text)About:${NC}"
+    echo -e "   Automates OLED Stats Display installation for"
+    echo -e "   Raspberry Pis, making it easy to set up for anyone."
+    echo -e ""
+    echo -e " $(c_gold)💚 Credits:${NC}"
+    echo -e "   • Installation script by $SCRIPT_AUTHOR"
+    echo -e "   • Original OLED Stats by $ORIGINAL_AUTHOR"
+    echo -e "${NC}"
     echo ""
     exit 0
 }
@@ -197,46 +203,80 @@ show_help() {
     echo ""
     echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
     echo -e "$(c_primary)║$(c_secondary)                    📖 HELP & USAGE GUIDE                       $(c_primary)║${NC}"
-    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
-    echo -e "$(c_primary)║${NC} $(c_accent)Script:${NC} OLED Stats Installation Script $SCRIPT_VERSION                    $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_special)Author:${NC} $SCRIPT_AUTHOR                                 $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_special)Original:${NC} $ORIGINAL_AUTHOR                                 $(c_primary)║${NC}"
-    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
-    echo -e "$(c_primary)║${NC} $(c_info)🚀 USAGE:${NC}                                                      $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} curl -fsSL https://raw.githubusercontent.com/4ngel2769/        $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} | bash [OPTIONS]                                               $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_accent)⚙️  OPTIONS:${NC}                                                   $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   $(c_special)-v, --verbose${NC}      Enable detailed output                    $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   $(c_special)-t, --theme <1-3>${NC}  Set color theme (1=Standard, 2=HTB, 3=Pastel) $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   $(c_special)--version${NC}          Show version information                  $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   $(c_special)-h, --help${NC}         Show this help message                    $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_secondary)🎨 AVAILABLE THEMES:${NC}                                           $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   $(c_special)1${NC} - STANDARD  (Classic terminal colors)                     $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   $(c_special)2${NC} - HTB       (Hack The Box cybersec style)               $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}   $(c_special)3${NC} - PASTEL    (Soft and pleasant colors) [Default]        $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_secondary)💡 EXAMPLES:${NC}                                                   $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)📦 Standard installation:${NC}                                      $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} curl -fsSL https://raw.githubusercontent.com/4ngel2769/        $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} | bash                                                         $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)🎨 HTB theme with verbose:${NC}                                     $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} curl -fsSL https://raw.githubusercontent.com/4ngel2769/        $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} | bash -s -- --theme 2 --verbose                              $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)🔧 Standard theme installation:${NC}                               $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} curl -fsSL https://raw.githubusercontent.com/4ngel2769/        $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh       $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} | bash -s -- -t 1                                             $(c_primary)║${NC}"
     echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
+    echo -e "${NC} $(c_accent)Script:${NC} OLED Stats Installation Script $SCRIPT_VERSION${NC}"
+    echo -e "${NC} $(c_special)Author:${NC} $SCRIPT_AUTHOR${NC}"
+    echo -e "${NC} $(c_special)Original:${NC} $ORIGINAL_AUTHOR${NC}"
+    echo -e "$(c_primary)◂━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━▸${NC}"
+    echo -e "${NC} $(c_info)🚀 USAGE:${NC}"
+    echo -e "${NC} curl -fsSL [URL] | bash [OPTIONS]${NC}"
+    echo -e ""
+    echo -e "${NC} $(c_accent)⚙️  OPTIONS:${NC}"
+    echo -e "${NC} $(c_special)-v, --verbose${NC}           Enable detailed output${NC}"
+    echo -e "${NC} $(c_special)-u, --unattended${NC}        Run in non-interactive mode (uses defaults)${NC}"
+    echo -e "${NC} $(c_special)-s, --silent${NC}            Silent mode with progress bar only${NC}"
+    echo -e "${NC} $(c_special)-S, --skip-update${NC}       Skip system package updates${NC}"
+    echo -e "${NC} $(c_special)-N, --no-reboot${NC}         Disable automatic reboot${NC}"
+    echo -e "${NC} $(c_special)-t, --theme <1-3>${NC}       Set color theme (1=Standard, 2=HTB, 3=Pastel)${NC}"
+    echo -e "${NC} $(c_special)-r, --rotation <1-2>${NC}    Set display rotation (1=Normal, 2=Upside Down)${NC}"
+    echo -e "${NC} $(c_special)-V, --version${NC}           Show version information${NC}"
+    echo -e "${NC} $(c_special)-h, --help${NC}              Show this help message${NC}"
+    echo -e ""
+    echo -e "${NC} $(c_secondary)🎨 AVAILABLE THEMES:${NC}"
+    echo -e "${NC} $(c_special)1${NC} - STANDARD  (Classic terminal colors)${NC}"
+    echo -e "${NC} $(c_special)2${NC} - HTB       (Hack The Box cybersec style)${NC}"
+    echo -e "${NC} $(c_special)3${NC} - PASTEL    (Soft and pleasant colors) [Default]${NC}"
+    echo -e ""
+    echo -e "${NC} $(c_secondary)UNATTENDED MODE:${NC}"
+    echo -e "${NC} Uses default settings for automated deployments:${NC}"
+    echo -e "${NC} - Default script: monitor.py (enhanced compatibility)${NC}"
+    echo -e "${NC} - Available scripts: stats.py, monitor.py, psutilstats.py, status.py${NC}"
+    echo -e "${NC} - No user prompts, automatic reboot${NC}"
+    echo -e "${NC} - Works well for scripts and CI/CD pipelines${NC}"
+    echo -e ""
+    echo -e "${NC} $(c_secondary)💡 EXAMPLES:${NC}"
+    echo -e ""
+    echo -e "${NC} $(c_text) - Standard installation:${NC}"
+    echo -e "${NC} curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/main/autoinstall_oled_stats.sh | bash${NC}"
+    echo -e ""
+    echo -e "${NC} $(c_text) - Unattended installation:${NC}"
+    echo -e "${NC} curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/main/autoinstall_oled_stats.sh | bash -s -- -u${NC}"
+    echo -e ""
+    echo -e "${NC} $(c_text) - HTB theme with verbose:${NC}"
+    echo -e "${NC} curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/main/autoinstall_oled_stats.sh | bash -s -- --theme 2 --verbose${NC}"
+    echo -e "$(c_primary)◂━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━▸${NC}"
     echo ""
     exit 0
+}
+
+# Progress bar function for silent mode
+show_progress() {
+    local current=$1
+    local total=$2
+    local width=50
+    local percentage=$((current * 100 / total))
+    local completed=$((width * current / total))
+    local remaining=$((width - completed))
+    
+    printf "\r["
+    printf "%${completed}s" | tr ' ' '='
+    printf "%${remaining}s" | tr ' ' '-'
+    printf "] %d%%" $percentage
+}
+
+# Helper function to update progress (prevents set -e from breaking again)
+update_progress() {
+    ((CURRENT_STEP++)) || true
+    if [ "$SILENT" = true ]; then
+        show_progress $CURRENT_STEP $TOTAL_STEPS
+    fi
+}
+
+print_silent() {
+    if [ "$SILENT" = true ]; then
+        return
+    fi
+    echo -e "$1"
 }
 
 # Parse command line arguments
@@ -244,6 +284,22 @@ while [[ $# -gt 0 ]]; do
     case $1 in
         -v|--verbose)
             VERBOSE=true
+            shift
+            ;;
+        -u|--unattended)
+            UNATTENDED=true
+            shift
+            ;;
+        -s|--silent)
+            SILENT=true
+            shift
+            ;;
+        -S|--skip-update)
+            SKIP_APT_UPDATE=true
+            shift
+            ;;
+        -N|--no-reboot)
+            AUTO_REBOOT=false
             shift
             ;;
         -t|--theme)
@@ -267,7 +323,26 @@ while [[ $# -gt 0 ]]; do
                 exit 1
             fi
             ;;
-        --version)
+        -r|--rotation)
+            if [[ -n $2 && $2 =~ ^[12]$ ]]; then
+                ROTATION="$2"
+                shift 2
+            else
+                echo "❌ Error: --rotation requires 1 (normal) or 2 (upside down)"
+                exit 1
+            fi
+            ;;
+        --rotation=*)
+            rotation_value="${1#*=}"
+            if [[ $rotation_value =~ ^[12]$ ]]; then
+                ROTATION="$rotation_value"
+                shift
+            else
+                echo "❌ Error: --rotation requires 1 (normal) or 2 (upside down)"
+                exit 1
+            fi
+            ;;
+        -V|--version)
             show_version
             ;;
         -h|--help)
@@ -279,38 +354,54 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Override silent/verbose conflicts - verbose takes priority
+if [ "$VERBOSE" = true ]; then
+    SILENT=false
+elif [ "$SILENT" = true ]; then
+    VERBOSE=false
+fi
+
 # Function to print colored output
 print_status() {
-    echo -e "$(c_info)[📋 INFO >>]${NC} $1"
+    if [ "$SILENT" = false ]; then
+        echo -e "$(c_info)[<< INFO >>]${NC} $1"
+    fi
 }
 
 print_success() {
-    echo -e "$(c_success)[✅ SUCCESS]${NC} $1"
+    if [ "$SILENT" = false ]; then
+        echo -e "$(c_success)[<< SUCCESS]${NC} $1"
+    fi
 }
 
 print_warning() {
-    echo -e "$(c_warning)[⚠️ WARNING]${NC} $1"
+    if [ "$SILENT" = false ]; then
+        echo -e "$(c_warning)[⚠️ WARNING]${NC} $1"
+    fi
 }
 
 print_error() {
+    # Always show errors, even in silent mode
     echo -e "$(c_error)[❌ ERROR]${NC} $1"
 }
 
 print_verbose() {
-    if [ "$VERBOSE" = true ]; then
-        echo -e "$(c_highlight)[🔍 VERBOSE]${NC} $1"
+    if [ "$VERBOSE" = true ] && [ "$SILENT" = false ]; then
+        echo -e "$(c_highlight)[<< VERBOSE]${NC} $1"
     fi
 }
 
 print_version_info() {
-    echo ""
-    echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "$(c_primary)║$(c_secondary)                 🚀 Starting OLED Installation...               $(c_primary)║${NC}"
-    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)Script Version:${NC} $SCRIPT_VERSION                                           $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)Script Author:${NC} $SCRIPT_AUTHOR                          $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_text)Original Code:${NC} $ORIGINAL_AUTHOR                            $(c_primary)║${NC}"
-    echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
+    if [ "$SILENT" = false ]; then
+        echo ""
+        echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
+        echo -e "$(c_primary)║$(c_secondary)                 🚀 Starting OLED Installation...               $(c_primary)║${NC}"
+        echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
+        echo -e "$(c_primary)║${NC} $(c_text)Script Version:${NC} $SCRIPT_VERSION                                          $(c_primary)║${NC}"
+        echo -e "$(c_primary)║${NC} $(c_text)Script Author:${NC} $SCRIPT_AUTHOR                          $(c_primary)║${NC}"
+        echo -e "$(c_primary)║${NC} $(c_text)Original Code:${NC} $ORIGINAL_AUTHOR                            $(c_primary)║${NC}"
+        echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
+    fi
 }
 
 # Function to run commands with optional verbose output
@@ -344,10 +435,76 @@ check_raspberry_pi() {
     if [ "$VERBOSE" = true ]; then
         local pi_model
         pi_model=$(cat /proc/device-tree/model 2>/dev/null | tr -d '\0')
-        print_verbose "🍓 Detected: $pi_model"
+        print_verbose "Detected: $pi_model"
     fi
     
-    print_success "🍓 Raspberry Pi detected"
+    print_success "Raspberry Pi detected"
+}
+
+# Check Pi model compatibility
+check_pi_compatibility() {
+    print_verbose "Checking Raspberry Pi model compatibility..."
+    local pi_model
+    pi_model=$(cat /proc/device-tree/model 2>/dev/null | tr -d '\0')
+    
+    print_verbose "Detected: $pi_model"
+    
+    # Check for known compatible models
+    if echo "$pi_model" | grep -qE "(Raspberry Pi (3|4|5|Zero|Zero 2))"; then
+        print_success "Pi model is compatible with OLED Stats"
+        if [ "$VERBOSE" = true ]; then
+            case "$pi_model" in
+                # *"Pi 2"*) print_verbose "Pi 2 detected" ;;
+                *"Pi 3"*) print_verbose "Pi 3 detected" ;;
+                *"Pi 4"*) print_verbose "Pi 4 detected" ;;
+                *"Pi 5"*) print_verbose "Pi 5 detected" ;;
+                *"Zero"*) print_verbose "Pi Zero detected" ;;
+            esac
+        fi
+    else
+        print_warning "⚠️  Unknown Pi model. Script may work but is not tested on this model."
+    fi
+    
+    return 0
+}
+
+# Verify Python library installation
+verify_python_libraries() {
+    print_status "🧪 Verifying Python library installation..."
+    
+    # Test if libraries can be imported
+    local test_script="
+import sys
+try:
+    import board
+    import busio
+    import digitalio
+    import adafruit_ssd1306
+    from PIL import Image, ImageDraw, ImageFont
+    import psutil
+    print('SUCCESS: All required libraries imported successfully')
+    sys.exit(0)
+except ImportError as e:
+    print(f'ERROR: Failed to import library: {e}')
+    sys.exit(1)
+except Exception as e:
+    print(f'ERROR: Unexpected error: {e}')
+    sys.exit(1)
+"
+    
+    print_verbose "🧪 Testing Python library imports..."
+    
+    if sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && python3 -c '$test_script'" >/dev/null 2>&1; then
+        print_success "Python libraries verified successfully"
+        return 0
+    else
+        print_error "Python library verification failed"
+        if [ "$VERBOSE" = true ]; then
+            print_verbose "Library test output:"
+            sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && python3 -c '$test_script'" || true
+        fi
+        return 1
+    fi
 }
 
 # Function to check if I2C is enabled
@@ -355,9 +512,20 @@ check_i2c_enabled() {
     print_verbose "🔍 Checking if I2C interface is enabled..."
     
     if ! lsmod | grep -q i2c_bcm2835; then
-        print_warning "🔧 I2C interface is not enabled. Please enable it manually using 'sudo raspi-config'"
-        print_warning "📋 Go to: 3 Interfacing Options -> I5 I2C -> Yes -> Ok -> Finish"
-        read -p "⏳ Press Enter after enabling I2C and rebooting..." < /dev/tty
+        if [ "$UNATTENDED" = true ]; then
+            print_warning "🔧 I2C interface is not enabled. Attempting to enable automatically..."
+            # Enable I2C automatically in unattended mode
+            sudo raspi-config nonint do_i2c 0 >/dev/null 2>&1 || {
+                print_error "Failed to enable I2C automatically"
+                print_error "💡 Please enable I2C manually using 'sudo raspi-config'"
+                return 1
+            }
+            print_success "I2C enabled automatically"
+        else
+            print_warning "I2C interface is not enabled. Please enable it manually using 'sudo raspi-config'"
+            print_warning "Go to: 3 Interfacing Options -> I5 I2C -> Yes -> Ok -> Finish"
+            read -p "⏳ Press Enter after enabling I2C and rebooting..." < /dev/tty
+        fi
     else
         print_verbose "✅ I2C interface is enabled"
     fi
@@ -366,7 +534,7 @@ check_i2c_enabled() {
 # Function to detect OLED display
 detect_oled() {
     print_status "🔍 Checking for OLED display at address 0x3c..."
-    print_verbose "🔧 Running i2cdetect to scan for devices..."
+    print_verbose "🩺 Running i2cdetect to scan for devices..."
     
     if [ "$VERBOSE" = true ]; then
         echo "📊 I2C scan results:"
@@ -406,16 +574,41 @@ main() {
     print_version_info
     echo ""
     
+    # Silent mode progress tracking
+    TOTAL_STEPS=10
+    CURRENT_STEP=0
+    
+    if [ "$SILENT" = true ]; then
+        echo "🚀 OLED Stats Installation - Silent Mode"
+        show_progress $CURRENT_STEP $TOTAL_STEPS
+    fi
+    
     if [ "$VERBOSE" = true ]; then
         print_verbose "🔧 Verbose mode enabled"
-        print_verbose "🎨 Using $COLOR_SCHEME theme"
-        print_verbose "📋 Script arguments:" "$@"
+        print_verbose "🎨 Using [$COLOR_SCHEME] theme"
+        print_verbose "📋 Script arguments: $*"
+    fi
+    
+    if [ "$UNATTENDED" = true ]; then
+        print_status "Running in unattended mode with default settings"
+        print_verbose "Unattended mode: using monitor.py as default script"
+        if [ "$AUTO_REBOOT" = true ]; then
+            print_verbose "Unattended mode: will auto-reboot after installation"
+        else
+            print_verbose "Unattended mode: will NOT auto-reboot after installation"
+        fi
     fi
     
     print_status "🚀 Starting OLED Stats Display installation..."
     
     # Check if running on Raspberry Pi
     check_raspberry_pi
+    
+    # Check Pi model compatibility (no increment, part of same step)
+    check_pi_compatibility
+    
+    # Now increment after both checks are done
+    update_progress
     
     # Get the actual username
     USERNAME=$(get_username)
@@ -426,19 +619,22 @@ main() {
     print_verbose "📁 Current working directory: $(pwd)"
     print_verbose "👤 Current user: $(whoami)"
     
-    # Step 1: Update system
-    print_status "⚙️  Updating system packages..."
-    if [ "$VERBOSE" = true ]; then
-        sudo apt-get update
-        # sudo apt-get upgrade -y
+    # Step 2: Update system (conditional)
+    if [ "$SKIP_APT_UPDATE" = false ]; then
+        print_status "⚙️ Updating system packages..."
+        if [ "$VERBOSE" = true ]; then
+            sudo apt-get update
+        else
+            sudo apt-get update -qq
+        fi
+        print_success "📦 System updated"
     else
-        sudo apt-get update -qq
-        # sudo apt-get upgrade -y -qq
+        print_status "⏭️ Skipping system update (--skip-update flag enabled)"
     fi
-    print_success "📦 System updated"
+    update_progress
 
-    # Step 2: Install required packages
-    print_status "⚙️  Installing required packages..."
+    # Step 3: Install required packages
+    print_status "📦 Installing required packages..."
     print_verbose "📦 Installing: python3-pip python3-venv git i2c-tools"
     
     if [ "$VERBOSE" = true ]; then
@@ -449,32 +645,36 @@ main() {
         sudo apt-get install --upgrade python3-setuptools -y >/dev/null 2>&1
     fi
     print_success "📦 Required packages installed"
+    update_progress
     
     # Check I2C
     check_i2c_enabled
     
-    # Step 3: Create virtual environment
+    # Step 4: Create virtual environment
     print_status "🐍 Creating Python virtual environment..."
-    cd "$HOME_DIR"
+    cd "$HOME_DIR" || {
+        print_error "Failed to change to directory: $HOME_DIR"
+        exit 1
+    }
     print_verbose "📁 Changed to directory: $HOME_DIR"
     
     # Remove existing virtual environment if it exists
     if [ -d "stats_env" ]; then
-        print_warning "🗑️  Existing stats_env found, removing..."
-        print_verbose "🗑️  Removing directory: $HOME_DIR/stats_env"
+        print_warning "🗑️ Existing stats_env found, removing..."
+        print_verbose "🗑️ Removing directory: $HOME_DIR/stats_env"
         rm -rf stats_env
     fi
     
     print_verbose "🐍 Creating virtual environment with system site packages..."
     sudo -u "$USERNAME" python3 -m venv stats_env --system-site-packages
     print_success "🐍 Virtual environment created"
+    update_progress
     
-    # Step 4: Skip Blinka installer and install libraries directly
-    print_status "⚙️  Installing required Python libraries..."
+    # Step 5: Install Python libraries
+    print_status "📦 Installing required Python libraries..."
     print_verbose "📦 Installing libraries directly in virtual environment..."
     
     if [ "$VERBOSE" = true ]; then
-        # Install libraries directly without the problematic Blinka installer
         sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install --upgrade adafruit-blinka"
         sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install adafruit-circuitpython-ssd1306"
         sudo -u "$USERNAME" bash -c "source $HOME_DIR/stats_env/bin/activate && pip3 install psutil"
@@ -487,15 +687,25 @@ main() {
     fi
     
     print_success "🐍 Python libraries installed"
+    update_progress
     
-    # Step 5: Clone the repository
+    # Verify Python library installation
+    if ! verify_python_libraries; then
+        print_warning "Library verification failed, but continuing installation..."
+    fi
+    update_progress
+    
+    # Step 6: Clone the repository
     print_status "📥 Downloading OLED Stats scripts..."
-    cd "$HOME_DIR"
+    cd "$HOME_DIR" || {
+        print_error "Failed to change to directory: $HOME_DIR"
+        exit 1
+    }
     
     # Remove existing directory if it exists
     if [ -d "rpi_oled_stats" ]; then
-        print_warning "🗑️  Existing rpi_oled_stats directory found, removing..."
-        print_verbose "🗑️  Removing directory: $HOME_DIR/rpi_oled_stats"
+        print_warning "🗑️ Existing rpi_oled_stats directory found, removing..."
+        print_verbose "🗑️ Removing directory: $HOME_DIR/rpi_oled_stats"
         sudo rm -rf rpi_oled_stats
     fi
     
@@ -506,10 +716,13 @@ main() {
         sudo -u "$USERNAME" git clone https://github.com/4ngel2769/rpi_oled_stats.git rpi_oled_stats >/dev/null 2>&1
     fi
     
-    cd rpi_oled_stats
+    cd rpi_oled_stats || {
+        print_error "Failed to change to directory: $HOME_DIR/rpi_oled_stats"
+        exit 1
+    }
     print_verbose "📁 Changed to directory: $HOME_DIR/rpi_oled_stats"
     
-    # Download font files if they don't exist
+    # Download font files
     if [ ! -f "PixelOperator.ttf" ]; then
         print_status "🔤 Downloading PixelOperator font..."
         print_verbose "📥 Font not found, downloading PixelOperator.ttf..."
@@ -526,58 +739,54 @@ main() {
         print_verbose "✅ lineawesome-webfont.ttf already exists"
     fi
     
-    if [ "$VERBOSE" = true ]; then
-        print_verbose "📁 Directory contents:"
-        ls -la
-    fi
-    
     print_success "📦 Scripts downloaded"
+    update_progress
     
-    # Step 6: Detect OLED display
+    # Step 7: Detect OLED display
     if ! detect_oled; then
         print_warning "⚠️  OLED display not detected. The script will still create the startup configuration."
         print_warning "🔧 Please check your connections and the display should work after reboot."
     fi
     
-    # Step 7: Choose and test the scripts
-    print_status "🎮 Selecting OLED display script..."
+    # Step 8: Choose and test the scripts
+    print_status "🔄️ Selecting OLED display script..."
     
-    # Choose which script to run
-    echo ""
-    echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "$(c_primary)║$(c_secondary)                      📱 SCRIPT SELECTION                       $(c_primary)║${NC}"
-    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
-    echo -e "$(c_primary)║${NC} $(c_special)1)${NC} 📝 stats.py - Simple text-based display                     $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_special)2)${NC} 🎨 monitor.py - Display with icons                          $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_special)3)${NC} ⚡ psutilstats.py - Enhanced compatibility                  $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} $(c_special)1)${NC} 📝 status.py - Enhanced text-based display                  $(c_primary)║${NC}"
-    echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
-    echo ""
-    read -p "🎯 Which script would you like to use as default? (1-3): " SCRIPT_CHOICE < /dev/tty
-    
-    case $SCRIPT_CHOICE in
-        1)
-            DEFAULT_SCRIPT="stats.py"
-            ;;
-        2)
-            DEFAULT_SCRIPT="monitor.py"
-            ;;
-        3)
-            DEFAULT_SCRIPT="psutilstats.py"
-            ;;
-        4)
-            DEFAULT_SCRIPT="status.py"
-            ;;
-        *)
-            print_warning "⚠️  Invalid choice, using psutilstats.py as default"
-            DEFAULT_SCRIPT="psutilstats.py"
-            ;;
-    esac
+    if [ "$UNATTENDED" = true ] || [ "$SILENT" = true ]; then
+        DEFAULT_SCRIPT="monitor.py"
+        print_status "Using monitor.py as default"
+    else
+        # Interactive script selection
+        echo ""
+        echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
+        echo -e "$(c_primary)║$(c_secondary)                      📟 SCRIPT SELECTION                       $(c_primary)║${NC}"
+        echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
+        echo -e "$(c_primary)║${NC} $(c_special)1)${NC} stats.py       - Simple text-based display                  $(c_primary)║${NC}"
+        echo -e "$(c_primary)║${NC} $(c_special)2)${NC} monitor.py     - Display with icons                         $(c_primary)║${NC}"
+        echo -e "$(c_primary)║${NC} $(c_special)3)${NC} psutilstats.py - Enhanced compatibility                     $(c_primary)║${NC}"
+        echo -e "$(c_primary)║${NC} $(c_special)4)${NC} status.py      - Clean exit & atexit enabled                  $(c_primary)║${NC}"
+        echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
+        echo ""
+        
+        read -p "🎯 Which script would you like to use as default? (1-4): " SCRIPT_CHOICE < /dev/tty
+        SCRIPT_CHOICE=${SCRIPT_CHOICE:-$DEFAULT_SCRIPT_CHOICE}
+        
+        case $SCRIPT_CHOICE in
+            1) DEFAULT_SCRIPT="stats.py" ;;
+            2) DEFAULT_SCRIPT="monitor.py" ;;
+            3) DEFAULT_SCRIPT="psutilstats.py" ;;
+            4) DEFAULT_SCRIPT="status.py" ;;
+            *)
+                print_warning "Invalid choice, using monitor.py as default"
+                DEFAULT_SCRIPT="monitor.py"
+                ;;
+        esac
+    fi
     
     print_verbose "🎯 Selected script: $DEFAULT_SCRIPT"
+    update_progress
     
     # Test the selected script for 5 seconds if OLED was detected
-    if sudo i2cdetect -y 1 | grep -q "3c"; then
+    if sudo i2cdetect -y 1 2>/dev/null | grep -q "3c" && [ "$SILENT" = false ]; then
         print_status "🧪 Testing $DEFAULT_SCRIPT for 5 seconds..."
         print_verbose "🧪 Running test command: timeout 5 python3 $DEFAULT_SCRIPT"
         
@@ -588,10 +797,10 @@ main() {
         fi
         print_success "🧪 Script test completed"
     else
-        print_status "⏭️  Skipping script test (OLED not detected)"
+        print_status "⏭️ Skipping script test (OLED not detected or silent mode)"
     fi
     
-    # Step 8: Create startup script
+    # Step 9: Create startup script
     print_status "📝 Creating startup script..."
     print_verbose "📝 Creating startup script at: $HOME_DIR/oled_display_start.sh"
     
@@ -603,6 +812,7 @@ main() {
 # Original Code: $ORIGINAL_AUTHOR
 # Wait for system to fully boot
 sleep 30
+export OLED_ROTATION="$ROTATION"
 source $HOME_DIR/stats_env/bin/activate
 cd $HOME_DIR/rpi_oled_stats
 python3 $DEFAULT_SCRIPT
@@ -611,15 +821,11 @@ EOF
     chmod +x "$HOME_DIR/oled_display_start.sh"
     chown "$USERNAME:$USERNAME" "$HOME_DIR/oled_display_start.sh"
     
-    if [ "$VERBOSE" = true ]; then
-        print_verbose "📝 Startup script contents:"
-        cat "$HOME_DIR/oled_display_start.sh"
-    fi
-    
     print_success "📝 Startup script created"
+    update_progress
     
-    # Step 9: Setup auto-start
-    print_status "⚙️  Setting up auto-start on boot..."
+    # Step 10: Setup auto-start
+    print_status "⚙️ Setting up auto-start on boot..."
     
     # Add to crontab for the user
     CRON_JOB="@reboot $HOME_DIR/oled_display_start.sh &"
@@ -630,65 +836,86 @@ EOF
         print_verbose "⏰ Adding cron job for auto-start..."
         (sudo -u "$USERNAME" crontab -l 2>/dev/null; echo "$CRON_JOB") | sudo -u "$USERNAME" crontab -
         print_success "⏰ Auto-start configured"
-        
-        if [ "$VERBOSE" = true ]; then
-            print_verbose "⏰ Current crontab for $USERNAME:"
-            sudo -u "$USERNAME" crontab -l
-        fi
     else
         print_warning "⏰ Auto-start already configured"
     fi
+    update_progress
     
-    # Step 10: Final instructions
-    print_success "🎉 Installation completed successfully!"
-    echo ""
-    echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "$(c_primary)║$(c_special)                    🎉 INSTALLATION COMPLETE!                   $(c_primary)║${NC}"
-    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
-    echo -e "$(c_primary)║${NC} ✅ Script version: $SCRIPT_VERSION                                        $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} ✅ Installation script by: $SCRIPT_AUTHOR              $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} ✅ Original OLED Stats code by: $ORIGINAL_AUTHOR           $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} ✅ System updated                                              $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} ✅ Required packages installed                                 $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} ✅ Virtual environment created at: $HOME_DIR/stats_env          $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} ✅ Scripts installed at: $HOME_DIR/rpi_oled_stats               $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} ✅ Default script set to: $DEFAULT_SCRIPT                           $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} ✅ Auto-start configured with 30-second boot delay             $(c_primary)║${NC}"
-    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
-    echo -e "$(c_primary)║$(c_accent)                      🛠️  MANUAL COMMANDS                       $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} 🚀 Start manually:                                             $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}    $HOME_DIR/oled_display_start.sh                              $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} 🔧 Change script:                                              $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}    Edit $HOME_DIR/oled_display_start.sh                         $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} 🔄 The display will start automatically 30 seconds             $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}    after boot.                                                 $(c_primary)║${NC}"
-    echo -e "$(c_primary)╠════════════════════════════════════════════════════════════════╣${NC}"
-    echo -e "$(c_primary)║$(c_gold)                            🏆 CREDITS                          $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC}                                                                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} 🛠️  Installation script: $SCRIPT_AUTHOR                $(c_primary)║${NC}"
-    echo -e "$(c_primary)║${NC} 🎨 Original OLED Stats: $ORIGINAL_AUTHOR                   $(c_primary)║${NC}"
-    echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
-    echo ""
+    # Completion message
+    if [ "$SILENT" = true ]; then
+        echo ""  # New line after progress bar
+        echo "✅ Installation completed successfully!"
+    else
+        print_success "🎉 Installation completed successfully!"
+        echo ""
+        echo -e "$(c_primary)╔════════════════════════════════════════════════════════════════╗${NC}"
+        echo -e "$(c_primary)║$(c_special)                    🎉 INSTALLATION COMPLETE!                   $(c_primary)║${NC}"
+        echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
+        echo -e "$(c_primary)${NC} - Script version: $SCRIPT_VERSION${NC}"
+        echo -e "$(c_primary)${NC} - System updated${NC}"
+        echo -e "$(c_primary)${NC} - Required packages installed${NC}"
+        echo -e "$(c_primary)${NC} - Python libraries verified${NC}"
+        echo -e "$(c_primary)${NC} - Virtual environment created at: $HOME_DIR/stats_env${NC}"
+        echo -e "$(c_primary)${NC} - Scripts installed at: $HOME_DIR/rpi_oled_stats${NC}"
+        echo -e "$(c_primary)${NC} - Default script set to: $DEFAULT_SCRIPT${NC}"
+        echo -e "$(c_primary)${NC} - Display rotation: $ROTATION (1=Normal, 2=Upside Down)${NC}"
+        echo -e "$(c_primary)${NC} - Auto-start configured with 30-second boot delay${NC}"
+        
+        if [ "$UNATTENDED" = false ]; then
+            echo -e "$(c_primary)◂════════════════════════════════════════════════════════════════▸${NC}"
+            echo -e "$(c_primary)$(c_accent)                          MANUAL COMMANDS${NC}"
+            echo -e ""
+            echo -e "$(c_primary)${NC} 🚀 Start manually:${NC}"
+            echo -e "$(c_primary)${NC}  ╰  $HOME_DIR/oled_display_start.sh${NC}"
+            echo -e ""
+            echo -e "$(c_primary)${NC} ⚙️ Change script:${NC}"
+            echo -e "$(c_primary)${NC}  ╰  Edit $HOME_DIR/oled_display_start.sh${NC}"
+            echo -e ""
+            echo -e "$(c_primary)${NC} 🔄 The display will start automatically 30 seconds after boot.${NC}"
+            echo -e "$(c_primary)${NC}  ╰  To change delay, edit: crontab -e${NC}"
+        fi
+        
+        echo -e "$(c_primary)◂════════════════════════════════════════════════════════════════▸${NC}"
+        echo -e "$(c_primary)$(c_gold)                            💚 CREDITS${NC}"
+        echo -e ""
+        echo -e "$(c_primary)${NC} Installation script by $SCRIPT_AUTHOR${NC}"
+        echo -e "$(c_primary)${NC} Original OLED Stats code by $ORIGINAL_AUTHOR${NC}"
+        echo -e ""
+        echo -e "$(c_primary)◂════════════════════════════════════════════════════════════════▸${NC}"
+        echo ""
+    fi
     
     if [ "$VERBOSE" = true ]; then
         print_verbose "💻 System information:"
         print_verbose "🐧 Kernel: $(uname -r)"
-        print_verbose "🖥️  OS: $(cat /etc/os-release | grep PRETTY_NAME | cut -d'"' -f2)"
+        print_verbose "🖥️ OS: $(cat /etc/os-release | grep PRETTY_NAME | cut -d'"' -f2)"
         print_verbose "🐍 Python version: $(python3 --version)"
         print_verbose "💾 Disk space available: $(df -h $HOME_DIR | tail -1 | awk '{print $4}')"
     fi
     
-    read -p "🔄 Would you like to reboot now to start the display? (y/n): " REBOOT_CHOICE < /dev/tty
-    
-    if [[ $REBOOT_CHOICE =~ ^[Yy]$ ]]; then
-        print_status "🔄 Rebooting system..."
-        sudo reboot
+    # Handle reboot
+    if [ "$AUTO_REBOOT" = true ]; then
+        if [ "$UNATTENDED" = true ] || [ "$SILENT" = true ]; then
+            print_status "Auto-rebooting in 10 seconds..."
+            sleep 10
+            sudo reboot
+        else
+            read -p "🔄 Reboot now to start the display? (y/n): " REBOOT_CHOICE < /dev/tty
+            REBOOT_CHOICE=${REBOOT_CHOICE:-n}
+            
+            if [[ $REBOOT_CHOICE =~ ^[Yy]$ ]]; then
+                print_status "🔄 Rebooting system..."
+                sudo reboot
+            else
+                print_status "✅ Installation complete. Reboot when ready."
+                print_status "🚀 You can start the display manually with: $HOME_DIR/oled_display_start.sh"
+                print_status "🔄 Or reboot to start automatically: sudo reboot"
+            fi
+        fi
     else
+        print_status "✅ Installation complete. No automatic reboot configured."
         print_status "🚀 You can start the display manually with: $HOME_DIR/oled_display_start.sh"
-        print_status "🔄 Or reboot to start automatically: sudo reboot"
+        print_status "🔄 Reboot manually when ready: sudo reboot"
     fi
 }
 

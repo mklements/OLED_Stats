@@ -1,6 +1,6 @@
 # OLED Stats
 
-OLED Stats Display Script For A Raspberry Pi Running Raspberry Pi OS Bookworm. The installation process and script has been tested on a Pi 3, 4 and 5.
+OLED Stats Display Script For A Raspberry Pi Running Raspberry Pi OS Bookworm. The installation process and script have been tested on a Pi Zero 2w, 3, 4 and 5.
 
 Full setup instructions available on my blog - https://www.the-diy-life.com/add-an-oled-stats-display-to-raspberry-pi-os-bookworm/
 Or my Youtube Channel - https://youtu.be/pdaDvPCdAlY
@@ -22,9 +22,7 @@ The script is pre-configured for 128x64 I2C OLED Display, but can easily be modi
   </tr>
   </table>
 
-## Auto-Installation Script
-
-🚀 <strong>Click here for automated installation guide</strong> (Recommended)
+## 🚀 Auto-Installation Script (Recommended)
 
 ### `>` Quick & Easy Installation
 
@@ -33,11 +31,11 @@ For the fastest setup experience, use the installation script that handles every
 > [!TIP]
 > The average setup time on a Raspberry Pi 3B v1.2 is approximately 5 minutes.
 
-#### 🎯 **One-Line Installation**
+#### **One-Line Installation**
 
 1. Run this command in your terminal to start the installation:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh | bash
+curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/main/autoinstall_oled_stats.sh | bash
 ```
 
 2. When close to being done, the script will prompt you to select your preferred display script:
@@ -63,7 +61,7 @@ curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads
 
 #### 🔍 **Verbose Installation** (see detailed output)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh | bash -s -- --verbose
+curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/main/autoinstall_oled_stats.sh | bash -s -- --verbose
 ```
 
 > [!NOTE]  
@@ -72,13 +70,13 @@ curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads
 #### 🛠️ **Advanced Options**
 ```bash
 # Combine verbose with custom theme
-curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh | bash -s -- --theme 2 --verbose
+curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/main/autoinstall_oled_stats.sh | bash -s -- --theme 2 --verbose
 
 # Show help
-curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh | bash -s -- --help
+curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/main/autoinstall_oled_stats.sh | bash -s -- --help
 
 # Show version
-curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads/main/autoinstall_oled_stats.sh | bash -s -- --version
+curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/main/autoinstall_oled_stats.sh | bash -s -- --version
 ```
 
 ### What the Auto-Installer Does:
@@ -90,11 +88,11 @@ curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads
 - ✅ **Libraries**: Installs Adafruit CircuitPython libraries and dependencies
 - ✅ **Repository**: Clones this repository and downloads required fonts
 - ✅ **I2C Detection**: Checks for OLED display connectivity
-- ✅ **Script Selection**: Lets you choose between stats.py, monitor.py, or psutilstats.py
+- ✅ **Script Selection**: Lets you choose between stats.py, monitor.py, psutilstats.py, or status.py
 - ✅ **Auto-Start**: Configures automatic startup on boot with 30-second delay
 - ✅ **Testing**: Tests your selected script for 5 seconds to verify functionality
 
-### Available Themes (🎨):
+### Available Themes:
 
 | Theme | Description | Best For |
 |-------|-------------|----------|
@@ -102,7 +100,7 @@ curl -fsSL https://raw.githubusercontent.com/4ngel2769/rpi_oled_stats/refs/heads
 | **2 - HTB** | HackTheBox style | Security enthusiasts, bright displays |
 | **3 - Pastel** | Soft and pleasant colors | Easy on the eyes |
 
-### 📋 Prerequisites:
+### Prerequisites:
 
 > [!IMPORTANT]  
 > Before running the installation script, ensure your OLED display is properly connected to the Raspberry Pi I2C pins (GND, VCC, SDA, SCL).
@@ -253,16 +251,35 @@ source stats_env/bin/activate
 cd OLED_Stats
 ```
 
-10. There are two options for scripts to run. A text-based one called stats.py and another one that has icons called monitor.py. Depending on which one you prefer, enter one of the below two commands
+10. There are several options for scripts to run. Choose the one that best suits your needs:
+
+- `stats.py` - A simple text-based display.
+- `monitor.py` - A display with icons.
+- `psutilstats.py` - Uses psutil for better compatibility on non-Raspbian distros.
+- `status.py` - An enhanced text-based display.
+
+Run one of the commands below to test the chosen script:
 
 ```shell
 python3 stats.py
 ```
 
-OR
+or
 
 ```shell
 python3 monitor.py
+```
+
+or
+
+```shell
+python3 psutilstats.py
+```
+
+or
+
+```shell
+python3 status.py
 ```
 
 11. The script should now be running and your display showing your Pi's IP address and stats, but if you close the terminal window then it'll stop being updated. To get the script to run automatically on start-up and continue to update itself, we need to make an executable file. You'll need to open a new terminal window for the below steps.
