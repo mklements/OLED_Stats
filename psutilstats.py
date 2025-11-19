@@ -9,6 +9,7 @@ import socket
 import board
 import digitalio
 import adafruit_ssd1306
+import os
 #
 from PIL import Image, ImageDraw, ImageFont
 #
@@ -55,6 +56,14 @@ def get_ipv4():
 # Use for I2C.
 i2c = board.I2C()
 oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c, addr=0x3C)
+
+# Set display rotation
+rotation = int(os.environ.get("OLED_ROTATION", "1"))
+if rotation == 2:
+    try:
+        oled.rotate(2)  # 180 degrees
+    except AttributeError:
+        oled.rotation = 2
 
 # Clear display.
 oled.fill(0)
