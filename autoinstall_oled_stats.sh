@@ -23,7 +23,7 @@ UNATTENDED=false
 SKIP_APT_UPDATE=false
 SILENT=false
 AUTO_REBOOT=true             # Auto-reboot behavior (works for both normal and unattended)
-DEFAULT_SCRIPT_CHOICE=2      # Default to monitor.py for unattended mode
+DEFAULT_SCRIPT_CHOICE=2      # Default to monitor.py for unattended mode (1=stats.py, 2=monitor.py, 3=psutilstats.py, 4=status.py)
 ROTATION=1                   # Default rotation (1 = normal, 2 = upside down)
 
 # ================================================================================
@@ -230,6 +230,7 @@ show_help() {
     echo -e "${NC} $(c_secondary)UNATTENDED MODE:${NC}"
     echo -e "${NC} Uses default settings for automated deployments:${NC}"
     echo -e "${NC} - Default script: monitor.py (enhanced compatibility)${NC}"
+    echo -e "${NC} - Available scripts: stats.py, monitor.py, psutilstats.py, status.py${NC}"
     echo -e "${NC} - No user prompts, automatic reboot${NC}"
     echo -e "${NC} - Works well for scripts and CI/CD pipelines${NC}"
     echo -e ""
@@ -762,16 +763,18 @@ main() {
         echo -e "$(c_primary)║${NC} $(c_special)1)${NC} stats.py       - Simple text-based display                  $(c_primary)║${NC}"
         echo -e "$(c_primary)║${NC} $(c_special)2)${NC} monitor.py     - Display with icons                         $(c_primary)║${NC}"
         echo -e "$(c_primary)║${NC} $(c_special)3)${NC} psutilstats.py - Enhanced compatibility                     $(c_primary)║${NC}"
+        echo -e "$(c_primary)║${NC} $(c_special)4)${NC} status.py      - Clean exit & atexit enabled                  $(c_primary)║${NC}"
         echo -e "$(c_primary)╚════════════════════════════════════════════════════════════════╝${NC}"
         echo ""
         
-        read -p "🎯 Which script would you like to use as default? (1-3): " SCRIPT_CHOICE < /dev/tty
+        read -p "🎯 Which script would you like to use as default? (1-4): " SCRIPT_CHOICE < /dev/tty
         SCRIPT_CHOICE=${SCRIPT_CHOICE:-$DEFAULT_SCRIPT_CHOICE}
         
         case $SCRIPT_CHOICE in
             1) DEFAULT_SCRIPT="stats.py" ;;
             2) DEFAULT_SCRIPT="monitor.py" ;;
             3) DEFAULT_SCRIPT="psutilstats.py" ;;
+            4) DEFAULT_SCRIPT="status.py" ;;
             *)
                 print_warning "Invalid choice, using monitor.py as default"
                 DEFAULT_SCRIPT="monitor.py"
