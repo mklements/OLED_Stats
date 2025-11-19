@@ -1,0 +1,28 @@
+services:
+  oled_stats:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: oled_stats
+    # Use host networking so the container can access local hardware (I2C, GPIO, etc.)
+    network_mode: host
+    # Allow access to GPIO / I2C devices
+    devices:
+      - "/dev/i2c-1:/dev/i2c-1"
+      - "/dev/gpiomem:/dev/gpiomem"
+    privileged: true
+    restart: unless-stopped
+    environment:
+      # Set OLED_ROTATION to 2 to rotate the display 180 degrees (default 1)
+      - OLED_ROTATION=1
+      # Optionally set your timezone
+      - TZ=UTC
+    # CLI command; change to your preferred script: stats.py, monitor.py, psutilstats.py, status.py
+    command: ["status.py"]
+    # the Dockerfile already copies fonts in build, but you can map a local repo to override
+    # - "./:/opt/stats"
+
+# Usage examples:
+#  - Build and start: docker compose up --build -d
+#  - View logs: docker compose logs -f oled_stats
+#  - Stop container: docker compose down
