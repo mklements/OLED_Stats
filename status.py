@@ -8,6 +8,7 @@ import busio
 import digitalio
 import adafruit_ssd1306
 import subprocess
+import os
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -37,6 +38,14 @@ font_sz = 16
 
 # Methode to control the display with oled func
 oled = adafruit_ssd1306.SSD1306_I2C(width, height, board.I2C(), addr=0x3C, reset=digitalio.DigitalInOut(board.D4))
+
+# Set display rotation (1 normal, 2 upside down)
+rotation = int(os.environ.get("OLED_ROTATION", "1"))
+if rotation == 2:
+    try:
+        oled.rotate(2)
+    except AttributeError:
+        oled.rotation = 2
 
 # Clear display.
 oled.fill(0)
