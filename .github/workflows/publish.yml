@@ -19,6 +19,14 @@ jobs:
       #    registry: ghcr.io
       #    username: ${{ github.repository_owner }}
       #    password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check DockerHub username is set
+      run: |
+        if [ -z "${{ secrets.DOCKERHUB_USERNAME }}" ]; then
+          echo "DOCKERHUB_USERNAME is EMPTY"
+          exit 1
+        else
+          echo "DOCKERHUB_USERNAME is set"
+        fi
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
@@ -31,3 +39,4 @@ jobs:
           tags: |
             mklements/oled_stats:latest
           platforms: linux/arm64,linux/amd64,linux/arm/v7
+
