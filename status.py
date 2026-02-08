@@ -3,43 +3,22 @@
 # For Raspberry Pi Desktop Case with OLED Stats Display
 # Base on Adafruit CircuitPython & SSD1306 Libraries
 # Installation & Setup Instructions - https://www.the-diy-life.com/add-an-oled-stats-display-to-raspberry-pi-os-bullseye/
-import board
-import busio
-import digitalio
+import os, sys, time, atexit, signal
+import board, digitalio
 import adafruit_ssd1306
-import subprocess
-import os
 
 from PIL import Image, ImageDraw, ImageFont
 
-import sys
-import atexit
-import signal
+import psutil
+import socket
 
-def exit_handler():
-    oled.fill(0)
-    oled.show()
+WIDTH, HEIGHT = 128, 64
+FONT_SZ = 16
 
-def kill_handler(*args):
-    oled.fill(0)
-    oled.show()
-    sys.exit(0)
+oled = adafruit_ssd1306.SSD1306_I2C(
+    WIDTH, HEIGHT, board.I2C(), addr=0x3C, reset=digitalio.DigitalInOut(board.D4)
+)
 
-atexit.register(exit_handler)
-signal.signal(signal.SIGINT, kill_handler)
-signal.signal(signal.SIGTERM, kill_handler)
-
-# Display Parameters
-width = 128
-height = 64
-
-# Font size
-font_sz = 16
-
-# Methode to control the display with oled func
-oled = adafruit_ssd1306.SSD1306_I2C(width, height, board.I2C(), addr=0x3C, reset=digitalio.DigitalInOut(board.D4))
-
-# Set display rotation (1 normal, 2 upside down)
 rotation = int(os.environ.get("OLED_ROTATION", "1"))
 if rotation == 2:
     try:
@@ -47,59 +26,122 @@ if rotation == 2:
     except AttributeError:
         oled.rotation = 2
 
-# Clear display.
+def cleanup():
+    try:
+        oled.fill(0)
+        oled.show()
+    except Exception:
+        pass
+
+def kill_handler(*_):
+    cleanup()
+    sys.exit(0)
+
+atexit.register(cleanup)
+signal.signal(signal.SIGINT, kill_handler)
+signal.signal(signal.SIGTERM, kill_handler)
+
 oled.fill(0)
 oled.show()
 
-# Create a blank image for drawing in 1-bit color
-image = Image.new('1', (oled.width, oled.height))
-
-# Get drawing object to draw on image
+image = Image.new("1", (oled.width, oled.height))
 draw = ImageDraw.Draw(image)
 
-# Import custom fonts
-font = ImageFont.truetype('PixelOperator.ttf', font_sz)
-icon_font= ImageFont.truetype('lineawesome-webfont.ttf', font_sz)
+font = ImageFont.truetype("PixelOperator.ttf", FONT_SZ)
+icon_font = ImageFont.truetype("lineawesome-webfont.ttf", FONT_SZ)
+
+# Helper: get a “best guess” LAN IP without shelling out
+def get_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return ip
+    except Exception:
+        return "0.0.0.0"
+
+def get_temp_c():
+    # Pi exposes temperature here (on typical Raspberry Pi OS)
+    try:
+        with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
+            return float(f.read().strip()) / 1000.0
+    except Exception:
+        return 0.0
+
+def format_uptime(seconds):
+    minutes = seconds // 60
+    hours = minutes // 60
+    days = hours // 24
+
+    minutes %= 60
+    hours %= 24
+
+    if days > 0:
+        return f"{days}d {hours}h"
+    elif hours > 0:
+        return f"{hours}:{minutes:02d}"
+    else:
+        return f"{minutes}m"
+
+# Cache slow-ish values
+ip = get_ip()
+last_ip_check = 0.0
+
+last_frame = None
+
+# Prime psutil CPU sampling (first call can be 0.0)
+psutil.cpu_percent(interval=None)
 
 while True:
-    draw.rectangle((0, 0, oled.width, oled.height), fill=0) # Draw a black filled box to clear the image.
-    cmd = "ip addr | awk '/inet / { print $2 }' | sed -n '2{p;q}' | cut -d '/' -f1" # Command that's executed in bash
-    IP = subprocess.check_output(cmd, shell = True ) # Register ouput from cmd in var
-    cmd = "vmstat 4 2|tail -1|awk '{print 100-$15}' | tr -d '\n'" # Takes a second to fetch for accurate cpu usage in %
-    CPU = subprocess.check_output(cmd, shell = True )
-    cmd = "free -m | awk 'NR==2{printf $3}'| awk '{printf $1/1000}'"
-    Memuse = subprocess.check_output(cmd, shell = True )
-    cmd = "cat /proc/meminfo | head -n 1 | awk -v CONVFMT='%.0f' '{printf $2/1000000}'"
-    MemTotal = subprocess.check_output(cmd, shell = True )
-    cmd = "free -m | awk -v CONVFMT='%.1f' 'NR==2{printf $3*100/$2}'"
-    Memuseper = subprocess.check_output(cmd, shell = True )
-    cmd = "df -h | awk '$NF==\"/\"{printf \"%s\", $5}'"
-    Disk = subprocess.check_output(cmd, shell = True )
-    cmd = "uptime | awk '{print $3,$4}' | cut -f1 -d','"
-    uptime = subprocess.check_output(cmd, shell = True )
-    cmd = "cat /sys/class/thermal/thermal_zone*/temp | awk -v CONVFMT='%.1f' '{printf $1/1000}'"
-    temp = subprocess.check_output(cmd, shell = True )
-    # We draw the icons seprately and offset by a fixed amount later
-    # Icon wifi, chr num comes from unicode &#xf1eb; to decimal 61931 (Use: https://www.binaryhexconverter.com/hex-to-decimal-converter)
-    draw.text((1, 0), chr(61931), font=icon_font, fill=255) # Offset the icon on the x-as a little and devide the y-as in steps of 16
-    # Icon cpu
-    draw.text((1, 16), chr(62171), font=icon_font, fill=255)
-    # Icon temp right
-    draw.text((111, 16), chr(62153), font=icon_font, fill=255) # Offset the icon from the left to the farthest right
-    # Icon memory
-    draw.text((1, 32), chr(62776), font=icon_font, fill=255)
-    # Icon disk
-    draw.text((1, 48), chr(63426), font=icon_font, fill=255)
-    # Icon time right
-    draw.text((111, 48), chr(62034), font=icon_font, fill=255)
-    # Pi Stats Display, printed from left to right each line
-    draw.text((22, 0), str(IP,'utf-8'), font=font, fill=255) # x y followed by the content to be printed on the display followed by how it should be printed
-    draw.text((22, 16), str(CPU,'utf-8') + "%", font=font, fill=255)
-    draw.text((107, 16), str(temp,'utf-8') + "°C", font=font, fill=255, anchor="ra") # anchor basically refers to printing right to left: https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html#specifying-an-anchor
-    draw.text((22, 32), str(Memuseper,'utf-8') + "%", font=font, fill=255)
-    draw.text((125, 32), str(Memuse,'utf-8') + "/" + str(MemTotal,'utf-8') + "G", font=font, fill=255, anchor="ra")
-    draw.text((22, 48), str(Disk,'utf-8'), font=font, fill=255)
-    draw.text((107, 48), str(uptime,'utf-8'), font=font, fill=255, anchor="ra")
-    # Display image
-    oled.image(image)
-    oled.show()
+    now = time.time()
+
+    # Refresh IP only every 60s
+    if now - last_ip_check > 60:
+        ip = get_ip()
+        last_ip_check = now
+
+    cpu = psutil.cpu_percent(interval=None)
+
+    vm = psutil.virtual_memory()
+    mem_used_gb = vm.used / (1024**3)
+    mem_total_gb = vm.total / (1024**3)
+    mem_pct = vm.percent
+
+    du = psutil.disk_usage("/")
+    disk_pct = du.percent
+
+    uptime_s = int(time.time() - psutil.boot_time())
+    uptime = format_uptime(uptime_s)
+
+    temp_c = get_temp_c()
+
+    # Build frame text. If it didn't change, skip OLED update.
+    frame = (ip, round(cpu, 0), round(temp_c, 1), round(mem_pct, 1),
+             round(mem_used_gb, 1), round(mem_total_gb, 0), int(disk_pct), uptime)
+
+    if frame != last_frame:
+        draw.rectangle((0, 0, oled.width, oled.height), fill=0)
+
+        # icons
+        draw.text((1, 0),  chr(61931), font=icon_font, fill=255)  # wifi
+        draw.text((1, 16), chr(62171), font=icon_font, fill=255)  # cpu
+        draw.text((111,16),chr(62153), font=icon_font, fill=255)  # temp
+        draw.text((1, 32), chr(62776), font=icon_font, fill=255)  # memory
+        draw.text((1, 48), chr(63426), font=icon_font, fill=255)  # disk
+        draw.text((111,48),chr(62034), font=icon_font, fill=255)  # time
+
+        # text
+        draw.text((22, 0),  ip, font=font, fill=255)
+        draw.text((22, 16), f"{cpu:.0f}%", font=font, fill=255)
+        draw.text((107,16), f"{temp_c:.1f}°C", font=font, fill=255, anchor="ra")
+        draw.text((22, 32), f"{mem_pct:.0f}%", font=font, fill=255)
+        draw.text((125,32), f"{mem_used_gb:.1f}/{mem_total_gb:.0f}G", font=font, fill=255, anchor="ra")
+        draw.text((22, 48), f"{disk_pct:.0f}%", font=font, fill=255)
+        draw.text((107,48), uptime, font=font, fill=255, anchor="ra")
+
+        oled.image(image)
+        oled.show()
+        last_frame = frame
+
+    time.sleep(5.0)
