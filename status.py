@@ -26,6 +26,7 @@ if rotation == 2:
     except AttributeError:
         oled.rotation = 2
 
+
 def cleanup():
     try:
         oled.fill(0)
@@ -33,9 +34,11 @@ def cleanup():
     except Exception:
         pass
 
+
 def kill_handler(*_):
     cleanup()
     sys.exit(0)
+
 
 atexit.register(cleanup)
 signal.signal(signal.SIGINT, kill_handler)
@@ -50,6 +53,7 @@ draw = ImageDraw.Draw(image)
 font = ImageFont.truetype("PixelOperator.ttf", FONT_SZ)
 icon_font = ImageFont.truetype("lineawesome-webfont.ttf", FONT_SZ)
 
+
 # Helper: get a “best guess” LAN IP without shelling out
 def get_ip():
     try:
@@ -61,6 +65,7 @@ def get_ip():
     except Exception:
         return "0.0.0.0"
 
+
 def get_temp_c():
     # Pi exposes temperature here (on typical Raspberry Pi OS)
     try:
@@ -68,6 +73,7 @@ def get_temp_c():
             return float(f.read().strip()) / 1000.0
     except Exception:
         return 0.0
+
 
 def format_uptime(seconds):
     minutes = seconds // 60
@@ -81,8 +87,21 @@ def format_uptime(seconds):
         return f"{days}d {hours}h"
     elif hours > 0:
         return f"{hours}:{minutes:02d}"
+        # return f"{hours}:{minutes}"
     else:
         return f"{minutes}m"
+
+
+# Use a monotonic uptime source (not wall-clock) to avoid NTP/time corrections.
+# Option A: /proc/uptime (works great on Linux, incl. Raspberry Pi OS)
+def get_uptime_seconds():
+    try:
+        with open("/proc/uptime", "r") as f:
+            return int(float(f.readline().split()[0]))
+    except Exception:
+        # Fallback: keep old behavior if /proc/uptime isn't available for some reason
+        return int(time.time() - psutil.boot_time())
+
 
 # Cache slow-ish values
 ip = get_ip()
@@ -111,34 +130,49 @@ while True:
     du = psutil.disk_usage("/")
     disk_pct = du.percent
 
-    uptime_s = int(time.time() - psutil.boot_time())
+    # FIX: use monotonic uptime instead of time.time() - psutil.boot_time()
+    uptime_s = get_uptime_seconds()
     uptime = format_uptime(uptime_s)
 
     temp_c = get_temp_c()
 
     # Build frame text. If it didn't change, skip OLED update.
-    frame = (ip, round(cpu, 0), round(temp_c, 1), round(mem_pct, 1),
-             round(mem_used_gb, 1), round(mem_total_gb, 0), int(disk_pct), uptime)
+    frame = (
+        ip,
+        round(cpu, 0),
+        round(temp_c, 1),
+        round(mem_pct, 1),
+        round(mem_used_gb, 1),
+        round(mem_total_gb, 0),
+        int(disk_pct),
+        uptime,
+    )
 
     if frame != last_frame:
         draw.rectangle((0, 0, oled.width, oled.height), fill=0)
 
         # icons
-        draw.text((1, 0),  chr(61931), font=icon_font, fill=255)  # wifi
+        draw.text((1, 0), chr(61931), font=icon_font, fill=255)  # wifi
         draw.text((1, 16), chr(62171), font=icon_font, fill=255)  # cpu
-        draw.text((111,16),chr(62153), font=icon_font, fill=255)  # temp
+        draw.text((111, 16), chr(62153), font=icon_font, fill=255)  # temp
         draw.text((1, 32), chr(62776), font=icon_font, fill=255)  # memory
         draw.text((1, 48), chr(63426), font=icon_font, fill=255)  # disk
-        draw.text((111,48),chr(62034), font=icon_font, fill=255)  # time
+        draw.text((111, 48), chr(62034), font=icon_font, fill=255)  # time
 
         # text
-        draw.text((22, 0),  ip, font=font, fill=255)
+        draw.text((22, 0), ip, font=font, fill=255)
         draw.text((22, 16), f"{cpu:.0f}%", font=font, fill=255)
-        draw.text((107,16), f"{temp_c:.1f}°C", font=font, fill=255, anchor="ra")
+        draw.text((107, 16), f"{temp_c:.1f}°C", font=font, fill=255, anchor="ra")
         draw.text((22, 32), f"{mem_pct:.0f}%", font=font, fill=255)
-        draw.text((125,32), f"{mem_used_gb:.1f}/{mem_total_gb:.0f}G", font=font, fill=255, anchor="ra")
+        draw.text(
+            (125, 32),
+            f"{mem_used_gb:.1f}/{mem_total_gb:.0f}G",
+            font=font,
+            fill=255,
+            anchor="ra",
+        )
         draw.text((22, 48), f"{disk_pct:.0f}%", font=font, fill=255)
-        draw.text((107,48), uptime, font=font, fill=255, anchor="ra")
+        draw.text((107, 48), uptime, font=font, fill=255, anchor="ra")
 
         oled.image(image)
         oled.show()
