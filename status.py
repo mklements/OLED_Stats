@@ -54,7 +54,7 @@ font = ImageFont.truetype("PixelOperator.ttf", FONT_SZ)
 icon_font = ImageFont.truetype("lineawesome-webfont.ttf", FONT_SZ)
 
 
-# Helper: get a “best guess” LAN IP without shelling out
+# Helper: get a best guess LAN IP without shelling out
 def get_ip():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -87,13 +87,11 @@ def format_uptime(seconds):
         return f"{days}d {hours}h"
     elif hours > 0:
         return f"{hours}:{minutes:02d}"
-        # return f"{hours}:{minutes}"
     else:
         return f"{minutes}m"
 
 
-# Use a monotonic uptime source (not wall-clock) to avoid NTP/time corrections.
-# Option A: /proc/uptime (works great on Linux, incl. Raspberry Pi OS)
+# Use proc uptime as psutil reported a +20m after an hour
 def get_uptime_seconds():
     try:
         with open("/proc/uptime", "r") as f:
@@ -130,7 +128,6 @@ while True:
     du = psutil.disk_usage("/")
     disk_pct = du.percent
 
-    # FIX: use monotonic uptime instead of time.time() - psutil.boot_time()
     uptime_s = get_uptime_seconds()
     uptime = format_uptime(uptime_s)
 
@@ -164,13 +161,7 @@ while True:
         draw.text((22, 16), f"{cpu:.0f}%", font=font, fill=255)
         draw.text((107, 16), f"{temp_c:.1f}°C", font=font, fill=255, anchor="ra")
         draw.text((22, 32), f"{mem_pct:.0f}%", font=font, fill=255)
-        draw.text(
-            (125, 32),
-            f"{mem_used_gb:.1f}/{mem_total_gb:.0f}G",
-            font=font,
-            fill=255,
-            anchor="ra",
-        )
+        draw.text((125, 32), f"{mem_used_gb:.1f}/{mem_total_gb:.0f}G", font=font, fill=255, anchor="ra")
         draw.text((22, 48), f"{disk_pct:.0f}%", font=font, fill=255)
         draw.text((107, 48), uptime, font=font, fill=255, anchor="ra")
 
@@ -179,3 +170,4 @@ while True:
         last_frame = frame
 
     time.sleep(5.0)
+
